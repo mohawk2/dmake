@@ -1,4 +1,4 @@
-/* RCS  $Id: runargv.c,v 1.2 2000-11-01 12:27:31 hjs Exp $
+/* RCS  $Id: runargv.c,v 1.3 2001-05-07 12:47:09 mh Exp $
 --
 -- SYNOPSIS
 --      Invoke a sub process.
@@ -26,6 +26,9 @@
 #include <signal.h>
 #include "extern.h"
 #include "sysintf.h"
+#if defined(__CYGWIN__)
+#include <errno.h>
+#endif
 
 typedef struct prp {
    char *prp_cmd;
@@ -67,17 +70,21 @@ int	last;
 int     shell;
 char	*cmd;
 {
+#if !defined(__CYGWIN__)
    extern  int  errno;
 #ifndef __APPLE__
 #ifdef arm32
    extern  const char * const sys_errlist[];
 #else
-#if defined(linux) || defined(__FreeBSD__)
+#if defined(linux) || defined(__FreeBSD__) 
    extern  const char * const sys_errlist[];
 #else
    extern  char *sys_errlist[];
 #endif
 #endif
+#endif
+#else /* __CYGWIN__ */
+#define sys_errlist _sys_errlist
 #endif
    int          pid;
    char         **argv;
