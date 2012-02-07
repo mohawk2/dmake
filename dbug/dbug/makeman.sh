@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 gcc -o factorial main.c factorial.c dbug.c
 
