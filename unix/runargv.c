@@ -269,9 +269,10 @@ dmwaitnext( wid, status )
 
    /* If ECHILD is set from waitpid/wait then no child was left. */
    if( *wid  == -1 ) {
+      int realErr = errno; // fprintf can pollute errno
       fprintf(stderr, "%s:  Internal Error: wait() failed: %d -  %s\n",
 	      Pname, errno, strerror(errno) );
-      if(errno != ECHILD) {
+      if( realErr != ECHILD ) {
 	 /* Wait was interrupted or a child was terminated (SIGCHLD) */
 	 return -2;
       } else {
@@ -369,9 +370,10 @@ dmwaitpid( pqid, wid, status )
    }
    /* If ECHILD is set from waitpid/wait then no child was left. */
    if( *wid  == -1 ) {
+     int realErr = errno; // fprintf can pollute errno
       fprintf(stderr, "%s:  Internal Error: waitpid() failed: %d -  %s\n",
 	      Pname, errno, strerror(errno) );
-      if(errno != ECHILD) {
+      if(realErr != ECHILD) {
 	 /* Wait was interrupted or a child was terminated (SIGCHLD) */
 	 return -2;
       } else {
@@ -438,7 +440,8 @@ private_strerror (errnum)
      int errnum; 
 { 
 #ifndef __APPLE__
-# if defined(arm32) || defined(linux) || defined(__FreeBSD__) || defined(__OpenBSD__)
+# if defined(arm32) || defined(linux) || defined(__FreeBSD__) || \
+     defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
   extern  const char * const sys_errlist[];
 # else
   extern  char *sys_errlist[];
