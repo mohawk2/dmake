@@ -93,11 +93,14 @@ case "$_os" in
 # MacOSX is not garuanteed to be case insensitive, assume it's case
 # sensitive, see issue 73661 for details.
 	  ;;
-	"FreeBSD")
+	"AIX")
+	  OS_VERSION=sysvr4
+	  ;;
+	"DragonFly")
 	  OS_VERSION=linux
 	  ;;
-	"OSF1")
-	  OS_VERSION=sysvr4
+	"FreeBSD")
+	  OS_VERSION=linux
 	  ;;
 	"NetBSD")
 	  OS_VERSION=linux
@@ -108,7 +111,7 @@ case "$_os" in
 	"IRIX64")
 	  OS_VERSION=sysvr4
 	  ;;
-	"AIX")
+	"OSF1")
 	  OS_VERSION=sysvr4
 	  ;;
 	"OpenBSD")
