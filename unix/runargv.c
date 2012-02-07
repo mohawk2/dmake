@@ -840,8 +840,7 @@ int pqid;
 PUBLIC void
 Clean_up_processes()
 {
-   register int i;
-   int ret;
+   int i, ret;
 
    if( _procs != NIL(PR) ) {
       for( i=0; i<Max_proc; i++ )
@@ -876,8 +875,8 @@ int	ignore;
 int     last;
 int     wfc;
 {
-   register int i;
-   register PR *pp;
+   int i;
+   PR *pp;
 
    /* Never change MAXPROCESS after _procs is allocated. */
    if( _procs_size != Max_proc ) {
@@ -953,7 +952,7 @@ _finished_child(cid, status)/*
 DMHANDLE cid;
 int	status;
 {
-  register int i;
+  int i;
   char     *dir;
 
   if((int)cid < 1) { /* Force int. */
@@ -1052,7 +1051,7 @@ _running( cp )/*
 */
 CELLPTR cp;
 {
-   register int i;
+   int i;
 
    if( !_procs ) return( -1 );
 
@@ -1075,7 +1074,7 @@ CELLPTR cp;
 t_attr  cmnd_attr;
 int     last;
 {
-   register int i;
+   int i;
    RCPPTR rp;
 
    for( i=0; i<Max_proc; i++ )
