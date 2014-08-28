@@ -1,6 +1,4 @@
-/* $RCSfile: make.c,v $
--- $Revision: 1.12 $
--- last change: $Author: kz $ $Date: 2008-03-05 18:29:19 $
+/*
 --
 -- SYNOPSIS
 --      Perform the update of all outdated targets.
@@ -527,7 +525,7 @@ CELLPTR setdirroot;
        * than one prerequisite. */
       /* A new A_DYNAMIC attribute could save a lot of strchr( ,'$') calls. */
       if ( tcp && !(tcp->ce_flag & F_MARK) && strchr(tcp->CE_NAME, '$') ) {
-	 /* Replace this dynamic prerequisite with the the real prerequisite,
+	 /* Replace this dynamic prerequisite with the real prerequisite,
 	  * and add the additional prerequisites if there are more than one.*/
 
 	 name = Expand( tcp->CE_NAME );
@@ -548,7 +546,7 @@ CELLPTR setdirroot;
 	 }
       }
 
-      /* Dynamic expansion results in a NULL cell only when the the new
+      /* Dynamic expansion results in a NULL cell only when the new
        * prerequisite is already in the prerequisite list or empty. In this
        * case delete the cell and continue. */
       if ( tcp == NIL(CELL) ) {
@@ -1255,7 +1253,7 @@ Exec_commands( cp )/*
 
   The function returns 0, if the command is executed and has successfully
   returned, and it returns 1 if the command is executing but has not yet
-  returned or -1 if an error occured (Return value from Do_cmnd()).
+  returned or -1 if an error occurred (Return value from Do_cmnd()).
 
   Macros that are found in recipe lines are expanded in this function, in
   parallel builds this can mean they are expanded before the previous recipe

@@ -1,6 +1,4 @@
-/* $RCSfile: dmake.c,v $
--- $Revision: 1.13 $
--- last change: $Author: kz $ $Date: 2008-03-05 18:28:04 $
+/*
 --
 -- SYNOPSIS
 --      The main program.
@@ -292,7 +290,7 @@ char **argv;
                  HASHPTR hp;
                  /* This cleans the .SILENT setting */
                  hp = Def_macro(".SILENT", "", M_EXPANDED);
-                 /* This overrides the bitmask for further occurences of
+                 /* This overrides the bitmask for further occurrences of
                   * .SILENT to "no bits allowed", see bit variables in the
                   * set_macro_value() definition in dag.c.
                   * The bitmask is already set by Create_macro_vars() in
