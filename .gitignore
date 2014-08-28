@@ -1,6 +1,7 @@
 .*.swp
 *.o
 Makefile
+Makefile.in
 config.h
 config.log
 config.status
@@ -10,3 +11,16 @@ dmakeroot.h
 stamp-h1
 startup/config.mk
 unix/.dirstamp
+autom4te.cache/
+aclocal.m4
+config.guess
+config.sub
+configure
+test-driver
+tests/*.log
+tests/*.trs
+config.h.in*
+compile
+depcomp
+install-sh
+missing
