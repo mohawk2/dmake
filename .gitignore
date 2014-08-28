@@ -1,0 +1,12 @@
+.*.swp
+*.o
+Makefile
+config.h
+config.log
+config.status
+.deps
+dmake
+dmakeroot.h
+stamp-h1
+startup/config.mk
+unix/.dirstamp
