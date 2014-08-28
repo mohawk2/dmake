@@ -147,8 +147,8 @@ CELLPTR target;
 int	ignore;
 int     last;
 {
-   int i;
-   PR *pp;
+   register int i;
+   register PR *pp;
 
    if( _procs == NIL(PR) ) {
       TALLOC( _procs, Max_proc, PR );
@@ -181,8 +181,7 @@ _finished_child(pid, status)
 int	pid;
 int	status;
 {
-   int i;
-   PR *pp;
+   register int i;
    char     *dir;
 
    for( i=0; i<Max_proc; i++ )
@@ -242,7 +241,7 @@ static int
 _running( cp )
 CELLPTR cp;
 {
-   int i;
+   register int i;
 
    if( !_procs ) return(FALSE);
 
@@ -264,7 +263,7 @@ CELLPTR cp;
 int     last;
 int     shell;
 {
-   int i;
+   register int i;
    RCPPTR rp;
 
    for( i=0; i<Max_proc; i++ )

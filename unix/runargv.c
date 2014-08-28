@@ -1,6 +1,4 @@
-/* $RCSfile: runargv.c,v $
--- $Revision: 1.14 $
--- last change: $Author: kz $ $Date: 2008-03-05 18:39:41 $
+/*
 --
 -- SYNOPSIS
 --      Invoke a sub process.
@@ -581,7 +579,7 @@ char  **cmd; /* Simulate a reference to *cmd. */
 
    /* Really spawn or fork a child. */
 #if defined( USE_SPAWN )
-   /* As no other childs are started while the output is redirected this
+   /* As no other children are started while the output is redirected this
     * is save. */
    if( Is_exec_shell ) {
       /* Add error checking? */
@@ -785,7 +783,7 @@ int pqid;
 	       return 0;
 	    } else {
 	       Fatal( "dmake was interrupted or a child terminated. "
-		      "Stopping all childs ..." );
+		      "Stopping all children ..." );
 	    }
 	 } else {
 	    /* The child we were waiting for is missing or no child is
@@ -807,7 +805,7 @@ int pqid;
                }
 	       _proc_cnt = 0;
 	    }
-	    /* The pid we were waiting for or any of the remaining childs
+	    /* The pid we were waiting for or any of the remaining children
 	     * (pid == -1) is missing. This should not happen and means
 	     * that the process got lost or was treated elsewhere. */
 	    Fatal( "Internal Error: Child is missing but still listed in _procs[x] %d: %s\n"
@@ -879,8 +877,8 @@ int	ignore;
 int     last;
 int     wfc;
 {
-   int i;
-   PR *pp;
+   register int i;
+   register PR *pp;
 
    /* Never change MAXPROCESS after _procs is allocated. */
    if( _procs_size != Max_proc ) {
@@ -956,7 +954,7 @@ _finished_child(cid, status)/*
 DMHANDLE cid;
 int	status;
 {
-  int i;
+  register int i;
   char     *dir;
 
   if((int)cid < 1) { /* Force int. */
@@ -1055,7 +1053,7 @@ _running( cp )/*
 */
 CELLPTR cp;
 {
-   int i;
+   register int i;
 
    if( !_procs ) return( -1 );
 
@@ -1078,7 +1076,7 @@ CELLPTR cp;
 t_attr  cmnd_attr;
 int     last;
 {
-   int i;
+   register int i;
    RCPPTR rp;
 
    for( i=0; i<Max_proc; i++ )
