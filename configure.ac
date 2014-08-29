@@ -4,9 +4,9 @@ AC_PREREQ(2.59)
 
 dnl Set the package version
 dnl Don't forget to update the PACKAGE, VERSION and BUILDINFO macros in
-dnl dmake/win95/microsft/config.h to keep the native Microsoft C++
+dnl win95/microsft/config.h to keep the native Microsoft C++
 dnl compiler build happy. 
-AC_INIT(dmake, 4.12)
+AC_INIT(dmake, 4.13)
 AC_CANONICAL_BUILD
 BUILDINFO="$build"
 
