@@ -603,7 +603,7 @@ Get_current_dir()
    if( !getcwd(buf, sizeof(buf)) )
       Fatal("Internal Error: Error when calling getcwd()!");
 
-#ifdef __EMX__BACKSLASH
+#ifdef __EMX__
    char *slash;
    slash = buf;
    while( (slash=strchr(slash,'/')) )

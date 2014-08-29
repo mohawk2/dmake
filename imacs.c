@@ -68,7 +68,7 @@ Create_macro_vars()
    else
 #if (_MPW)
    	  DirSepStr = ":";
-#elif defined( __EMX__BACKSLASH)
+#elif defined( __EMX__)
    /* Use '\' for OS/2 port. */
    	  DirSepStr = "\\";
 #else
