@@ -1,4 +1,20 @@
-News file for the dmake version that is hosted on the OpenOffice.org
+News information for the dmake version that is hosted on the Apache-Extras
+svn.
+
+Verion 4.12.2
+=============
+
+Includes minimal changes to add support for OS/2, DragonFly and NetBSD.
+Also includes some small enhancements taken from LibreOffice.
+
+The "dbug" library has been removed from the distribution,
+it's still available in SVN and a more up to date version
+at sourceforge.
+
+
+
+
+News information for the dmake version that was hosted on the OpenOffice.org
 cvs. #i<number># denote issues tracked by the OpenOffice.org issue tracking
 system, see <http://qa.openoffice.org/issue_handling/project_issues.html>.
 

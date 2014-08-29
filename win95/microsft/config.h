@@ -38,7 +38,7 @@
 
 /* Name and version number of this package */
 #define PACKAGE "dmake"
-#define VERSION "4.12"
+#define VERSION "4.12.2.2"
 #define BUILDINFO "Windows / MS Visual C++"
 
 #if defined (_MSC_VER)

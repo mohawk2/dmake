@@ -1,0 +1,7 @@
+name: dmake
+license: gpl_1
+provides:
+  dmake:
+    file: META.yml
+    version: 4.12.2.2
+version: 4.12.2.2

@@ -1,3 +1,5 @@
+Change log for the dmake version that was hosted on the OpenOffice.org cvs.
+
 2008-02-26 18:37  vq
 
 	* Makefile.in, NEWS, configure, configure.in, man/dmake.tf,
