@@ -18,7 +18,7 @@
 GROUPSHELL *:= $(SHELL)
 
 # Process release-specific refinements, if any.
-.INCLUDE .NOINFER .IGNORE : $(INCFILENAME:d)$(OSRELEASE)$/macros.mk
+.INCLUDE .NOINFER .IGNORE : "$(INCFILENAME:d)$(OSRELEASE)$/macros.mk"
 
 # Applicable suffix definitions
 A *:= .lib	# Libraries

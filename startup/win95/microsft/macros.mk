@@ -1,7 +1,7 @@
 # MSDOS Microsoft-C environment customization.
 
 .IF $(OSENVIRONMENT)
-   .INCLUDE .IGNORE .NOINFER : $(INCFILENAME:d)$(OSENVIRONMENT)$/macros.mk
+   .INCLUDE .IGNORE .NOINFER : "$(INCFILENAME:d)$(OSENVIRONMENT)$/macros.mk"
 .ENDIF
 
 # Standard C-language command names and flags

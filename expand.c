@@ -280,7 +280,7 @@ char *src;
       SET_TOKEN( &str, src );
       e = NIL(char);
 
-      while( *(s = Get_token( &str, "", FALSE )) != '\0' ) {
+      while( *(s = Get_token( &str, NIL(char), FALSE )) != '\0' ) {
 	 HASHPTR hp;
 
 	 if ( (hp = Get_name(normalize_path(s), Defs, FALSE)) != NIL(HASH) 
@@ -330,7 +330,7 @@ char *src;
 
    if (mod & JUST_FIRST_FLAG) {
       SET_TOKEN(&str, src);
-      if ((s = Get_token(&str,"",FALSE)) != '\0') {
+      if ((s = Get_token(&str,NIL(char),FALSE)) != '\0') {
 	 /* Recycle the quote at the beginning. */
 	 if(str.tk_quote == 0) {
 	    s--;
@@ -358,7 +358,7 @@ char *src;
    DB_PRINT( "mod", ("Source string [%s]", src) );
    res = DmStrDup("");
 
-   while( *(s = Get_token( &str, "", FALSE )) != '\0' ) {
+   while( *(s = Get_token( &str, NIL(char), FALSE )) != '\0' ) {
       char *tokstart = s;
 
       /* search for the directory portion of the filename.  If the
@@ -460,7 +460,7 @@ int  mapesc;
 
    /* Build the token list */
    SET_TOKEN( &tokens, src );
-   while( *(tok = Get_token( &tokens, "", FALSE )) != '\0' ) {
+   while( *(tok = Get_token( &tokens, NIL(char), FALSE )) != '\0' ) {
       char *x;
 
       if( first ) {

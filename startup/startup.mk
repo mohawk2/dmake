@@ -29,10 +29,10 @@ __.EXECS     !:= yes            # yes => define how to build executables.
 .IMPORT .IGNORE : TMPDIR SHELL
 
 # Default DMAKE configuration, if not overriden by environment
-.INCLUDE .NOINFER $(!null,$(OS) .IGNORE) : $(INCFILENAME:d)config.mk
+.INCLUDE .NOINFER $(!null,$(OS) .IGNORE) : "$(INCFILENAME:d)config.mk"
 
 # Look for a local defaults configuration
-.INCLUDE .NOINFER .IGNORE : $(INCFILENAME:d)local.mk
+.INCLUDE .NOINFER .IGNORE : "$(INCFILENAME:d)local.mk"
 
 # Define the directory separator string.
 / *=  $(DIRSEPSTR)
@@ -40,7 +40,7 @@ __.EXECS     !:= yes            # yes => define how to build executables.
 # Customize macro definitions based on setings of OS, OSRELEASE and
 # OSENVIRONMENT, this must come before the default macro definitions which
 # follow.
-.INCLUDE .NOINFER .IGNORE : $(INCFILENAME:d)$(OS)$/macros.mk
+.INCLUDE .NOINFER .IGNORE : "$(INCFILENAME:d)$(OS)$/macros.mk"
 
 # ----------------- Default Control Macro definitions -----------------------
 # Select appropriate defaults for basic macros
@@ -193,7 +193,7 @@ NULLPRQ *:= __.NULLPRQ
    .END
 
    # Customize default recipe definitions for OS, OSRELEASE, etc. settings.
-   .INCLUDE .NOINFER .IGNORE: $(INCFILENAME:d)$(OS)$/recipes.mk
+   .INCLUDE .NOINFER .IGNORE: "$(INCFILENAME:d)$(OS)$/recipes.mk"
 .ENDIF
 
 

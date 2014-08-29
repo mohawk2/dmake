@@ -46,6 +46,14 @@ To install dmake, simply copy dmake.exe and the startup/ sub-directory to
 a directory of your choice.  You may also want to copy the man/
 sub-directory for future access to the manual page.
 
+With MINGW gcc compiler
+-----------------------
+From dmake root directory run: "winnt\mingw\build.cmd" in a command shell.
+This should create a dmake.exe + relevant *.mk files in "output" subdirectory.
+
+To install dmake, simply copy the content of "output" subdirectory to
+a directory of your choice.
+
 
 All other systems might look in the public/ directory for usefull hints.
 
