@@ -46,4 +46,4 @@ else
   echo "Failure! dmake reported:"
   echo "$output1"
 fi
-exit $result
+exit $result1
