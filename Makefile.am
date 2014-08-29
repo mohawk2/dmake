@@ -35,7 +35,7 @@ dmake_SOURCES = \
 	dmdump.c macparse.c rulparse.c percent.c function.c
 
 # set the include path found by configure
-INCLUDES = -I$(top_srcdir) -I$(top_builddir) \
+AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir) \
            -I$(top_srcdir)/@OS_TYPE@/@OS_VERSION@ -I$(top_srcdir)/@OS_TYPE@
 
 if DBUG
@@ -45,7 +45,7 @@ endif
 if OSTYPEUNIX
 dmake_SOURCES += unix/arlib.c unix/dcache.c unix/dirbrk.c unix/rmprq.c\
                  unix/ruletab.c unix/runargv.c unix/tempnam.c
-INCLUDES += -I$(top_srcdir)/@OS_TYPE@/@OS_VERSION@/gnu \
+AM_CPPFLAGS += -I$(top_srcdir)/@OS_TYPE@/@OS_VERSION@/gnu \
             -I$(top_srcdir)/@OS_TYPE@/@OS_VERSION@ \
             -I$(top_srcdir)/@OS_TYPE@ 
 endif
@@ -56,7 +56,7 @@ dmake_SOURCES += win95/dchdir.c win95/switchar.c \
                  msdos/dirbrk.c unix/runargv.c \
                  unix/rmprq.c \
                  win95/microsft/ruletab.c
-INCLUDES += -I$(top_srcdir)/@OS_TYPE@/@OS_VERSION@ -I$(top_srcdir)/@OS_TYPE@
+AM_CPPFLAGS += -I$(top_srcdir)/@OS_TYPE@/@OS_VERSION@ -I$(top_srcdir)/@OS_TYPE@
 endif
 
 SUBDIRS = startup tests
