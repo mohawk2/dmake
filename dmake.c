@@ -588,7 +588,7 @@ int  err;
       fil = fopen( name, mode ? "w":"r" );
 
    if( Verbose & V_FILE_IO )
-      printf( "%s:  Openning [%s] for %s", Pname, name, mode?"write":"read" );
+      printf( "%s:  Opening [%s] for %s", Pname, name, mode?"write":"read" );
 
    if( fil == NIL(FILE) ) {
       if( Verbose & V_FILE_IO ) printf( " (fail)\n" );
