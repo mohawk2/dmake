@@ -146,9 +146,30 @@ else
 fi
 
 
+# Test 7
+# further test of :f to ensure place-with-space change doesn't regress
+cat > $file1 <<EOT
+LIST1   = a.a ../b.b ./c.c ..\d.d .\e.e /f.f \g.g c:/h/h.h c:\i\i.i
+LIST2   = \$(LIST1:f)
+DIRBRKSTR = /\: # force Windows behaviour for this test
+
+all:
+	@echo \$(LIST2)
+EOT
+
+output7=`eval ${DMAKEPROG} -r -f $file1`
+result7=$?
+if test "$output7" != "a.a b.b c.c d.d e.e f.f g.g h.h i.i"; then
+  echo "Subtest 7: Wrong result: $output7"
+  result7=1
+else
+  echo "Subtest 7: OK"
+fi
+
+
 if test $result1 -eq 0 -a $result2 -eq 0 \
     -a $result3 -eq 0  -a $result4 -eq 0 \
-    -a $result5 -eq 0  -a $result6 -eq 0 ; then
+    -a $result5 -eq 0  -a $result6 -eq 0  -a $result7 -eq 0 ; then
     echo "Success - Cleaning up" && rm -f ${tmpfiles}
     exit
 else
