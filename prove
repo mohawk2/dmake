@@ -1,0 +1,69 @@
+#!/bin/sh
+
+# ripped out of the autotools-generated Makefile in tests
+# eg: ./prove tests/targets-14
+
+case $# in
+  0)
+    echo "Usage: $0 <tests-file>"
+    exit 1;
+    ;;
+esac
+
+cd tests
+p=`basename "$1"`
+b=$p
+
+case $- in *e*) set +e;; esac
+srcdirstrip=`echo "." | sed 's|.|.|g'`
+
+case $p in ./*) f=`echo "$p" | sed "s|^$srcdirstrip/||"`;; *) f=$p;; esac
+
+{
+  am__color_tests=no
+  if test "X" = Xno
+  then am__color_tests=no
+  elif test "X" = Xalways
+  then am__color_tests=yes
+  elif test "X$TERM" != Xdumb && { test -t 1; } 2>/dev/null
+  then am__color_tests=yes
+  fi
+}
+srcdir=.
+export srcdir
+
+case "$p.log" in
+  */*) am__odir=`echo "./$p.log" | sed 's|/[^/]*$||'`;;
+  *) am__odir=.;;
+esac
+
+test "x$am__odir" = x"." || test -d "$am__odir" || /bin/mkdir -p "$am__odir" || exit $?
+
+if test -f "./$f"
+then dir=./
+elif test -f "$f"
+then dir=
+else dir="./"
+fi
+
+tst=$dir$f
+log="$p.log"
+
+if test -n ''
+then am__enable_hard_errors=no
+else am__enable_hard_errors=yes
+fi
+
+case "  " in
+  *[\ \	]$f[\ \	]* | *[\ \	]$dir$f[\ \	]*) am__expect_failure=yes;;
+  *) am__expect_failure=no;;
+esac
+
+
+DMAKEPROG="../dmake" /bin/sh ../test-driver --test-name "$f" \
+  --log-file $log --trs-file $b.trs \
+  --color-tests "$am__color_tests" \
+  --enable-hard-errors "$am__enable_hard_errors" \
+  --expect-failure "$am__expect_failure"   --    \
+  "$tst"
+cat $log
