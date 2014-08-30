@@ -54,7 +54,7 @@ fi
 #autoconf
 
 # use this instead - runs everything else as needed
-autoreconf
+autoreconf -i
 
 #automake -a -c -f
 
