@@ -50,6 +50,10 @@
 -- 		have been compiled with -DDBUG switch on.  Not the case for
 -- 		distributed versions.  Any such versions must be linked
 -- 		together with a version of Fred Fish's debug code.
+
+To find what values to put in a dbug_string, see line 346 et seq of
+dbug/dbug/dbug.c, eg "-#d:F:L:t"
+
 -- 			 
 -- 	NOTE:  - in order to compile the code the include file stddef.h
 -- 		must be shipped with the bundled code.
