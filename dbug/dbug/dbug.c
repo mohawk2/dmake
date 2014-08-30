@@ -61,6 +61,8 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #ifdef amiga
 #define AMIGA
 #endif
@@ -273,8 +275,8 @@ LOCAL int DelayArg (int value); /* Convert D flag argument */
 LOCAL BOOLEAN DoProfile ();	/* Check if profiling is enabled */
 
 				/* Supplied in Sys V runtime environ */
-LOCAL char *strtok ();		/* Break string into tokens */
-LOCAL char *strrchr ();		/* Find last occurrence of char */
+LOCAL char *Strtok ();		/* Break string into tokens */
+LOCAL char *Strrchr ();		/* Find last occurrence of char */
 
 /*
  *	The following local variables are used to hold the state information
@@ -449,8 +451,8 @@ char *control;
     }
     control = StrDup (control);
     PushState ();
-    scan = strtok (control, ":");
-    for (; scan != NULL; scan = strtok ((char *)NULL, ":")) {
+    scan = Strtok (control, ":");
+    for (; scan != NULL; scan = Strtok ((char *)NULL, ":")) {
 	switch (*scan++) {
 	    case 'd': 
 		_db_on_ = TRUE;
@@ -1430,7 +1432,7 @@ int size;
  *	in the runtime environment (missing from BSD4.1).
  */
 
-LOCAL char *strtok (s1, s2)
+LOCAL char *Strtok (s1, s2)
 char *s1, *s2;
 {
     static char *end = NULL;
@@ -1440,7 +1442,7 @@ char *s1, *s2;
     if (s2 != NULL) {
 	if (s1 != NULL) {
 	    end = s1;
-	    rtnval = strtok ((char *) NULL, s2);
+	    rtnval = Strtok ((char *) NULL, s2);
 	} else if (end != NULL) {
 	    if (*end != EOS) {
 		rtnval = end;
@@ -1478,7 +1480,7 @@ char *pathname;
 {
     register char *base;
 
-    base = strrchr (pathname, '/');
+    base = Strrchr (pathname, '/');
     if (base++ == NULL) {
 	base = pathname;
     }
@@ -1526,7 +1528,7 @@ char *pathname;
 	    granted = TRUE;
 	}
     } else {
-	lastslash = strrchr (pathname, '/');
+	lastslash = Strrchr (pathname, '/');
 	if (lastslash != NULL) {
 	    *lastslash = EOS;
 	} else {
@@ -1550,7 +1552,7 @@ char *pathname;
  *	Alternately, you can use rindex() on BSD systems.
  */
 
-LOCAL char *strrchr (s, c)
+LOCAL char *Strrchr (s, c)
 char *s;
 char c;
 {
