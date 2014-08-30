@@ -6,9 +6,12 @@
 : ${DMAKEPROG:=dmake}
 file1="mymakefile.mk"
 file2="mytestfile"
+sdir="space dir"
+file3="`pwd`/$sdir/start.mk"
+file4="$sdir/included.mk"
 tmpfiles="$file1 $file2"
 
-trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
+trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles "$sdir" ; }' 1 2 3 15
 
 # Test for "test" programm in path
 which test > /dev/null || { echo "Failure! \"test\" program missing." ; exit 1; } 
@@ -32,13 +35,37 @@ ${file2}:
 EOT
 
 ${DMAKEPROG} -r -f $file1
-result=$?
-if ${test} ! -e "${file2}"; then
+result1=$?
+if ${test} -e "${file2}"
+then
+  echo "File found"
+else
   echo "File missing"
-  result=1
+  result1=1
 fi
 
-${test} $result -eq 0 && echo "Success - Cleaning up" && rm -f ${tmpfiles}
-${test} $result -ne 0 && echo "Failure!"
-exit $result
+${test} -d "$sdir" || mkdir "$sdir"
+cat <<EOT >"$file3"
+.INCLUDE .NOINFER \$(!null,\$(OS) .IGNORE) : "\$(INCFILENAME:d)included.mk"
+EOT
+cat <<EOT >"$file4"
+all:
+	@echo foo
+EOT
+output2=`${DMAKEPROG} -f "$file1" "MAKESTARTUP=$file3" all`
+result2=$?
+if ${test} "$output2" = "foo"
+then
+  echo "Right result: space-with-place works"
+else
+  echo "Wrong result: '$output2'"
+  result2=1
+fi
 
+if ${test} $result1 -eq 0 -a $result2 -eq 0; then
+  echo "Success - Cleaning up"
+  rm -rf ${tmpfiles} "$sdir"
+else
+  echo "Failure!"
+  exit 1
+fi
