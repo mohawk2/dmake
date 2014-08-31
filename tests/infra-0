@@ -46,7 +46,7 @@ fi
 
 ${test} -d "$sdir" || mkdir "$sdir"
 cat <<EOT >"$file3"
-.INCLUDE .NOINFER \$(!null,\$(OS) .IGNORE) : "\$(INCFILENAME:d)included.mk"
+.INCLUDE .NOINFER : \$(INCFILENAME:d)included.mk
 EOT
 cat <<EOT >"$file4"
 all:
