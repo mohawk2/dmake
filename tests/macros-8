@@ -188,10 +188,28 @@ else
 fi
 
 
+# Test 9
+# test string-concatenation behaviour - "a"b interpreted same as "ab"
+cat > $file1 <<EOT
+a""b:
+	@echo \$@
+EOT
+
+output9=`eval ${DMAKEPROG} -r -f $file1`
+result9=$?
+if test "$output9" != 'a""b'; then
+  echo "Subtest 9: Wrong result: $output9"
+  result9=1
+else
+  echo "Subtest 9: OK"
+fi
+
+
 if test $result1 -eq 0 -a $result2 -eq 0 \
     -a $result3 -eq 0  -a $result4 -eq 0 \
     -a $result5 -eq 0  -a $result6 -eq 0 \
-    -a $result7 -eq 0  -a $result8 -eq 0 ; then
+    -a $result7 -eq 0  -a $result8 -eq 0 \
+    -a $result9 -eq 0  ; then
     echo "Success - Cleaning up" && rm -f ${tmpfiles}
     exit
 else
