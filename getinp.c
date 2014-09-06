@@ -394,12 +394,16 @@ int	  anchor;
    /* Handle processing of quoted tokens.  Note that this is disabled if
     * brk is equal to NIL */
 
+   /* in the case that we found a quote and EITHER we're
+    * normally-processing (non-NIL brk) OR we're not currently in a "" */
    while( *s == '\"' && ((brk != NIL(char)) || !string->tk_quote) ) {
-      s++;
-      if( string->tk_quote ) {
-	 curp = s-1;
-	 do { curp = strchr( curp+1, '\"' ); }
+      s++; /* move s after " */
+      if( string->tk_quote ) { /* inside a "" */
+	 curp = s-1; /* start on initial " */
+	 do { curp = strchr( curp+1, '\"' ); } /* curp is next " */
 	 while( (curp != NIL(char)) && (*(curp+1) == '\"'));
+	 /* while still finding " immediately followed by another " */
+	 /* terminates on finding either no " or on non-doubled " */
 
          if( curp == NIL(char) ) Fatal( "Unmatched quote in token" );
 	 string->tk_quote = !string->tk_quote;
