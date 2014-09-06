@@ -178,6 +178,7 @@ V3 = \$(V1)\$(V2)
 	@echo \$@
 EOT
 
+# '-#d:F:L:t,50'
 output8=`eval ${DMAKEPROG} -r -f $file1`
 result8=$?
 if test "$output8" != "ab"; then
