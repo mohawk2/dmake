@@ -198,20 +198,20 @@ char *str;
 
 
 PUBLIC char *
-DmStrPbrk( s1, s2 )/*
+DmStrPbrk( s1, searchchars )/*
 ====================
-   find first occurrence of char in s2 in string s1.
+   find first occurrence of char in searchchars in string s1.
    Returns a pointer to the first occurrence.  NOTE '\0' is considered part
-   of s2 and a pointer to it is returned if no other chars match. */
+   of searchchars and a pointer to it is returned if no other chars match. */
 
 char *s1;
-char *s2;
+char *searchchars;
 {
    register char *t;
 
-   if( s1 == NIL(char) || s2 == NIL(char) ) return( "" );
+   if( s1 == NIL(char) || searchchars == NIL(char) ) return( "" );
 
-   for( t=s1; *t && (strchr( s2, *t ) == NIL(char)); t++ );
+   for( t=s1; *t && (strchr( searchchars, *t ) == NIL(char)); t++ );
    return( t );
 }
 
