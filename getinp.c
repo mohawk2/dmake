@@ -361,6 +361,7 @@ int	  anchor;
    register char *curp = 0; /* pointer to end of this token */
    register char *t;
    int           done = FALSE;
+   int           startedquote = FALSE;
    char          tokbreak[100];
 
    DB_ENTER( "Get_token" );
@@ -386,35 +387,12 @@ int	  anchor;
     * may possibly cause breaks.  This includes the brk list as well as
     * white space. */
    strcpy( tokbreak, " \t\r\n" );
-   strcat( tokbreak, brk   );
-
-
-   /* Handle processing of quoted tokens.  Note that this is disabled if
-    * brk is equal to NIL */
-
-   /* in the case that we found a quote and EITHER we're
-    * normally-processing (non-NIL brk) OR we're not currently in a "" */
-   while( *s == '\"' && ((brk != NIL(char)) || !string->tk_quote) ) {
-      s++; /* move s after " */
-      if( string->tk_quote ) { /* inside a "" */
-	 curp = s-1; /* start on initial " */
-	 do { curp = strchr( curp+1, '\"' ); } /* curp is next " */
-	 while( (curp != NIL(char)) && (*(curp+1) == '\"'));
-	 /* while still finding " immediately followed by another " */
-	 /* terminates on finding either no " or on non-doubled " */
-
-         if( curp == NIL(char) ) Fatal( "Unmatched quote in token" );
-	 string->tk_quote = !string->tk_quote;
-
-	 /* Check for "" case, and if found ignore it */
-	 if( curp == s ) continue;
-	 goto found_token;
-      }
-      else
-        SCAN_WHITE( s );
-
-      string->tk_quote = !string->tk_quote;
+   if (string->tk_quote) {
+      startedquote = TRUE;
+   } else {
+      strcat( tokbreak, "\"" );
    }
+   strcat( tokbreak, brk   );
 
 
    /* Check for a token break character at the beginning of the token.
@@ -423,36 +401,45 @@ int	  anchor;
    if( anchor == 2 ) {
       curp = s;
       while( *curp && (strchr(brk,*curp)!=NIL(char)) && (*curp!=*brk) ) curp++;
-      done = (*brk == *curp++);
+      if (*brk == *curp++) goto found_token;
    }
    else if( strchr( brk, *s ) != NIL(char) ) {
       curp = DmStrSpn( s, brk );
-      done = (anchor == 0) ? TRUE :
-	     ((anchor == 1)?(*s == *brk) : (*brk == curp[-1]));
+      if (
+	(anchor == 0) ||
+	((anchor == 1) ? (*s == *brk) : (*brk == curp[-1]))
+      ) goto found_token;
    }
 
 
    /* Scan for the next token in the list and return it less the break char
     * that was used to terminate the token.  It will possibly be returned in
     * the next call to Get_token */
-   if( !done ) {
-      SCAN_WHITE( s );
-
-      t = s;
-      do {
-	 done = TRUE;
-	 curp = DmStrPbrk(t, tokbreak);
-
-	 if( anchor && *curp && !IS_WHITE( *curp ) )
-	    if( ((anchor == 1)?*curp:DmStrSpn(curp,brk)[-1]) != *brk ) {
-	       t++;
-	       done = FALSE;
-	    }
+   curp = s;
+   do {
+      done = TRUE;
+      if (string->tk_quote && !startedquote && (brk != NIL(char))) {
+	 DB_PRINT( "tok", ("Before [%s]", curp) );
+	 curp = strchr(curp, '\"');
+	 DB_PRINT( "tok", ("After [%s]", curp) );
+         if( curp == NIL(char) ) Fatal( "Unmatched quote in token" );
+	 string->tk_quote = !string->tk_quote;
+	 continue;
       }
-      while( !done );
-
-      if( (curp == s) && (strchr(brk, *curp) != NIL(char)) ) curp++;
+      curp = DmStrPbrk(curp, tokbreak);
+      if (!*curp) goto found_token; /* no more possible token-enders found */
+      if (*curp == '\"') {
+	 string->tk_quote = !string->tk_quote;
+	 continue;
+      }
+      if( anchor && !IS_WHITE( *curp ) )
+	 if( ((anchor == 1)?*curp:DmStrSpn(curp,brk)[-1]) != *brk ) {
+	    curp++;
+	    done = FALSE;
+	 }
    }
+   while( !done );
+   if( (curp == s) && (strchr(brk, *curp) != NIL(char)) ) curp++;
 
 found_token:
    string->tk_str   = curp;
