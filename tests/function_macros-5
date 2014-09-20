@@ -34,6 +34,8 @@ all2 :
 	@+echo "Z\$(DYNMAC)Z"
 EOT
 
+# '-#d:F:L:t,50'
+# valgrind --read-var-info=yes --leak-check=full --show-reachable=yes -v
 ${DMAKEPROG} -P3 -r -f $file1
 result=$?
 if test "`cat $file2`" != "Y(shellpre) (shellpost)Y"; then
