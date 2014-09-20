@@ -559,11 +559,18 @@ static void
 _set_inc_depth()
 {
    char buf[10];
+   char *incname = NIL(char);
    sprintf( buf, "%d", next_file_slot );
    Def_macro( "INCDEPTH", buf, M_MULTI|M_NOEXPORT );
-   Def_macro( "INCFILENAME",
-              next_file_slot ? ftab[next_file_slot-1].name : "",
-              M_MULTI|M_NOEXPORT|M_EXPANDED );
+   if (next_file_slot) {
+      /* quote-protect it */
+      TALLOC(incname, strlen(ftab[next_file_slot-1].name) + 3, char);
+      sprintf(incname, "\"%s\"", ftab[next_file_slot-1].name);
+   }
+   Def_macro(
+      "INCFILENAME", incname ? incname : "", M_MULTI|M_NOEXPORT|M_EXPANDED
+   );
+   if (incname) FREE(incname);
 }
 
 
