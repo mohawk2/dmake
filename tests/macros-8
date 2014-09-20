@@ -190,15 +190,15 @@ fi
 
 
 # Test 9
-# test string-concatenation behaviour - "a"b interpreted same as "ab"
+# test string-concatenation behaviour - a" "b interpreted same as "a b"
 cat > $file1 <<EOT
-a""b:
+a" "b:
 	@echo \$@
 EOT
 
 output9=`eval ${DMAKEPROG} -r -f $file1`
 result9=$?
-if test "$output9" != 'a""b'; then
+if test "$output9" != 'a b'; then
   echo "Subtest 9: Wrong result: $output9"
   result9=1
 else
