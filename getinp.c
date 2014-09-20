@@ -376,18 +376,17 @@ int	  anchor;
       DB_RETURN( "" );
    }
 
+   if( brk == NIL(char) ) {
+      DB_PRINT( "tok", ("brk == NULL") );
+      curp = DmStrPbrk(s, "\n"); /* set curp to final null char if no \n */
+      goto found_token;
+   }
 
    /* Build the tokbreak list.  tokbreak contains all those chars that
     * may possibly cause breaks.  This includes the brk list as well as
     * white space. */
-   if( brk != NIL(char) ) {
-      strcpy( tokbreak, " \t\r\n" );
-      strcat( tokbreak, brk   );
-   }
-   else {
-      tokbreak[0] = 0xff;            /* a char we know will not show up      */
-      tokbreak[1] = 0;
-   }
+   strcpy( tokbreak, " \t\r\n" );
+   strcat( tokbreak, brk   );
 
 
    /* Handle processing of quoted tokens.  Note that this is disabled if
@@ -421,12 +420,12 @@ int	  anchor;
    /* Check for a token break character at the beginning of the token.
     * If found return the following set of break chars as a token. */
 
-   if( anchor == 2 && brk != NIL(char) ) {
+   if( anchor == 2 ) {
       curp = s;
       while( *curp && (strchr(brk,*curp)!=NIL(char)) && (*curp!=*brk) ) curp++;
       done = (*brk == *curp++);
    }
-   else if( (brk != NIL(char)) && (strchr( brk, *s ) != NIL(char)) ) {
+   else if( strchr( brk, *s ) != NIL(char) ) {
       curp = DmStrSpn( s, brk );
       done = (anchor == 0) ? TRUE :
 	     ((anchor == 1)?(*s == *brk) : (*brk == curp[-1]));
