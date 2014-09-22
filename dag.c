@@ -297,9 +297,9 @@ HASHPTR hp;
 PUBLIC HASHPTR
 Def_macro( name, value, flags )/*
 =================================
-   This routine is used to define a macro, and it's value. A copy of
+   This routine is used to define a macro, and its value. A copy of
    the content of value is stored and not the pointer to the value.
-   The flags indicates if it is a permanent macro or if it's value
+   The flags indicates if it is a permanent macro or if its value
    can be redefined.  A flags of M_PRECIOUS means it is a precious
    macro and cannot be further redefined unless M_FORCE is used.
    If the flags flag contains the M_MULTI bit it means that the macro
