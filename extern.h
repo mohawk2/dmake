@@ -176,9 +176,9 @@ char *cygdospath(char *src, int winpath);
 #endif
 #endif
 
-/*  If setvbuf is not available set output to unbuffered */
+/*  If setvbuf is not available, hope the OS has some buffering by default already */
 #if ! HAVE_SETVBUF
-#  define setvbuf(fp,bp,type,len) setbuf(fp,NULL)
+#  define setvbuf(fp,bp,type,len)
 #endif
 
 /* coreleft is used in some debug macros. Only Turbo C seems to provide
