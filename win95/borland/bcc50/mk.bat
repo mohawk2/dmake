@@ -20,6 +20,9 @@ del hash.obj
 bcc32 -c -I. -Iwin95 -Iwin95\borland -d -O -N- -w-nod -A- -w-pro -Iwin95\borland\bcc50  dag.c
 copy dag.obj objects
 del dag.obj
+bcc32 -c -I. -Iwin95 -Iwin95\borland -d -O -N- -w-nod -A- -w-pro -Iwin95\borland\bcc50  unix\dcache.c
+copy dcache.obj objects
+del dcache.obj
 bcc32 -c -I. -Iwin95 -Iwin95\borland -d -O -N- -w-nod -A- -w-pro -Iwin95\borland\bcc50  dmake.c
 copy dmake.obj objects
 del dmake.obj

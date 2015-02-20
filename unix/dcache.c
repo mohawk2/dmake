@@ -87,7 +87,11 @@ CacheStat(path, force)
 char        *path;
 int          force;
 {
+#ifdef _WIN32
+   WIN32_FILE_ATTRIBUTE_DATA FileInformation;
+#else
    struct stat stbuf;
+#endif
    DirEntryPtr dp;
    EntryPtr    ep;
    uint32 hkey;
@@ -163,9 +167,16 @@ int          force;
 
 	       ep->next = dp->entries;
 	       dp->entries = ep;
+#ifdef _WIN32
+	       ep->isdir = (direntp->d_type & DT_DIR);
+/* internal to win32 readdir, stat-like data is already available from
+  FindNextFile()/win32 readdir */
+	       ep->mtime = FileTimeTo_time_t(&((DIR*)direntp)->wdirp->data.ftLastWriteTime);
+#else
 	       DMSTAT(direntp->d_name,&stbuf);
 	       ep->isdir = (stbuf.st_mode & S_IFDIR);
 	       ep->mtime = stbuf.st_mtime;
+#endif
 	    }
 	    closedir(dirp);
 	 }
@@ -185,11 +196,17 @@ int          force;
       ep = NULL;
 
    if( force && !loaded) {
-      if (strlen(comp) > NameMax || DMSTAT(spath,&stbuf) != 0) {
-	 /* Either file to long or the stat failed. */
-	 if (strlen(comp) > NameMax)
-	    Warning( "File [%s] longer than value of NAMEMAX [%d].\n\
+      if (strlen(comp) > NameMax) {
+	Warning( "File [%s] longer than value of NAMEMAX [%d].\n\
 	Assume unix time 0.\n", comp, NameMax );
+	 if(ep)
+	    ep->mtime = 0L;
+      }
+#ifdef _WIN32
+      else if (GetFileAttributesEx(spath, GetFileExInfoStandard, &FileInformation) == 0) {
+#else
+      else if (DMSTAT(spath,&stbuf) != 0) {
+#endif
 	 if(ep)
 	    ep->mtime = 0L;
       }
@@ -201,11 +218,18 @@ int          force;
 	       strlwr(ep->name);
 	    Hash(ep->name, &ep->hkey);
 	    ep->next = dp->entries;
+#ifdef _WIN32
+	    ep->isdir = FileInformation.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+#else
 	    ep->isdir = (stbuf.st_mode & S_IFDIR);
+#endif
 	    dp->entries = ep;
 	 }
-
+#ifdef _WIN32
+	 ep->mtime = FileTimeTo_time_t(&(FileInformation.ftLastWriteTime));
+#else
 	 ep->mtime = stbuf.st_mtime;
+#endif
       }
 
       if( Verbose & V_DIR_CACHE )
