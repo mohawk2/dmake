@@ -6,6 +6,7 @@ cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -F
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\dmstring.obj dmstring.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\hash.obj hash.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\dag.obj dag.c
+cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\dcache.obj unix\dcache.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\dmake.obj dmake.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\path.obj path.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\imacs.obj imacs.c

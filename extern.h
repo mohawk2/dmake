@@ -30,6 +30,7 @@
 /* For MSVC++ needs to include windows.h first to avoid problems with
  * type redefinitions. Include it also for MinGW for consistency. */
 #if defined(__MINGW32__) || defined(_MSC_VER)
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
@@ -165,6 +166,10 @@ char *cygdospath(char *src, int winpath);
 #  warn "tzset is not supported, null out"
 #  define tzset()
 #endif
+#endif
+
+#ifdef _WIN32
+#  define FileTimeTo_time_t(ft) ((time_t)((*((unsigned __int64 *)ft) - 116444736000000000ULL)/10000000ULL))
 #endif
 
 /* Get the working directory fall back code */
