@@ -325,13 +325,17 @@ int    shell;
 char **cmd; /* Simulate a reference to *cmd. */
 {
    static char **av = NIL(char *);
+#if !defined(USE_CREATEPROCESS)
    static int   avs = 0;
+#endif
    int i = 0;
    char *s; /* Temporary string pointer. */
 
    if( av == NIL(char *) ) {
       TALLOC(av, MINARGV, char*);
+#if !defined(USE_CREATEPROCESS)
       avs = MINARGV;
+#endif
    }
    av[0] = NIL(char);
 

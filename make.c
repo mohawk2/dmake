@@ -317,7 +317,9 @@ CELLPTR setdirroot;
    /* Set the UseWinpath variable to reflect the (global/local) .WINPATH
     * attribute. The variable is used by DO_WINPATH() and in some other
     * places. */
+#if defined(__CYGWIN__)
    UseWinpath = (((cp->ce_attr|Glob_attr)&A_WINPATH) != 0);
+#endif
 
    /* m_at needs to be defined before going to a "stop_making_it" where
     * a _drop_mac( m_at ) would try to free it. */
@@ -479,7 +481,9 @@ CELLPTR setdirroot;
       if (m_at->ht_value == NIL(char)) {
 	 /* This check effectively tests if Make() was run before because
 	  * Make() frees all dynamic macro values at the end. */
+#if defined(__CYGWIN__)
 	 UseWinpath = (((cp->ce_attr|Glob_attr)&A_WINPATH) != 0);
+#endif
 	 m_at = Def_macro("@", DO_WINPATH(cp->ce_fname), M_MULTI);
       }
 
@@ -646,7 +650,9 @@ CELLPTR setdirroot;
    if (m_at->ht_value == NIL(char)) {
       /* This check effectively tests if Make() was run before because
        * Make() frees all dynamic macro values at the end. */
+#if defined(__CYGWIN__)
       UseWinpath = (((cp->ce_attr|Glob_attr)&A_WINPATH) != 0);
+#endif
       m_at = Def_macro("@", DO_WINPATH(cp->ce_fname), M_MULTI);
    }
  
@@ -1389,7 +1395,7 @@ CELLPTR cp;
 	 }
       }
 
-#if defined(MSDOS)
+#if defined(MSDOS) && defined(REAL_MSDOS)
       Swap_on_exec = ((l_attr & A_SWAP) != 0);	  /* Swapping for DOS only */
 #endif
       do_it = !Trace;

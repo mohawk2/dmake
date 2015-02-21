@@ -674,7 +674,7 @@ char *rp;
 	 case '-' : flag |= A_IGNORE; break;
 	 case '+' : flag |= A_SHELL;  break;
 	 case '%' :
-#if defined(MSDOS)
+#if defined(MSDOS) && defined(REAL_MSDOS)
 	    /* Ignore % in the non-MSDOS case. */
 	    flag |= A_SWAP;
 #endif

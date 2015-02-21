@@ -74,9 +74,9 @@ EXTERN	int	Def_targets;	/* TRUE if defining targets - Only used	  *
 				 * in Def_cell().			  */
 EXTERN  int	Skip_to_eof;	/* TRUE if asked to skip to eof on input  */
 EXTERN	int	NameMax;	/* The value of NAMEMAX                   */
+#if __CYGWIN__
 EXTERN	int	UseWinpath;	/* True if .WINPATH is set for currently  *
 				 * made target.                           */
-#if __CYGWIN__
 EXTERN  char*   CygDrvPre;      /* Drive prefix used by cygwin            */
 EXTERN  int     CygDrvPreLen;   /* Drive prefix length used by cygwin     */
 #endif
@@ -94,7 +94,7 @@ EXTERN  int	zerofd;         /* File descriptor for /dev/null          */
 EXTERN  int	Doing_bang;	/* TRUE if target timestamp needs not to be
 				 * updated immediately. */
 EXTERN  int	Packed_shell;	/* TRUE if packed args to use a shell	  */
-#if defined(MSDOS)
+#if defined(MSDOS) && defined(REAL_MSDOS)
 EXTERN  int	Swap_on_exec;	/* TRUE if going to swap on exec call     */
 #endif
 EXTERN  int	State;		/* parser state				  */
@@ -116,7 +116,7 @@ EXTERN	int	Touch;		  /* -t */
 EXTERN	int	Check;		  /* -q */
 EXTERN	uint16	Verbose;	  /* -v */
 EXTERN	uint16	Measure;	  /* -m */
-EXTERN	int	Microsoft;	  /* -M */
+/*EXTERN	int	Microsoft;	  /* -M */
 EXTERN	int	Transitive;	  /* -T */
 EXTERN  int     No_exec;          /* -X */
 

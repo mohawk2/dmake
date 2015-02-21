@@ -307,12 +307,12 @@ int  keep;
 	       cmnd = Expand(c+2);
 	       cmnd[strlen(cmnd)-1] = '\0';	/* strip last newline */
 	       Current_target = Root;
-#if defined(MSDOS)
+#if defined(MSDOS) && defined(REAL_MSDOS)
 	       Swap_on_exec = TRUE;
 #endif
 	       Wait_for_completion = TRUE;
 	       Do_cmnd(&cmnd, FALSE, TRUE, Current_target, A_DEFAULT, TRUE);
-#if defined(MSDOS)
+#if defined(MSDOS) && defined(REAL_MSDOS)
 	       Swap_on_exec = FALSE;
 #endif
 	       Wait_for_completion = FALSE;
