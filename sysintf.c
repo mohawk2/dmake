@@ -1112,12 +1112,16 @@ PUBLIC int
 Remove_file( name )
 char *name;
 {
+/* don't do the stat (extra I/O) for the likely to exist temp file of cmds
+   or less likely temp build products, unlink fails on a dir anyway */
+#if 0
    struct stat buf;
 
    if( stat(name, &buf) != 0 )
       return 1;
    if( (buf.st_mode & S_IFMT) == S_IFDIR )
       return 1;
+#endif
    return(unlink(name));
 }
 
