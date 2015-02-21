@@ -61,10 +61,7 @@
 
 #include "extern.h"
 
-/* The following definition controls the use of GetModuleFileName() */
 #if defined(_MSC_VER) || defined(__MINGW32__)
-#   define HAVE_GETMODULEFILENAMEFUNC 1
-
 /* this is needed for the _ftime call below. Only needed here. */
 #   include <sys/timeb.h>
 #endif
@@ -529,10 +526,9 @@ char* argv[];
 {
    Pname = (argc == 0) ? DEF_MAKE_PNAME : argv[0];
 
-   /* Only some native Windows compilers provide this functionality. */
-#ifdef HAVE_GETMODULEFILENAMEFUNC
-   if( (AbsPname = MALLOC( PATH_MAX, char)) == NIL(char) ) No_ram();
-   GetModuleFileName(NULL, AbsPname, PATH_MAX*sizeof(char));
+#ifdef _WIN32
+   /* get exe path from MS CRT's global buffer, CRT uses GetModuleFileName */
+   AbsPname = _pgmptr;
 #else
    AbsPname = "";
 #endif
