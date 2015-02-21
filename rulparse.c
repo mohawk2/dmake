@@ -55,7 +55,10 @@ static LINKPTR    _sv_ind_prq = NIL(LINK);   /* indirect prerequisites for % cel
 static int	  _sp_target  = FALSE;
 static t_attr     _sv_attr;
 static int        _sv_flag;
+/* unused in Bind_rules_to_targets */
+#if 0
 static int	  _sv_op;
+#endif
 static char      *_sv_setdir;
 static char	  _sv_globprq_only = 0;
 
@@ -341,7 +344,10 @@ int *state;
 
   /* Save these prior to calling _do_targets, since _build_graph needs the
    * _sv_setdir value for matching edges. */
+#if 0
+  /* unused in Bind_rules_to_targets */
   _sv_op     = op;
+#endif
   _sv_setdir = set_dir;
 
   if( special )
