@@ -28,7 +28,12 @@
 
 #include "extern.h"
 
+#define DM_StGiFy(a)	#a
+#define STRINGIFY(a)	DM_StGiFy(a)
+#define SET_INT_VAR_FROM_INT(name, val, flag, var) _set_int_var_from_int_and_str(name, val, STRINGIFY(val), flag, var)
+
 static	void	_set_int_var ANSI((char *, char *, int, int *));
+static	void	_set_int_var_from_int_and_str ANSI((char *, int, char *, int, int *));
 static	void	_set_string_var ANSI((char *, char *, int, char **));
 static	void	_set_bit_var ANSI((char *, char *, int));
 
@@ -133,21 +138,20 @@ Create_macro_vars()
    _set_string_var("SPACECHAR", "x", M_PRECIOUS|M_NOEXPORT|M_FLAG, &Spacechar );
    Spacechar[0] = ' ';
 
-   _set_int_var( "MAXLINELENGTH", "0", M_DEFAULT|M_NOEXPORT, &Buffer_size );
-   _set_int_var( "PREP",          "0", M_DEFAULT, &Prep );
+   SET_INT_VAR_FROM_INT( "MAXLINELENGTH", 0, M_DEFAULT|M_NOEXPORT, &Buffer_size );
+   SET_INT_VAR_FROM_INT( "PREP",          0, M_DEFAULT, &Prep );
    (void) Def_macro("MAXLINELENGTH", "1024", M_FLAG | M_DEFAULT);
 
    /* MAXPROCESSLIMIT is overwritten by the ruletab.c settings. Set its
     * initial value high so that it allows MAXPROCESS to be changed
     * from the command line. */
-   _set_int_var( "MAXPROCESSLIMIT", "100", M_DEFAULT|M_NOEXPORT,&Max_proclmt );
+   SET_INT_VAR_FROM_INT( "MAXPROCESSLIMIT", 100, M_DEFAULT|M_NOEXPORT,&Max_proclmt );
 #if defined(USE_CREATEPROCESS)
    /* Set the OS early enough. */
    Max_proclmt = MAXIMUM_WAIT_OBJECTS;
 #endif
-   _set_int_var( "MAXPROCESS", "1", M_DEFAULT|M_NOEXPORT, &Max_proc );
-   sprintf(buf,"%d",NAME_MAX);
-   _set_int_var( "NAMEMAX", buf, M_DEFAULT|M_NOEXPORT, &NameMax);
+   SET_INT_VAR_FROM_INT("MAXPROCESS", 1, M_DEFAULT|M_NOEXPORT, &Max_proc );
+   SET_INT_VAR_FROM_INT("NAMEMAX", NAME_MAX, M_DEFAULT|M_NOEXPORT, &NameMax);
 }
 
 
@@ -167,6 +171,27 @@ int  *var;
    hp->ht_flag |= M_VAR_INT | M_MULTI | M_INIT;
    hp->MV_IVAR  = var;
    *var         = atoi(val);
+}
+
+/*
+** Define an integer variable value from an int, and set up the macro.
+** This is inteded for numeric constants, valstr should be the C litteral
+** string of val, aka #val
+*/
+static void
+_set_int_var_from_int_and_str(name, val, valstr, flag, var)
+char *name;
+int  val;
+char *valstr;
+int  flag;
+int  *var;
+{
+   HASHPTR hp;
+
+   hp = Def_macro(name, valstr, M_FLAG | flag);
+   hp->ht_flag |= M_VAR_INT | M_MULTI | M_INIT;
+   hp->MV_IVAR  = var;
+   *var         = val;
 }
 
 
