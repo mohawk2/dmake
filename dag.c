@@ -364,11 +364,12 @@ int     flags;			/* initial ht_flags	*/
    /* If an empty string ("") is given set ht_value to NIL(char) */
    if( (value != NIL(char)) && (*value) ) {
 
+      p = q = DmStrDup(value);
       if( !(flags & M_LITERAL) ) {
-	 q = DmStrDup(value);
+
 	 /* strip out any \<nl> combinations where \ is the current
 	  * CONTINUATION char */
-	 for(p=q; (p=strchr(p,CONTINUATION_CHAR))!=NIL(char); )
+	 for(; (p=strchr(p,CONTINUATION_CHAR))!=NIL(char); )
 	    if( p[1] == '\n' ) {
 	       size_t len = strlen(p+2)+1;
 	       memmove ( p, p+2, len );
@@ -389,8 +390,7 @@ int     flags;			/* initial ht_flags	*/
 	 }
 	 flags &= ~M_LITERAL;
       }
-      else
-	 p = DmStrDup( value );	   		/* take string literally   */
+      /* else take string literally   */
       
       if( !*p )	{				/* check if result is ""   */
          FREE( p );
