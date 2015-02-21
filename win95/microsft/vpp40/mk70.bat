@@ -35,7 +35,6 @@ cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\rulparse.obj rulparse.c
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\percent.obj percent.c
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\function.obj function.c
-cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\dchdir.obj win95\dchdir.c
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\switchar.obj win95\switchar.c
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\dstrlwr.obj msdos\dstrlwr.c
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\arlib.obj msdos\arlib.c

@@ -35,11 +35,6 @@ extern char * getcwd();
 ** standard C items
 */
 
-/*
-** DOS interface standard items
-*/
-#define	chdir(p) dchdir(p)
-
 /* in sysintf.c: SIGQUIT is used, this is not defined in MinGW */
 #ifndef SIGQUIT
 #   define SIGQUIT SIGTERM

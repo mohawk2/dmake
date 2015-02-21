@@ -154,7 +154,6 @@ DFALINKPTR Match_dfa ANSI((char *));
 void Check_circle_dfa ANSI(());
 void Add_nfa ANSI((char *));
 char *Exec_function ANSI((char *));
-int dchdir ANSI((char *));
 void dstrlwr ANSI((char *, char *));
 time_t seek_arch ANSI((char*, char*));
 int touch_arch ANSI((char*, char*));
