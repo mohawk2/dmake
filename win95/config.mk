@@ -27,7 +27,7 @@ NDB_LDLIBS	=
 CFLAGS += -I$(OS)
 
 # Common Win32 source files.
-OS_SRC  += dchdir.c switchar.c
+OS_SRC  += switchar.c
 
 # Imported MSDOS Files.
 DOSSRC  += dstrlwr.c arlib.c dirbrk.c

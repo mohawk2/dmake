@@ -20,7 +20,6 @@ cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -F
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\rulparse.obj rulparse.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\percent.obj percent.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\function.obj function.c
-cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\dchdir.obj winnt\dchdir.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\dstrlwr.obj msdos\dstrlwr.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\arlib.obj msdos\arlib.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\dirbrk.obj msdos\dirbrk.c

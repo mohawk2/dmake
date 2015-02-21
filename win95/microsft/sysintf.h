@@ -36,11 +36,6 @@ extern char * getcwd();
 */
 
 /*
-** DOS interface standard items
-*/
-#define	chdir(p) dchdir(p)
-
-/*
 ** make parameters
 */
 #ifdef _POSIX_NAME_MAX

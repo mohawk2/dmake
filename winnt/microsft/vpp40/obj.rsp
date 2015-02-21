@@ -19,7 +19,6 @@ objects\macparse.obj
 objects\rulparse.obj
 objects\percent.obj
 objects\function.obj
-objects\dchdir.obj
 objects\dstrlwr.obj
 objects\arlib.obj
 objects\dirbrk.obj
