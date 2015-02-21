@@ -107,6 +107,7 @@ char *lib;
 char **member;
 int  force;
 {
+   char * basename;
    struct stat buf;
    time_t seek_arch();
 
@@ -114,11 +115,12 @@ int  force;
       Fatal("Library symbol names not supported");
 
    buf.st_mtime = (time_t)0L;
+   basename = Basename(name);
    if( lib != NIL(char) )
-      return( seek_arch(Basename(name), lib) );
-   else if( strlen(Basename(name)) > NameMax ) {
+      return( seek_arch(basename, lib) );
+   else if( strlen(basename) > NameMax ) {
       Warning( "Filename [%s] longer than value of NAMEMAX [%d].\n\
-      Assume unix time 0.\n", Basename(name), NameMax );
+      Assume unix time 0.\n", basename, NameMax );
       return((time_t)0L);
    }
    else if( STOBOOL(UseDirCache) )
