@@ -23,6 +23,9 @@
 --      Use cvs log to obtain detailed change logs.
 */
 
+#ifdef _WIN32
+#  error This is unix/sysintf.h , this can not be included on Win32
+#endif
 #define DMSTAT stat
 #define VOID_LCACHE(l,m) (void) void_lcache(l,m)
 #define Hook_std_writes(A)

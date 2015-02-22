@@ -192,4 +192,12 @@ char *cygdospath(char *src, int winpath);
 #define coreleft() 0L
 #endif
 
+/* generic implementation, override in platform specific sysintf.h
+ * if needed with #undef #define */
+#define DMPORTSTAT_T struct stat
+#define DMPORTSTAT(path, buf) DMSTAT(path, buf)
+#define DMPORTSTAT_SUCCESS(x) ((x) == 0)
+#define DMPORTSTAT_MTIME(x) ((x)->st_mtime)
+#define DMPORTSTAT_ISDIR(x) ((x)->st_mode & S_IFDIR)
+
 #endif

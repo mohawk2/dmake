@@ -135,7 +135,7 @@ _finished_child(pid, status) [unix/runargv] handles the finished child. If
 #define _P_NOWAIT P_NOWAIT
 #endif
 
-#include "sysintf.h"
+#include <sysintf.h>
 #if HAVE_ERRNO_H
 #  include <errno.h>
 #else

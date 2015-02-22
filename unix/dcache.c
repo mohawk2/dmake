@@ -40,7 +40,7 @@
 #endif
 #include <dirent.h>
 #include "extern.h"
-#include "sysintf.h"
+#include <sysintf.h>
 
 
 typedef struct ent {
@@ -87,11 +87,8 @@ CacheStat(path, force)
 char        *path;
 int          force;
 {
-#ifdef _WIN32
-   WIN32_FILE_ATTRIBUTE_DATA FileInformation;
-#else
-   struct stat stbuf;
-#endif
+
+   DMPORTSTAT_T stbuf;
    DirEntryPtr dp;
    EntryPtr    ep;
    uint32 hkey;
@@ -173,9 +170,9 @@ int          force;
   FindNextFile()/win32 readdir */
 	       ep->mtime = FileTimeTo_time_t(&((DIR*)direntp)->wdirp->data.ftLastWriteTime);
 #else
-	       DMSTAT(direntp->d_name,&stbuf);
-	       ep->isdir = (stbuf.st_mode & S_IFDIR);
-	       ep->mtime = stbuf.st_mtime;
+	       DMPORTSTAT(direntp->d_name,&stbuf);
+	       ep->isdir = DMPORTSTAT_ISDIR(&stbuf);
+	       ep->mtime = DMPORTSTAT_MTIME(&stbuf);
 #endif
 	    }
 	    closedir(dirp);
@@ -202,11 +199,8 @@ int          force;
 	 if(ep)
 	    ep->mtime = 0L;
       }
-#ifdef _WIN32
-      else if (GetFileAttributesEx(spath, GetFileExInfoStandard, &FileInformation) == 0) {
-#else
-      else if (DMSTAT(spath,&stbuf) != 0) {
-#endif
+
+      else if (!DMPORTSTAT_SUCCESS(DMPORTSTAT(spath,&stbuf))) {
 	 if(ep)
 	    ep->mtime = 0L;
       }
@@ -214,22 +208,18 @@ int          force;
 	 if (!ep) {
 	    TALLOC(ep,1,Entry);
 	    ep->name = DmStrDup(comp);
-	    if( !STOBOOL(DcacheRespCase) )
+	    if( !STOBOOL(DcacheRespCase) ) {
 	       strlwr(ep->name);
-	    Hash(ep->name, &ep->hkey);
+	       Hash(ep->name, &ep->hkey);
+	    }
+	    else {
+	       ep->hkey = hkey;
+	    }
 	    ep->next = dp->entries;
-#ifdef _WIN32
-	    ep->isdir = FileInformation.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
-#else
-	    ep->isdir = (stbuf.st_mode & S_IFDIR);
-#endif
+	    ep->isdir = DMPORTSTAT_ISDIR(&stbuf);
 	    dp->entries = ep;
 	 }
-#ifdef _WIN32
-	 ep->mtime = FileTimeTo_time_t(&(FileInformation.ftLastWriteTime));
-#else
-	 ep->mtime = stbuf.st_mtime;
-#endif
+	 ep->mtime = DMPORTSTAT_MTIME(&stbuf);
       }
 
       if( Verbose & V_DIR_CACHE )
