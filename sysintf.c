@@ -90,12 +90,12 @@
 static time_t
 really_dostat(name, buf)
 char *name;
-struct stat *buf;
+DMPORTSTAT_T *buf;
 {
-   return( (   DMSTAT(name,buf)==-1 
-            || (STOBOOL(Augmake) && (buf->st_mode & S_IFDIR)))
+   return( (   !DMPORTSTAT_SUCCESS(DMPORTSTAT(name,buf))
+            || (STOBOOL(Augmake) && DMPORTSTAT_ISDIR(buf)))
 	   ? (time_t)0L
-	   : (time_t) buf->st_mtime
+	   : (time_t)DMPORTSTAT_MTIME(buf)
 	 );
 }
 
@@ -108,13 +108,12 @@ char **member;
 int  force;
 {
    char * basename;
-   struct stat buf;
+   DMPORTSTAT_T buf;
    time_t seek_arch();
 
    if( member != NIL(char *) )
       Fatal("Library symbol names not supported");
 
-   buf.st_mtime = (time_t)0L;
    basename = Basename(name);
    if( lib != NIL(char) )
       return( seek_arch(basename, lib) );
