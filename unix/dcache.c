@@ -111,7 +111,7 @@ int          force;
    dir   = Filedir(fpath);
 
    /* do caching and comparing lower case if told so. */
-   if( !STOBOOL(DcacheRespCase) ) {
+   if( !BTOBOOL(DcacheRespCase) ) {
       udir = DmStrDup(dir);
       strlwr(comp);
       strlwr(dir);
@@ -157,7 +157,7 @@ int          force;
 	    while((direntp=readdir(dirp)) != NULL) {
 	       TALLOC(ep,1,Entry);
 	       ep->name = DmStrDup(direntp->d_name); /* basename only */
-	       if( !STOBOOL(DcacheRespCase) )
+	       if( !BTOBOOL(DcacheRespCase) )
 		  strlwr(ep->name);
 
 	       Hash(ep->name, &ep->hkey); /* This sets ep->hkey. */
@@ -208,7 +208,7 @@ int          force;
 	 if (!ep) {
 	    TALLOC(ep,1,Entry);
 	    ep->name = DmStrDup(comp);
-	    if( !STOBOOL(DcacheRespCase) ) {
+	    if( !BTOBOOL(DcacheRespCase) ) {
 	       strlwr(ep->name);
 	       Hash(ep->name, &ep->hkey);
 	    }
@@ -231,5 +231,5 @@ int          force;
       FREE(udir); /* Keep this before the free of fpath. */
 
    FREE(fpath);
-   return(!ep ? (time_t)0L : ((STOBOOL(Augmake) && ep->isdir)?0L:ep->mtime));
+   return(!ep ? (time_t)0L : ((BTOBOOL(Augmake) && ep->isdir)?0L:ep->mtime));
 }

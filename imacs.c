@@ -34,6 +34,7 @@
 
 static	void	_set_int_var ANSI((char *, char *, int, int *));
 static	void	_set_int_var_from_int_and_str ANSI((char *, int, char *, int, int *));
+static	void	_set_bool_var ANSI((char *, int, int, char *));
 static	void	_set_string_var ANSI((char *, char *, int, char **));
 static	void	_set_bit_var ANSI((char *, char *, int));
 
@@ -109,18 +110,19 @@ Create_macro_vars()
    _set_string_var("GROUPFLAGS",   " ", M_DEFAULT, &GShell_flags);
    _set_string_var("SHELLMETAS",   "",  M_DEFAULT, &Shell_metas );
    _set_string_var("GROUPSUFFIX",  "",  M_DEFAULT, &Grp_suff    );
-   _set_string_var("AUGMAKE",NIL(char), M_DEFAULT, &Augmake     );
-   _set_string_var("OOODMAKEMODE", "",  M_DEFAULT, &OOoDmMode );
+   _set_bool_var  ("AUGMAKE",     FALSE,M_DEFAULT, &Augmake     );
+   _set_bool_var  ("OOODMAKEMODE",FALSE,M_DEFAULT, &OOoDmMode );
    _set_string_var(".KEEP_STATE",  "",  M_DEFAULT, &Keep_state  );
    _set_string_var(".NOTABS",      "",  M_MULTI, &Notabs );
-   _set_string_var(".DIRCACHE",    "y", M_DEFAULT, &UseDirCache );
+   _set_bool_var  (".DIRCACHE",   TRUE, M_DEFAULT, &UseDirCache );
 
 #if CASE_INSENSITIVE_FS
-#define DIRCACHERESPCASEDEFAULT ""
+#define DIRCACHERESPCASEDEFAULT FALSE
 #else
-#define DIRCACHERESPCASEDEFAULT "y"
+#define DIRCACHERESPCASEDEFAULT TRUE
 #endif
-   _set_string_var(".DIRCACHERESPCASE", DIRCACHERESPCASEDEFAULT, M_DEFAULT, &DcacheRespCase);
+   _set_bool_var  (".DIRCACHERESPCASE", DIRCACHERESPCASEDEFAULT, M_DEFAULT, &DcacheRespCase);
+#undef DIRCACHERESPCASEDEFAULT
 
    _set_string_var("MAKEDIR",Get_current_dir(),M_PRECIOUS|M_NOEXPORT,
 		   &Makedir_macval);
@@ -191,6 +193,33 @@ int  *var;
    hp = Def_macro(name, valstr, M_FLAG | flag);
    hp->ht_flag |= M_VAR_INT | M_MULTI | M_INIT;
    hp->MV_IVAR  = var;
+   *var         = val;
+}
+
+
+/*
+** Define an bool variable, and set up the macro.
+** Unlike _set_bit_var, this does not use global Glob_attr (Glob_attr's
+** bits are all used up anyway), and a bool takes 'Y' or 'y' as true, every
+** other string including NIL(char) are false, which is differnt from bit_var's
+** conversions to true and false. A bool is a global char var. Glob_attr could
+** be converted to a bit vector instead of being int32_t in the future but
+** the string to bool/bit conversion still needs a flag on whether its a
+** ""/NULL or 'y' conversion.
+*/
+static void
+_set_bool_var(name, val, flag, var)
+char *name;
+int  val;
+int  flag;
+char *var;
+{
+   HASHPTR hp;
+   char *valstr = val ? "y" : NIL(char);
+
+   hp = Def_macro(name, valstr, M_FLAG | flag);
+   hp->ht_flag |= M_VAR_BOOL | M_MULTI | M_INIT;
+   hp->MV_CVAR  = var;
    *var         = val;
 }
 

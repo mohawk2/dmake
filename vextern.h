@@ -59,9 +59,9 @@ EXTERN	char*	Spacechar;	/* pointer to macro value for SPACECHAR   */
 EXTERN	char*	Keep_state;	/* current .KEEP_STATE file		  */
 EXTERN  char*   Escape_char;	/* Current escape character               */
 EXTERN  char*   LastMacName;	/* Last macro successfully parsed	  */
-EXTERN  char*   UseDirCache;    /* The value of .DIRCACHE                 */
-EXTERN  char*   DcacheRespCase; /* TRUE if we are to respect dcache case  */
-EXTERN  char*   OOoDmMode;	/* Enable special behavior for OOo build. */
+EXTERN  char    UseDirCache;    /* The value of .DIRCACHE                 */
+EXTERN  char    DcacheRespCase; /* TRUE if we are to respect dcache case  */
+EXTERN  char    OOoDmMode;	/* Enable special behavior for OOo build. */
 EXTERN	int	Target;		/* TRUE if a default target was found in  *
 				 * a makefile or on the commandline       */
 EXTERN	int	If_expand;	/* TRUE if calling Expand from getinp.c   */
@@ -103,7 +103,7 @@ EXTERN  int	Group;		/* parsing a group recipe ==> TRUE        */
 /* Command line option flags are defined here.  They correspond one-for one
  * with the flags defined in dmake.c */
  
-EXTERN	char    *Augmake;	  /* -A */
+EXTERN	char    Augmake;	  /* -A */
 EXTERN  char    Comment;	  /* -c */
 EXTERN	char	Get_env;	  /* -e or -E */
 EXTERN  char*   Notabs;		  /* -B */

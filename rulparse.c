@@ -1144,7 +1144,7 @@ _build_meta( name )/*
 char *name;
 {
    char *tmp;
-   int  test = (STOBOOL(Augmake) ? name[strlen(name)-1] == '~' : 0);
+   int  test = (BTOBOOL(Augmake) ? name[strlen(name)-1] == '~' : 0);
 
    tmp = DmStrJoin( test ? "s.%" : "%", name, -1, FALSE);
    if( test ) tmp[ strlen(tmp)-1 ] = '\0';
