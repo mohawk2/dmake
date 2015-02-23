@@ -93,7 +93,7 @@ char *name;
 DMPORTSTAT_T *buf;
 {
    return( (   !DMPORTSTAT_SUCCESS(DMPORTSTAT(name,buf))
-            || (STOBOOL(Augmake) && DMPORTSTAT_ISDIR(buf)))
+            || (BTOBOOL(Augmake) && DMPORTSTAT_ISDIR(buf)))
 	   ? (time_t)0L
 	   : (time_t)DMPORTSTAT_MTIME(buf)
 	 );
@@ -122,7 +122,7 @@ int  force;
       Assume unix time 0.\n", basename, NameMax );
       return((time_t)0L);
    }
-   else if( STOBOOL(UseDirCache) )
+   else if( BTOBOOL(UseDirCache) )
       return(CacheStat(name,force));
    else
       return(really_dostat(name,&buf));

@@ -61,7 +61,7 @@
                                          * an empty macro implicitly
                                          * defined when expanding it.   */
 #define M_VAR_BIT        0x1000         /* macro bit variable           */
-#define M_VAR_CHAR       0x2000         /* macro char variable          */
+#define M_VAR_BOOL       0x2000         /* macro bool variable          */
 #define M_VAR_STRING     0x4000         /* macro string variable        */
 #define M_VAR_INT        0x8000         /* macro integer variable       */
 
@@ -226,6 +226,7 @@
 #define GET_MACRO(A)     Get_name(A, Macs, FALSE)
 #define iswhite(C)       ((C == ' ') || (C == '\t'))
 #define STOBOOL(A)       (A && ((*A | 0x20) == 'y'))
+#define BTOBOOL(A)       (A)
 
 #endif
 

@@ -412,7 +412,7 @@ CELLPTR setdirroot;
 	 goto stop_making_it;
       }
       else if( cp->ce_prq != NIL(LINK)
-            || (STOBOOL(Augmake) && (cp->ce_flag&F_EXPLICIT)))
+            || (BTOBOOL(Augmake) && (cp->ce_flag&F_EXPLICIT)))
 	 /* Assume an empty recipe for a target that we have run inference on
 	  * but do not have a set of rules for but for which we have inferred
 	  * a list of prerequisites. */

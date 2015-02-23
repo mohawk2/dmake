@@ -60,8 +60,11 @@ HASHPTR hp;
 	 /* No special treatment for TMD needed. */
 	 break;
 
-      case M_VAR_CHAR:
-         *hp->MV_CVAR = (hp->ht_value == NIL(char)) ? '\0':*hp->ht_value;
+      case M_VAR_BOOL:
+         *hp->MV_CVAR = (hp->ht_value == NIL(char)) ? FALSE:
+         /* |0x20 turns turn ASCII 'Y' into 'y', if 'y' it stays as 'y' */
+            (*hp->ht_value | 0x20)== 'y'
+               ? TRUE : FALSE;
          break;
          
       case M_VAR_INT: {

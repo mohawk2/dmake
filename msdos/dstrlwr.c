@@ -31,7 +31,7 @@ dstrlwr(entry, target)
 char *entry;
 char *target;
 {
-   if (STOBOOL(DcacheRespCase))
+   if (BTOBOOL(DcacheRespCase))
       return;
    
    /* Look for the target being lower case, if so then lower the case

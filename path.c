@@ -239,7 +239,7 @@ char *path;
 
       /* Remove './'. If OOODMAKEMODE is set do this only if it is not at
        * the start of the path. */
-      if ( p-q == 1 && *q == '.' && (q != path || !STOBOOL(OOoDmMode)) ) {
+      if ( p-q == 1 && *q == '.' && (q != path || !BTOBOOL(OOoDmMode)) ) {
 	 len = strlen(p+1)+1;
 	 memmove(q,p+1,len);
 	 q = tpath;
