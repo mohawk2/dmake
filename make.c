@@ -1170,9 +1170,12 @@ _drop_mac( hp )/*
 ================ set a macro value to zero. */
 HASHPTR hp;
 {
-   if( hp && hp->ht_value != NIL(char) ) {
-      FREE( hp->ht_value );
-      hp->ht_value = NIL(char);
+   if( hp ) {
+      char * value = hp->ht_value;
+      if( value != NIL(char) ) {
+         hp->ht_value = NIL(char);
+         FREE( value );
+      }
    }
 }
 
