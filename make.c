@@ -430,9 +430,11 @@ CELLPTR setdirroot;
    /* Search the prerequisite list for dynamic prerequisites and if we find
     * them copy the list of prerequisites for potential later re-use. */
    if ( cp->ce_prqorg == NIL(LINK) ) {
-      for( dp = cp->ce_prq; dp != NIL(LINK); dp = dp->cl_next )
-	 if ( strchr(dp->cl_prq->CE_NAME, '$') != NULL )
+      for( dp = cp->ce_prq; dp != NIL(LINK); dp = dp->cl_next ) {
+         char * ce_name = dp->cl_prq->CE_NAME;
+	 if ( strchr(ce_name, '$') != NULL )
 	    break;
+      }
 
       if (dp != NIL(LINK)) {
 	 cp->ce_prqorg = _dup_prq(cp->ce_prq);
