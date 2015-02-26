@@ -34,7 +34,7 @@ extern char * tempnam();
 extern char * getcwd();
 
 /* for directory cache */
-/* #define CacheStat(A,B)	really_dostat(A,&buf)*/
+/* #define CacheStat(A,B)	really_dostat(A)*/
 
 /*
 ** standard C items
@@ -46,7 +46,7 @@ extern char * getcwd();
 /* Disabled for CWS os2port01
  *#define	chdir(p) _dchdir(p)
  */
-#define CacheStat(A,B) really_dostat(A,&buf)
+#define CacheStat(A,B) really_dostat(A)
 
 /*
 ** make parameters
