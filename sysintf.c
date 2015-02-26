@@ -99,20 +99,23 @@ DMPORTSTAT_T *buf;
 	 );
 }
 
+/* member is part of the unimplemented .SYMBOL feature, see DO_STAT in stat.c */
 
 PUBLIC time_t
-Do_stat(name, lib, member, force)
+Do_stat(name, lib, /*member,*/ force)
 char *name;
 char *lib;
-char **member;
+/*char **member;*/
 int  force;
 {
    char * basename;
    DMPORTSTAT_T buf;
    time_t seek_arch();
 
+/*
    if( member != NIL(char *) )
       Fatal("Library symbol names not supported");
+*/
 
    basename = Basename(name);
    if( lib != NIL(char) )
@@ -132,13 +135,15 @@ int  force;
 /* Touch existing file to force modify time to present.
  */
 PUBLIC int
-Do_touch(name, lib, member)
+Do_touch(name, lib/*, member*/)
 char *name;
 char *lib;
-char **member;
+/* char **member; */
 {
+/*
    if( member != NIL(char *) )
       Fatal("Library symbol names not supported");
+*/
 
    if (lib != NIL(char))
       return( touch_arch(Basename(name), lib) );
