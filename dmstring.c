@@ -211,7 +211,9 @@ char *searchchars;
 
    if( s1 == NIL(char) || searchchars == NIL(char) ) return( "" );
 
-   for( t=s1; *t && (strchr( searchchars, *t ) == NIL(char)); t++ );
+   t = strpbrk(s1, searchchars);
+   if( !t )
+      t = s1+strlen(s1);
    return( t );
 }
 
