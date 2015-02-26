@@ -88,14 +88,14 @@
 ** pointer pointed at by sym point at it.  Not handled for now!
 */
 static time_t
-really_dostat(name, buf)
+really_dostat(name)
 char *name;
-DMPORTSTAT_T *buf;
 {
-   return( (   !DMPORTSTAT_SUCCESS(DMPORTSTAT(name,buf))
-            || (BTOBOOL(Augmake) && DMPORTSTAT_ISDIR(buf)))
+   DMPORTSTAT_T buf;
+   return( (   !DMPORTSTAT_SUCCESS(DMPORTSTAT(name,&buf))
+            || (BTOBOOL(Augmake) && DMPORTSTAT_ISDIR(&buf)))
 	   ? (time_t)0L
-	   : (time_t)DMPORTSTAT_MTIME(buf)
+	   : (time_t)DMPORTSTAT_MTIME(&buf)
 	 );
 }
 
@@ -128,7 +128,7 @@ int  force;
    else if( BTOBOOL(UseDirCache) )
       return(CacheStat(name,force));
    else
-      return(really_dostat(name,&buf));
+      return(really_dostat(name));
 }
 
 
@@ -140,16 +140,17 @@ char *name;
 char *lib;
 /* char **member; */
 {
+   char * basename = Basename(name);
 /*
    if( member != NIL(char *) )
       Fatal("Library symbol names not supported");
 */
 
    if (lib != NIL(char))
-      return( touch_arch(Basename(name), lib) );
-   else if( strlen(Basename(name)) > NameMax ) {
+      return( touch_arch(basename, lib) );
+   else if( strlen(basename) > NameMax ) {
       Warning( "Filename [%s] longer than value of NAMEMAX [%d].\n\
-      File timestamp not updated to present time.\n", Basename(name), NameMax );
+      File timestamp not updated to present time.\n", basename, NameMax );
       return(-1);
    }
    else
