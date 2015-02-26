@@ -94,21 +94,25 @@ int          force;
    uint32 hkey;
    uint16 hv;
    char *fpath;
-   char *spath;
    char *comp;
    char *dir;
    char *udir; /* Hold the unchanged (DcacheRespCase) directory. */
+   char olddirsep = '\0'; /* null char can't be a legal dir sep */
    int  loaded=FALSE;
 
    if (If_root_path(path))
-      spath = path;
+      fpath = path;
    else
-      spath = Build_path(Pwd,path);
-
-   fpath = DmStrDup(spath);
+      fpath = Build_path(Pwd,path);
 
    comp  = Basename(fpath); /* Use before the Filedir() call. */
-   dir   = Filedir(fpath);
+/* a quick version of Filedir, I doubt Build_path or If_root_path would fail
+   in a way for comp == fpath and then a underflow bad write into the malloc
+   header, but dmake doesn't use assert */
+   olddirsep = comp[-1];
+   comp[-1] = '\0';
+
+   dir   = fpath; /* Basename returns a ptr to inside its arg */
 
    /* do caching and comparing lower case if told so. */
    if( !BTOBOOL(DcacheRespCase) ) {
@@ -181,6 +185,15 @@ int          force;
       }
    }
 
+/* done with dirs */
+   if( udir != dir )
+      FREE(udir);
+/* Need the original, maybe full, path back.
+   vars dir and udir are gone after this
+*/
+   if( olddirsep != '\0' )
+      comp[-1] = olddirsep;
+
    Hash(comp, &hkey); /* Calculate hkey. */
 
    /* search in dp->entries for comp. */
@@ -200,7 +213,7 @@ int          force;
 	    ep->mtime = 0L;
       }
 
-      else if (!DMPORTSTAT_SUCCESS(DMPORTSTAT(spath,&stbuf))) {
+      else if (!DMPORTSTAT_SUCCESS(DMPORTSTAT(fpath,&stbuf))) {
 	 if(ep)
 	    ep->mtime = 0L;
       }
@@ -224,12 +237,8 @@ int          force;
 
       if( Verbose & V_DIR_CACHE )
 	 printf("%s:  Updating dir cache entry for [%s], new time is %ld\n",
-	        Pname, spath, ep ? ep->mtime : 0L);
+	        Pname, fpath, ep ? ep->mtime : 0L);
    }
 
-   if( udir != dir )
-      FREE(udir); /* Keep this before the free of fpath. */
-
-   FREE(fpath);
    return(!ep ? (time_t)0L : ((BTOBOOL(Augmake) && ep->isdir)?0L:ep->mtime));
 }
