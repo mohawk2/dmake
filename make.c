@@ -755,27 +755,26 @@ CELLPTR setdirroot;
       DB_PRINT( "make", ("Set ce_time (mintime) to: %ld", cp->ce_time) );
 
       if( Touch ) {
-	 name = cp->ce_fname;
-	 lib  = cp->ce_lib;
+	 if( !(cp->ce_attr & A_PHONY) && (!(Glob_attr & A_SILENT) || !Trace) ) {
+	    name = cp->ce_fname;
+	    lib  = cp->ce_lib;
 
-	 if( (!(Glob_attr & A_SILENT) || !Trace) && !(cp->ce_attr & A_PHONY) ) {
 	    if( lib == NIL(char) )
 	       printf("touch(%s)", name );
 	    else if( cp->ce_attr & A_SYMBOL )
 	       printf("touch(%s((%s)))", lib, name );
 	    else
 	       printf("touch(%s(%s))", lib, name );
-	 }
 
-	if( !Trace && !(cp->ce_attr & A_PHONY) )
-	    /* .SYMBOL feature is not implement for touch */
-	    if(cp->ce_attr & A_SYMBOL)
-	       Fatal("Library symbol names not supported");
-	    if( Do_touch( name, lib ) )
-	       printf( "  not touched - non-existant" );
+	    if( !Trace )
+	       /* .SYMBOL feature is not implement for touch */
+	       if(cp->ce_attr & A_SYMBOL)
+	          Fatal("Library symbol names not supported");
+	       if( Do_touch( name, lib ) )
+	          printf( "  not touched - non-existant" );
 
-	 if( (!(Glob_attr & A_SILENT) || !Trace) && !(cp->ce_attr & A_PHONY) )
 	    printf( "\n" );
+	 }
 
 	 Update_time_stamp( cp );
       }
