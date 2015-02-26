@@ -620,7 +620,7 @@ CELLPTR setdirroot;
        * replaced. */
       if( cp->ce_attr & A_LIBRARY )
 	 if( tcp->ce_time <= cp->ce_time ) {
-	    time_t mtime = Do_stat( name, tcp->ce_lib, NIL(char *), FALSE );
+	    time_t mtime = Do_stat( name, tcp->ce_lib, FALSE );
 	    if( mtime < tcp->ce_time ) tcp->ce_time = cp->ce_time+1L;
 	 }
 
@@ -767,9 +767,11 @@ CELLPTR setdirroot;
 	       printf("touch(%s(%s))", lib, name );
 	 }
 
-	 if( !Trace && !(cp->ce_attr & A_PHONY) )
-	    if( Do_touch( name, lib,
-		(cp->ce_attr & A_SYMBOL) ? &name : NIL(char *) ) != 0 )
+	if( !Trace && !(cp->ce_attr & A_PHONY) )
+	    /* .SYMBOL feature is not implement for touch */
+	    if(cp->ce_attr & A_SYMBOL)
+	       Fatal("Library symbol names not supported");
+	    if( Do_touch( name, lib ) )
 	       printf( "  not touched - non-existant" );
 
 	 if( (!(Glob_attr & A_SILENT) || !Trace) && !(cp->ce_attr & A_PHONY) )

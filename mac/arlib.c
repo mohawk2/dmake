@@ -37,7 +37,7 @@ char*	lib;
    	warned = TRUE,
    	Warning("Can't extract library member timestamp;\n\
    	using library timestamp instead.");
-   return (Do_stat(lib, NULL, NULL, TRUE));
+   return (Do_stat(lib, NULL, TRUE));
 }
 
 PUBLIC int
@@ -51,6 +51,6 @@ char*	lib;
    	warned = TRUE,
    	Warning("Can't update library member timestamp;\n\
    	touching library instead.");
-   return (Do_touch(lib, NULL, NULL));
+   return (Do_touch(lib, NULL));
 }
 
