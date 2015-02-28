@@ -98,7 +98,6 @@ FILE *TryFiles ANSI((LINKPTR));
 void Fatal ANSI((ARG (char *,fmt),ARG (va_alist_type, va_alist)));
 void Error ANSI((ARG (char *,fmt),ARG (va_alist_type, va_alist)));
 void Warning ANSI((ARG (char *,fmt),ARG (va_alist_type, va_alist)));
-void No_ram ANSI(());
 void Usage ANSI((int));
 void Version ANSI(());
 char *Get_suffix ANSI((char *));
