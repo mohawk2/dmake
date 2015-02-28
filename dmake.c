@@ -118,6 +118,9 @@ static  void    _do_f_flag ANSI((char, char *, char **));
 #else
 static  void    _do_f_flag ANSI((int, char *, char **));
 #endif
+#ifdef _WIN32
+static  int     dm_malloc_handler(size_t size);
+#endif
 
 PUBLIC int
 main(argc, argv)
@@ -138,6 +141,10 @@ char **argv;
    FILE*   mkfil;
    int     ex_val;
    int     m_export;
+
+#ifdef _WIN32
+   dm_set_new_handler(dm_malloc_handler);
+#endif
 
    /* Uncomment the following line to pass commands to the DBUG engine
     * before the command line switches (-#..) are evaluated. */
@@ -858,12 +865,20 @@ DARG(va_alist_type,va_alist)
    va_end(args);
 }
 
-
+#ifdef _WIN32
+static int
+dm_malloc_handler(size_t size)
+{
+   Fatal( "No more memory" );
+   return 0;
+}
+#else
 PUBLIC void
 No_ram()
 {
    Fatal( "No more memory" );
 }
+#endif
 
 
 PUBLIC void

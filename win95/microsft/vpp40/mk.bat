@@ -33,6 +33,7 @@ rem cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -O
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\ruletab.obj win95\microsft\ruletab.c
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\runargv.obj unix\runargv.c
 cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\rmprq.obj unix\rmprq.c
+cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\allochnd.obj win95\microsft\allochnd.cpp
 
 :link
 rem link /nologo /out:dmake.exe @fix95nt\win95\microsft\vpp40\obj.rsp

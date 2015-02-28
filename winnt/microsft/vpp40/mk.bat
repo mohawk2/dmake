@@ -28,5 +28,6 @@ cl -c -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -F
 cl -c -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\ruletab.obj win95\microsft\ruletab.c
 cl -c -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\runargv.obj msdos\runargv.c
 cl -c -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\rmprq.obj msdos\rmprq.c
+cl -c -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\allochnd.obj win95\microsft\allochnd.cpp
 rem link /nologo @win95\microsft\vpp40\obj.rsp,dmake.exe,NUL.MAP;
 link /out:dmake.exe @.\win95\microsft\vpp40\obj.rsp

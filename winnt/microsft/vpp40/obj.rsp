@@ -1,3 +1,4 @@
+newmode.obj
 objects\infer.obj
 objects\make.obj
 objects\stat.obj
@@ -26,3 +27,4 @@ objects\tempnam.obj
 objects\ruletab.obj
 objects\runargv.obj
 objects\rmprq.obj
+objects\allochnd.obj

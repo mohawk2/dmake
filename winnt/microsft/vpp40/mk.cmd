@@ -27,5 +27,6 @@ cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -F
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\ruletab.obj winnt\microsft\ruletab.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\runargv.obj msdos\runargv.c
 cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\rmprq.obj msdos\rmprq.c
+cl -c -I. -Iwinnt -Iwinnt\microsft -Iwinnt\microsft\vpp40 /nologo -Od -GF -Ge -Foobjects\allochnd.obj winnt\microsft\allochnd.cpp
 link /nologo /out:dmake.exe @fix95nt\winnt\microsft\vpp40\obj.rsp 
 copy winnt\microsft\vpp40\template.mk startup\config.mk
