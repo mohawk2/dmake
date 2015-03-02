@@ -22,6 +22,7 @@ if %1 == msc60swp    goto mkms60swp
 
 if %1 == win95-bcc50 goto mkw32b50
 if %1 == win95-vpp40 goto mkw32vp40
+if %1 == win95-vpp70 goto mkw32vp70
 
 rem label the possible DOS variations for dmake here.
 :error
@@ -39,8 +40,11 @@ echo    msc51swp     - Microsoft C 5.1, MASM 5.1 compile of swapping dmake.
 echo    msc60        - Microsoft C 6.0 compile.
 echo    msc60swp     - Microsoft C 6.0, MASM 5.1 compile of swapping dmake.
 
-echo    win95-bcc50  - Borland C++ 5.0 32-bit compile of dmake.
-echo    win95-vpp40  - Microsoft VC++ 4.0 32-bit compile of dmake.
+echo    win95-bcc50     - Borland C++ 5.0 32-bit compile of dmake.
+echo    win95-vpp40     - Microsoft VC++ 4.0 32-bit compile of dmake.
+echo    win95-vpp70     - MS VC++ ^>= 2003 optimized
+echo    win95-vpp70 rel - MS VC++ ^>= 2003 optimized
+echo    win95-vpp70 dbg - MS VC++ ^>= 2003 unoptimized for debugging
 goto end
 
 rem This is the script that makes dmake using Microsoft C 5.1
@@ -63,6 +67,10 @@ goto end
 
 :mkw32vp40
 win95\microsft\vpp40\mk.bat
+goto end
+
+:mkw32vp70
+win95\microsft\vpp40\mk70.bat %2
 goto end
 
 rem This is the script that makes dmake using Turbo C 2.0 or higher.
