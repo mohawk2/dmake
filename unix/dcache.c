@@ -40,7 +40,7 @@
 #endif
 #include <dirent.h>
 #include "extern.h"
-#include "sysintf.h"
+#include <sysintf.h>
 
 
 typedef struct ent {
@@ -87,30 +87,35 @@ CacheStat(path, force)
 char        *path;
 int          force;
 {
-   struct stat stbuf;
+
+   DMPORTSTAT_T stbuf;
    DirEntryPtr dp;
    EntryPtr    ep;
    uint32 hkey;
    uint16 hv;
    char *fpath;
-   char *spath;
    char *comp;
    char *dir;
    char *udir; /* Hold the unchanged (DcacheRespCase) directory. */
+   char olddirsep = '\0'; /* null char can't be a legal dir sep */
    int  loaded=FALSE;
 
    if (If_root_path(path))
-      spath = path;
+      fpath = path;
    else
-      spath = Build_path(Pwd,path);
-
-   fpath = DmStrDup(spath);
+      fpath = Build_path(Pwd,path);
 
    comp  = Basename(fpath); /* Use before the Filedir() call. */
-   dir   = Filedir(fpath);
+/* a quick version of Filedir, I doubt Build_path or If_root_path would fail
+   in a way for comp == fpath and then a underflow bad write into the malloc
+   header, but dmake doesn't use assert */
+   olddirsep = comp[-1];
+   comp[-1] = '\0';
+
+   dir   = fpath; /* Basename returns a ptr to inside its arg */
 
    /* do caching and comparing lower case if told so. */
-   if( !STOBOOL(DcacheRespCase) ) {
+   if( !BTOBOOL(DcacheRespCase) ) {
       udir = DmStrDup(dir);
       strlwr(comp);
       strlwr(dir);
@@ -156,22 +161,38 @@ int          force;
 	    while((direntp=readdir(dirp)) != NULL) {
 	       TALLOC(ep,1,Entry);
 	       ep->name = DmStrDup(direntp->d_name); /* basename only */
-	       if( !STOBOOL(DcacheRespCase) )
+	       if( !BTOBOOL(DcacheRespCase) )
 		  strlwr(ep->name);
 
 	       Hash(ep->name, &ep->hkey); /* This sets ep->hkey. */
 
 	       ep->next = dp->entries;
 	       dp->entries = ep;
-	       DMSTAT(direntp->d_name,&stbuf);
-	       ep->isdir = (stbuf.st_mode & S_IFDIR);
-	       ep->mtime = stbuf.st_mtime;
+#ifdef _WIN32
+	       ep->isdir = (direntp->d_type & DT_DIR);
+/* internal to win32 readdir, stat-like data is already available from
+  FindNextFile()/win32 readdir */
+	       ep->mtime = FileTimeTo_time_t(&((DIR*)direntp)->wdirp->data.ftLastWriteTime);
+#else
+	       DMPORTSTAT(direntp->d_name,&stbuf);
+	       ep->isdir = DMPORTSTAT_ISDIR(&stbuf);
+	       ep->mtime = DMPORTSTAT_MTIME(&stbuf);
+#endif
 	    }
 	    closedir(dirp);
 	 }
 	 Set_dir(Pwd);
       }
    }
+
+/* done with dirs */
+   if( udir != dir )
+      FREE(udir);
+/* Need the original, maybe full, path back.
+   vars dir and udir are gone after this
+*/
+   if( olddirsep != '\0' )
+      comp[-1] = olddirsep;
 
    Hash(comp, &hkey); /* Calculate hkey. */
 
@@ -185,11 +206,14 @@ int          force;
       ep = NULL;
 
    if( force && !loaded) {
-      if (strlen(comp) > NameMax || DMSTAT(spath,&stbuf) != 0) {
-	 /* Either file to long or the stat failed. */
-	 if (strlen(comp) > NameMax)
-	    Warning( "File [%s] longer than value of NAMEMAX [%d].\n\
+      if (strlen(comp) > NameMax) {
+	Warning( "File [%s] longer than value of NAMEMAX [%d].\n\
 	Assume unix time 0.\n", comp, NameMax );
+	 if(ep)
+	    ep->mtime = 0L;
+      }
+
+      else if (!DMPORTSTAT_SUCCESS(DMPORTSTAT(fpath,&stbuf))) {
 	 if(ep)
 	    ep->mtime = 0L;
       }
@@ -197,25 +221,24 @@ int          force;
 	 if (!ep) {
 	    TALLOC(ep,1,Entry);
 	    ep->name = DmStrDup(comp);
-	    if( !STOBOOL(DcacheRespCase) )
+	    if( !BTOBOOL(DcacheRespCase) ) {
 	       strlwr(ep->name);
-	    Hash(ep->name, &ep->hkey);
+	       Hash(ep->name, &ep->hkey);
+	    }
+	    else {
+	       ep->hkey = hkey;
+	    }
 	    ep->next = dp->entries;
-	    ep->isdir = (stbuf.st_mode & S_IFDIR);
+	    ep->isdir = DMPORTSTAT_ISDIR(&stbuf);
 	    dp->entries = ep;
 	 }
-
-	 ep->mtime = stbuf.st_mtime;
+	 ep->mtime = DMPORTSTAT_MTIME(&stbuf);
       }
 
       if( Verbose & V_DIR_CACHE )
 	 printf("%s:  Updating dir cache entry for [%s], new time is %ld\n",
-	        Pname, spath, ep ? ep->mtime : 0L);
+	        Pname, fpath, ep ? ep->mtime : 0L);
    }
 
-   if( udir != dir )
-      FREE(udir); /* Keep this before the free of fpath. */
-
-   FREE(fpath);
-   return(!ep ? (time_t)0L : ((STOBOOL(Augmake) && ep->isdir)?0L:ep->mtime));
+   return(!ep ? (time_t)0L : ((BTOBOOL(Augmake) && ep->isdir)?0L:ep->mtime));
 }

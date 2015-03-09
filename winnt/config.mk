@@ -27,7 +27,7 @@ NDB_LDLIBS	=
 CFLAGS += -I$(OS)
 
 # Common Win32 source files.
-OS_SRC  += dchdir.c
+OS_SRC  +=
 
 # Imported Win95 files.
 WIN95SRC += switchar.c

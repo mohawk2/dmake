@@ -61,10 +61,7 @@
 
 #include "extern.h"
 
-/* The following definition controls the use of GetModuleFileName() */
 #if defined(_MSC_VER) || defined(__MINGW32__)
-#   define HAVE_GETMODULEFILENAMEFUNC 1
-
 /* this is needed for the _ftime call below. Only needed here. */
 #   include <sys/timeb.h>
 #endif
@@ -91,62 +88,69 @@
 ** pointer pointed at by sym point at it.  Not handled for now!
 */
 static time_t
-really_dostat(name, buf)
+really_dostat(name)
 char *name;
-struct stat *buf;
 {
-   return( (   DMSTAT(name,buf)==-1 
-            || (STOBOOL(Augmake) && (buf->st_mode & S_IFDIR)))
+   DMPORTSTAT_T buf;
+   return( (   !DMPORTSTAT_SUCCESS(DMPORTSTAT(name,&buf))
+            || (BTOBOOL(Augmake) && DMPORTSTAT_ISDIR(&buf)))
 	   ? (time_t)0L
-	   : (time_t) buf->st_mtime
+	   : (time_t)DMPORTSTAT_MTIME(&buf)
 	 );
 }
 
+/* member is part of the unimplemented .SYMBOL feature, see DO_STAT in stat.c */
 
 PUBLIC time_t
-Do_stat(name, lib, member, force)
+Do_stat(name, lib, /*member,*/ force)
 char *name;
 char *lib;
-char **member;
+/*char **member;*/
 int  force;
 {
-   struct stat buf;
+   char * basename;
+   DMPORTSTAT_T buf;
    time_t seek_arch();
 
+/*
    if( member != NIL(char *) )
       Fatal("Library symbol names not supported");
+*/
 
-   buf.st_mtime = (time_t)0L;
+   basename = Basename(name);
    if( lib != NIL(char) )
-      return( seek_arch(Basename(name), lib) );
-   else if( strlen(Basename(name)) > NameMax ) {
+      return( seek_arch(basename, lib) );
+   else if( strlen(basename) > NameMax ) {
       Warning( "Filename [%s] longer than value of NAMEMAX [%d].\n\
-      Assume unix time 0.\n", Basename(name), NameMax );
+      Assume unix time 0.\n", basename, NameMax );
       return((time_t)0L);
    }
-   else if( STOBOOL(UseDirCache) )
+   else if( BTOBOOL(UseDirCache) )
       return(CacheStat(name,force));
    else
-      return(really_dostat(name,&buf));
+      return(really_dostat(name));
 }
 
 
 /* Touch existing file to force modify time to present.
  */
 PUBLIC int
-Do_touch(name, lib, member)
+Do_touch(name, lib/*, member*/)
 char *name;
 char *lib;
-char **member;
+/* char **member; */
 {
+   char * basename = Basename(name);
+/*
    if( member != NIL(char *) )
       Fatal("Library symbol names not supported");
+*/
 
    if (lib != NIL(char))
-      return( touch_arch(Basename(name), lib) );
-   else if( strlen(Basename(name)) > NameMax ) {
+      return( touch_arch(basename, lib) );
+   else if( strlen(basename) > NameMax ) {
       Warning( "Filename [%s] longer than value of NAMEMAX [%d].\n\
-      File timestamp not updated to present time.\n", Basename(name), NameMax );
+      File timestamp not updated to present time.\n", basename, NameMax );
       return(-1);
    }
    else
@@ -325,13 +329,17 @@ int    shell;
 char **cmd; /* Simulate a reference to *cmd. */
 {
    static char **av = NIL(char *);
+#if !defined(USE_CREATEPROCESS)
    static int   avs = 0;
+#endif
    int i = 0;
    char *s; /* Temporary string pointer. */
 
    if( av == NIL(char *) ) {
       TALLOC(av, MINARGV, char*);
+#if !defined(USE_CREATEPROCESS)
       avs = MINARGV;
+#endif
    }
    av[0] = NIL(char);
 
@@ -525,10 +533,9 @@ char* argv[];
 {
    Pname = (argc == 0) ? DEF_MAKE_PNAME : argv[0];
 
-   /* Only some native Windows compilers provide this functionality. */
-#ifdef HAVE_GETMODULEFILENAMEFUNC
-   if( (AbsPname = MALLOC( PATH_MAX, char)) == NIL(char) ) No_ram();
-   GetModuleFileName(NULL, AbsPname, PATH_MAX*sizeof(char));
+#ifdef _WIN32
+   /* get exe path from MS CRT's global buffer, CRT uses GetModuleFileName */
+   AbsPname = _pgmptr;
 #else
    AbsPname = "";
 #endif
@@ -1112,12 +1119,16 @@ PUBLIC int
 Remove_file( name )
 char *name;
 {
+/* don't do the stat (extra I/O) for the likely to exist temp file of cmds
+   or less likely temp build products, unlink fails on a dir anyway */
+#if 0
    struct stat buf;
 
    if( stat(name, &buf) != 0 )
       return 1;
    if( (buf.st_mode & S_IFMT) == S_IFDIR )
       return 1;
+#endif
    return(unlink(name));
 }
 

@@ -108,7 +108,7 @@ dbug/dbug/dbug.c, eg "-#d:F:L:t"
 #endif
 #define ARG(a,b) a b
 
-static char *sccid = "Copyright (c) 1990,...,1997 by WTI Corp.";
+#define SCCID "Copyright (c) 1990,...,1997 by WTI Corp."
 static char _warn  = TRUE;		/* warnings on by default */
 
 static	void	_do_VPATH();
@@ -117,6 +117,9 @@ static	void	_do_ReadEnvironment();
 static  void    _do_f_flag ANSI((char, char *, char **));
 #else
 static  void    _do_f_flag ANSI((int, char *, char **));
+#endif
+#ifdef _WIN32
+static  int     dm_malloc_handler(size_t size);
 #endif
 
 PUBLIC int
@@ -138,6 +141,10 @@ char **argv;
    FILE*   mkfil;
    int     ex_val;
    int     m_export;
+
+#ifdef _WIN32
+   dm_set_new_handler(dm_malloc_handler);
+#endif
 
    /* Uncomment the following line to pass commands to the DBUG engine
     * before the command line switches (-#..) are evaluated. */
@@ -175,9 +182,11 @@ char **argv;
    Trace     = FALSE;
    Touch     = FALSE;
    Check     = FALSE;
-   Microsoft = FALSE;
+/* Microsoft = FALSE; */
    Makemkf   = FALSE;
+#if defined(__CYGWIN__)
    UseWinpath= FALSE;
+#endif
    No_exec   = FALSE;
    m_export  = FALSE;
    cmdmacs   = NIL(char);
@@ -856,12 +865,20 @@ DARG(va_alist_type,va_alist)
    va_end(args);
 }
 
-
+#ifdef _WIN32
+static int
+dm_malloc_handler(size_t size)
+{
+   Fatal( "No more memory" );
+   return 0;
+}
+#else
 PUBLIC void
 No_ram()
 {
    Fatal( "No more memory" );
 }
+#endif
 
 
 PUBLIC void
@@ -943,24 +960,24 @@ Version()
    extern char **Rule_tab;
    char **p;
    
-   printf("%s - Version %s (%s)\n", Pname, VERSION, BUILDINFO);
-   printf("%s\n\n", sccid);
+   printf("%s - Version " VERSION " (" BUILDINFO ")\n"
+          SCCID "\n\n"
+          "Default Configuration:\n"
+          , Pname);
 
-   puts("Default Configuration:");
    for (p=Rule_tab;  *p != NIL(char);  p++)
       printf("\t%s\n", *p);
 
-   printf("\n");
-
+   puts("\n"
 #if defined(HAVE_SPAWN_H) || defined(__CYGWIN__)
    /* Only systems that have spawn ar concerned whether spawn or fork/exec
     * are used. */
 #if ENABLE_SPAWN
-      printf("Subprocesses are executed using: spawn.\n\n");
+      "Subprocesses are executed using: spawn.\n\n"
 #else
-      printf("Subprocesses are executed using: fork/exec.\n\n");
+      "Subprocesses are executed using: fork/exec.\n\n"
 #endif
 #endif
 
-      printf("Please read the NEWS file for the latest release notes.\n");
+      "Please read the NEWS file for the latest release notes.");
 }

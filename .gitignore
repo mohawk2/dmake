@@ -1,4 +1,6 @@
+*.exe
 *.o
+*.pdb
 .*.swp
 .deps
 .dirstamp
@@ -19,6 +21,7 @@ dmake
 dmakeroot.h
 install-sh
 missing
+objects
 stamp-h1
 startup/config.mk
 test-driver

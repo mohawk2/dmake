@@ -31,17 +31,9 @@
 extern char * tempnam();
 extern char * getcwd();
 
-/* for directory cache */
-#define CacheStat(A,B)	really_dostat(A,&buf)
-
 /*
 ** standard C items
 */
-
-/*
-** DOS interface standard items
-*/
-#define	chdir(p) dchdir(p)
 
 /*
 ** make parameters

@@ -317,7 +317,9 @@ CELLPTR setdirroot;
    /* Set the UseWinpath variable to reflect the (global/local) .WINPATH
     * attribute. The variable is used by DO_WINPATH() and in some other
     * places. */
+#if defined(__CYGWIN__)
    UseWinpath = (((cp->ce_attr|Glob_attr)&A_WINPATH) != 0);
+#endif
 
    /* m_at needs to be defined before going to a "stop_making_it" where
     * a _drop_mac( m_at ) would try to free it. */
@@ -410,7 +412,7 @@ CELLPTR setdirroot;
 	 goto stop_making_it;
       }
       else if( cp->ce_prq != NIL(LINK)
-            || (STOBOOL(Augmake) && (cp->ce_flag&F_EXPLICIT)))
+            || (BTOBOOL(Augmake) && (cp->ce_flag&F_EXPLICIT)))
 	 /* Assume an empty recipe for a target that we have run inference on
 	  * but do not have a set of rules for but for which we have inferred
 	  * a list of prerequisites. */
@@ -428,9 +430,11 @@ CELLPTR setdirroot;
    /* Search the prerequisite list for dynamic prerequisites and if we find
     * them copy the list of prerequisites for potential later re-use. */
    if ( cp->ce_prqorg == NIL(LINK) ) {
-      for( dp = cp->ce_prq; dp != NIL(LINK); dp = dp->cl_next )
-	 if ( strchr(dp->cl_prq->CE_NAME, '$') != NULL )
+      for( dp = cp->ce_prq; dp != NIL(LINK); dp = dp->cl_next ) {
+         char * ce_name = dp->cl_prq->CE_NAME;
+	 if ( strchr(ce_name, '$') != NULL )
 	    break;
+      }
 
       if (dp != NIL(LINK)) {
 	 cp->ce_prqorg = _dup_prq(cp->ce_prq);
@@ -479,7 +483,9 @@ CELLPTR setdirroot;
       if (m_at->ht_value == NIL(char)) {
 	 /* This check effectively tests if Make() was run before because
 	  * Make() frees all dynamic macro values at the end. */
+#if defined(__CYGWIN__)
 	 UseWinpath = (((cp->ce_attr|Glob_attr)&A_WINPATH) != 0);
+#endif
 	 m_at = Def_macro("@", DO_WINPATH(cp->ce_fname), M_MULTI);
       }
 
@@ -616,7 +622,7 @@ CELLPTR setdirroot;
        * replaced. */
       if( cp->ce_attr & A_LIBRARY )
 	 if( tcp->ce_time <= cp->ce_time ) {
-	    time_t mtime = Do_stat( name, tcp->ce_lib, NIL(char *), FALSE );
+	    time_t mtime = Do_stat( name, tcp->ce_lib, FALSE );
 	    if( mtime < tcp->ce_time ) tcp->ce_time = cp->ce_time+1L;
 	 }
 
@@ -646,7 +652,9 @@ CELLPTR setdirroot;
    if (m_at->ht_value == NIL(char)) {
       /* This check effectively tests if Make() was run before because
        * Make() frees all dynamic macro values at the end. */
+#if defined(__CYGWIN__)
       UseWinpath = (((cp->ce_attr|Glob_attr)&A_WINPATH) != 0);
+#endif
       m_at = Def_macro("@", DO_WINPATH(cp->ce_fname), M_MULTI);
    }
  
@@ -749,25 +757,26 @@ CELLPTR setdirroot;
       DB_PRINT( "make", ("Set ce_time (mintime) to: %ld", cp->ce_time) );
 
       if( Touch ) {
-	 name = cp->ce_fname;
-	 lib  = cp->ce_lib;
+	 if( !(cp->ce_attr & A_PHONY) && (!(Glob_attr & A_SILENT) || !Trace) ) {
+	    name = cp->ce_fname;
+	    lib  = cp->ce_lib;
 
-	 if( (!(Glob_attr & A_SILENT) || !Trace) && !(cp->ce_attr & A_PHONY) ) {
 	    if( lib == NIL(char) )
 	       printf("touch(%s)", name );
 	    else if( cp->ce_attr & A_SYMBOL )
 	       printf("touch(%s((%s)))", lib, name );
 	    else
 	       printf("touch(%s(%s))", lib, name );
-	 }
 
-	 if( !Trace && !(cp->ce_attr & A_PHONY) )
-	    if( Do_touch( name, lib,
-		(cp->ce_attr & A_SYMBOL) ? &name : NIL(char *) ) != 0 )
-	       printf( "  not touched - non-existant" );
+	    if( !Trace )
+	       /* .SYMBOL feature is not implement for touch */
+	       if(cp->ce_attr & A_SYMBOL)
+	          Fatal("Library symbol names not supported");
+	       if( Do_touch( name, lib ) )
+	          printf( "  not touched - non-existant" );
 
-	 if( (!(Glob_attr & A_SILENT) || !Trace) && !(cp->ce_attr & A_PHONY) )
 	    printf( "\n" );
+	 }
 
 	 Update_time_stamp( cp );
       }
@@ -1164,9 +1173,12 @@ _drop_mac( hp )/*
 ================ set a macro value to zero. */
 HASHPTR hp;
 {
-   if( hp && hp->ht_value != NIL(char) ) {
-      FREE( hp->ht_value );
-      hp->ht_value = NIL(char);
+   if( hp ) {
+      char * value = hp->ht_value;
+      if( value != NIL(char) ) {
+         hp->ht_value = NIL(char);
+         FREE( value );
+      }
    }
 }
 
@@ -1389,7 +1401,7 @@ CELLPTR cp;
 	 }
       }
 
-#if defined(MSDOS)
+#if defined(MSDOS) && defined(REAL_MSDOS)
       Swap_on_exec = ((l_attr & A_SWAP) != 0);	  /* Swapping for DOS only */
 #endif
       do_it = !Trace;

@@ -70,6 +70,8 @@
 #   define MSDOS 1
 #endif
 
+#define REAL_MSDOS 1
+
 /* a small problem with pointer to voids on some unix machines needs this */
 #define DMPVOID void *
 

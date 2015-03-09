@@ -30,6 +30,7 @@
 /* For MSVC++ needs to include windows.h first to avoid problems with
  * type redefinitions. Include it also for MinGW for consistency. */
 #if defined(__MINGW32__) || defined(_MSC_VER)
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
@@ -167,6 +168,10 @@ char *cygdospath(char *src, int winpath);
 #endif
 #endif
 
+#ifdef _WIN32
+#  define FileTimeTo_time_t(ft) ((time_t)((*((unsigned __int64 *)ft) - 116444736000000000ULL)/10000000ULL))
+#endif
+
 /* Get the working directory fall back code */
 #if ! HAVE_GETCWD
 #if HAVE_GETWD
@@ -176,9 +181,9 @@ char *cygdospath(char *src, int winpath);
 #endif
 #endif
 
-/*  If setvbuf is not available set output to unbuffered */
+/*  If setvbuf is not available, hope the OS has some buffering by default already */
 #if ! HAVE_SETVBUF
-#  define setvbuf(fp,bp,type,len) setbuf(fp,NULL)
+#  define setvbuf(fp,bp,type,len)
 #endif
 
 /* coreleft is used in some debug macros. Only Turbo C seems to provide
@@ -186,5 +191,13 @@ char *cygdospath(char *src, int winpath);
 #ifdef DBUG
 #define coreleft() 0L
 #endif
+
+/* generic implementation, override in platform specific sysintf.h
+ * if needed with #undef #define */
+#define DMPORTSTAT_T struct stat
+#define DMPORTSTAT(path, buf) DMSTAT(path, buf)
+#define DMPORTSTAT_SUCCESS(x) ((x) == 0)
+#define DMPORTSTAT_MTIME(x) ((x)->st_mtime)
+#define DMPORTSTAT_ISDIR(x) ((x)->st_mode & S_IFDIR)
 
 #endif

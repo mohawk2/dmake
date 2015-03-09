@@ -54,7 +54,7 @@ if OSTYPEWIN32
 dmake_SOURCES += win95/dchdir.c win95/switchar.c \
                  msdos/dstrlwr.c msdos/arlib.c \
                  msdos/dirbrk.c unix/runargv.c \
-                 unix/rmprq.c \
+                 unix/rmprq.c unix/dcache.c \
                  win95/microsft/ruletab.c
 AM_CPPFLAGS += -I$(top_srcdir)/@OS_TYPE@/@OS_VERSION@ -I$(top_srcdir)/@OS_TYPE@
 endif

@@ -100,6 +100,7 @@
 #define HAVE_STRERROR 1
 #define HAVE_TEMPNAM 1
 #define HAVE_FCNTL_H 1
+#define HAVE_SETVBUF 1
 
 /* These defines are needed for itypes.h! (this is tested only with MSVC++ 6.0) */
 #define SIZEOF_INT 4

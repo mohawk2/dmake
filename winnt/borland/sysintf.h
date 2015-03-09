@@ -39,7 +39,6 @@ extern char * getcwd();
 ** DOS interface standard items
 */
 #define	chdir(p) dchdir(p)
-#define CacheStat(A,B) really_dostat(A,&buf)
 
 /*
 ** make parameters

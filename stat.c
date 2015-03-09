@@ -41,14 +41,19 @@ static	int	_check_dir_list ANSI((CELLPTR, CELLPTR, int, int));
       time_t res;
       DB_ENTER( "_do_stat" );
 
-      res = Do_stat(name, lib, sym, force);
+      if( member != NIL(char *) )
+         Fatal("Library symbol names not supported");
+
+      res = Do_stat(name, lib, force);
+
       DB_PRINT( "stat", ("Statted [%s,%s,%d,%ld]", name, lib, sym, res) );
 
       DB_RETURN( res );
    }   
 #define DO_STAT(A,B,C,D)  _do_stat(A,B,C,D)
 #else
-#define DO_STAT(A,B,C,D)  Do_stat(A,B,C,D)
+/* .SYMBOL isn't implemented, the NULL check constant folds away usually */
+#define DO_STAT(A,B,C,D)   (((C) != NIL(char *) && (Fatal("Library symbol names not supported"),1)), Do_stat(A,B,D))
 #endif
 
 static char *_first;	/* If set this variable saves the first pathname that was

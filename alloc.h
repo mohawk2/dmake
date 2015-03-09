@@ -55,5 +55,11 @@
 
 #define TALLOC(p, n, t)	if ((p = CALLOC(n, t)) == (t*)0) {No_ram();}
 
+/* Windows will automatically check for null and call our registered handler */
+#ifdef _WIN32
+#   define No_ram()
+#endif
+
+
 #endif
 

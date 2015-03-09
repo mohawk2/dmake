@@ -135,7 +135,7 @@ _finished_child(pid, status) [unix/runargv] handles the finished child. If
 #define _P_NOWAIT P_NOWAIT
 #endif
 
-#include "sysintf.h"
+#include <sysintf.h>
 #if HAVE_ERRNO_H
 #  include <errno.h>
 #else
@@ -520,7 +520,13 @@ char  **cmd; /* Simulate a reference to *cmd. */
    /* Return immediately for empty line or noop command. */
    if ( !*tcmd ||				/* empty line */
 	( strncmp(tcmd, "noop", 4) == 0 &&	/* noop command */
-	  (iswhite(tcmd[4]) || tcmd[4] == '\0')) ) {
+	  (iswhite(tcmd[4]) || tcmd[4] == '\0'))
+#ifdef MSDOS
+	||
+	( strncmp(tcmd, "rem", 3) == 0 &&	/* MSDOS/Win32 noop command */
+	  (iswhite(tcmd[3]) || tcmd[3] == '\0'))
+#endif
+	) {
       internal = 1;
    }
    else if( !shell &&  /* internal echo only if not in shell */

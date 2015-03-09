@@ -156,6 +156,7 @@ char *buf;
 	       res = exec_normpath(eargs);
 	    }
 	    else if( mod_count == 1 ) {
+#if defined(__CYGWIN__)
 	       char *para = Expand(mod1);
 	       int tmpUseWinpath = UseWinpath;
 
@@ -164,9 +165,12 @@ char *buf;
 	       } else {
 		  UseWinpath = TRUE;
 	       }
+#endif
 	       res = exec_normpath(eargs);
+#if defined(__CYGWIN__)
 	       UseWinpath = tmpUseWinpath;
 	       FREE(para);
+#endif
 	    }
 	    else
 	       Fatal( "One or no comma-separated arguments expected in [%s].\n", buf );

@@ -6,6 +6,7 @@ objects\expand.obj+
 objects\dmstring.obj+
 objects\hash.obj+
 objects\dag.obj+
+objects\dcache.obj+
 objects\dmake.obj+
 objects\path.obj+
 objects\imacs.obj+

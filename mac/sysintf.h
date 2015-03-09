@@ -29,7 +29,7 @@
 #define GETPID 1
 
 /* for directory cache */
-#define CacheStat(A,B)	really_dostat(A,&buf)
+#define CacheStat(A,B)	really_dostat(A)
 
 /*
 ** standard C items

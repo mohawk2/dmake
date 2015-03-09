@@ -55,7 +55,10 @@ static LINKPTR    _sv_ind_prq = NIL(LINK);   /* indirect prerequisites for % cel
 static int	  _sp_target  = FALSE;
 static t_attr     _sv_attr;
 static int        _sv_flag;
+/* unused in Bind_rules_to_targets */
+#if 0
 static int	  _sv_op;
+#endif
 static char      *_sv_setdir;
 static char	  _sv_globprq_only = 0;
 
@@ -341,7 +344,10 @@ int *state;
 
   /* Save these prior to calling _do_targets, since _build_graph needs the
    * _sv_setdir value for matching edges. */
+#if 0
+  /* unused in Bind_rules_to_targets */
   _sv_op     = op;
+#endif
   _sv_setdir = set_dir;
 
   if( special )
@@ -1138,7 +1144,7 @@ _build_meta( name )/*
 char *name;
 {
    char *tmp;
-   int  test = (STOBOOL(Augmake) ? name[strlen(name)-1] == '~' : 0);
+   int  test = (BTOBOOL(Augmake) ? name[strlen(name)-1] == '~' : 0);
 
    tmp = DmStrJoin( test ? "s.%" : "%", name, -1, FALSE);
    if( test ) tmp[ strlen(tmp)-1 ] = '\0';
