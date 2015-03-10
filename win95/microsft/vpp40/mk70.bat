@@ -16,6 +16,7 @@ set "ld_opt=-ltcg"
 if exist objects rd /S /Q objects
 if exist config.h del config.h
 if exist dmake.exe del dmake.exe
+if exist dmake.pdb del dmake.pdb
 md objects
 %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\infer.obj infer.c
 %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\make.obj make.c
@@ -43,7 +44,7 @@ md objects
 %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\arlib.obj msdos\arlib.c
 %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\dirbrk.obj msdos\dirbrk.c
 rem Not needed for MSVC 6 and up. Lesser versions not supported
-rem cl -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\tempnam.obj tempnam.c
+rem %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\tempnam.obj tempnam.c
 %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\ruletab.obj win95\microsft\ruletab.c
 %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\runargv.obj unix\runargv.c
 %cc% -c %c_flg% -I. -Iwin95 -Iwin95\microsft -Iwin95\microsft\vpp40 /nologo %c_opt% -Zi -Foobjects\rmprq.obj unix\rmprq.c

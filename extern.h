@@ -186,7 +186,7 @@ char *cygdospath(char *src, int winpath);
 #endif
 
 #ifdef _WIN32
-#  define FileTimeTo_time_t(ft) ((time_t)((*((unsigned __int64 *)ft) - 116444736000000000ULL)/10000000ULL))
+#  define FileTimeTo_time_t(ft) ((time_t)((*((unsigned __int64 *)ft) - 116444736000000000)/10000000))
 #endif
 
 /* Get the working directory fall back code */
