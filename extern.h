@@ -43,6 +43,10 @@ sysintf.c(1132) : warning C4996: 'unlink' was declared deprecated
         Message: 'The POSIX name for this item is deprecated. Instead, use the I
 SO C++ conformant name: _unlink. See online help for details.' */
 #define _CRT_NONSTDC_NO_DEPRECATE
+/* get back some of the perf loss caused by >= VC 2005 dropping single threaded
+   static link CRT, this macro disables multithreading locks on some stdio
+   functions */
+#define _CRT_DISABLE_PERFCRIT_LOCKS
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
