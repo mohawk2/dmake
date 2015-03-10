@@ -106,8 +106,6 @@ _finished_child(pid, status) [unix/runargv] handles the finished child. If
   with runargv().
 */
 
-#include <signal.h>
-
 #include "extern.h"
 
 #ifdef HAVE_WAIT_H

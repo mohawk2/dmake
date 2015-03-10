@@ -35,11 +35,11 @@
 #undef __WIN32__
 #endif
 
+#include "extern.h"
 #ifdef __APPLE__
 #include <sys/types.h>
 #endif
 #include <dirent.h>
-#include "extern.h"
 #include <sysintf.h>
 
 

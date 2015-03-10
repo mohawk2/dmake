@@ -30,6 +30,19 @@
 /* For MSVC++ needs to include windows.h first to avoid problems with
  * type redefinitions. Include it also for MinGW for consistency. */
 #if defined(__MINGW32__) || defined(_MSC_VER)
+/* silence warnings about using null term strings in >= VC 2005
+sysintf.c(918) : warning C4996: 'strcat' was declared deprecated
+        Message: 'This function or variable may be unsafe. Consider using strcat
+_s instead. To disable deprecation, use _CRT_SECURE_NO_DEPRECATE. See online hel
+p for details.' */
+#define _CRT_SECURE_NO_DEPRECATE
+/* silence warnings about using POSIX name funcs in >= VC 2005
+sysintf.c(1132) : warning C4996: 'unlink' was declared deprecated
+        C:\Program Files\Microsoft Visual Studio 8\VC\INCLUDE\stdio.h(290) : see
+ declaration of 'unlink'
+        Message: 'The POSIX name for this item is deprecated. Instead, use the I
+SO C++ conformant name: _unlink. See online help for details.' */
+#define _CRT_NONSTDC_NO_DEPRECATE
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
