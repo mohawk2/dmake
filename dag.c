@@ -643,16 +643,16 @@ int       no_check;
    DB_PRINT( "rul", ("Defining recipe %s", rcp) );
 
    if( !white_too ) rcp = DmStrSpn( rcp, " \t" );
-   if( (rcp == NIL(char)) || (*rcp == 0 && !white_too) )
+   if( *rcp == 0 && !white_too )
       DB_RETURN( sp );	     /* return last recipe when new recipe not added */
 
    rp = no_check ? rcp : DmStrSpn( rcp, " \t@-+%" );
 
    TALLOC(nsp, 1, STRING);
    nsp->st_string = DmStrDup( rp );
+   /*nsp->st_next = NIL(STRING); already null*/
 
    if( sp != NIL(STRING) ) sp->st_next = nsp;
-   nsp->st_next = NIL(STRING);
 
    if( !no_check ) nsp->st_attr |= Rcp_attribute( rcp );
 

@@ -138,11 +138,12 @@ DmStrDup( str )/*
 char *str;
 {
    char *t;
+   size_t len;
 
    if( str == NIL(char) ) return( NIL(char) );
-   
-   if( (t = MALLOC( strlen( str )+1, char )) == NIL(char) ) No_ram();
-   strcpy( t, str );
+   len = strlen( str )+1;
+   if( (t = MALLOC( len, char )) == NIL(char) ) No_ram();
+   t = memcpy( t, str, len );
 
    return( t );
 }
