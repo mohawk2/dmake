@@ -840,9 +840,10 @@ char   *fname;
 ** Close a previously used temporary file.
 */
 PUBLIC void
-Close_temp(cp, file)
+Close_temp(cp, file, name)
 CELLPTR cp;
 FILE    *file;
+char    *name;
 {
    FILELISTPTR fl;
    if( cp == NIL(CELL) ) cp = Root;
@@ -850,7 +851,8 @@ FILE    *file;
    for( fl=cp->ce_files; fl && fl->fl_file != file; fl=fl->fl_next );
    if( fl ) {
       fl->fl_file = NIL(FILE);
-      fclose(file);
+      if( fclose(file) == EOF )
+         Fatal("Close or Write error on temporary file, while processing `%s'", name);
    }
 }
 

@@ -54,7 +54,7 @@ typedef struct {
 static	void	_drop_mac ANSI((HASHPTR));
 static	void	_set_recipe ANSI((char*, int));
 static	void	_set_tmd ANSI(());
-static	void	_append_file ANSI((STRINGPTR, FILE*, char*, int));
+static	void	_append_file ANSI((STRINGPTR, FILE*, int));
 static  LINKPTR _dup_prq ANSI((LINKPTR));
 static  LINKPTR _expand_dynamic_prq ANSI(( LINKPTR, LINKPTR, char * ));
 static  char*   _prefix ANSI((char *, char *));
@@ -1316,7 +1316,7 @@ CELLPTR cp;
 
       /* Emit group prolog */
       if( attr & A_PROLOG )
-         _append_file( _recipes[RP_GPPROLOG], tmpfile, cp->CE_NAME, trace );
+         _append_file( _recipes[RP_GPPROLOG], tmpfile, trace );
    }
 
    if( !useshell )
@@ -1420,7 +1420,7 @@ CELLPTR cp;
 
       if( group )
 	 /* Append_line() calls Print_cmnd(). */
-         Append_line( cmnd, TRUE, tmpfile, cp->CE_NAME, trace, 0 );
+         Append_line( cmnd, TRUE, tmpfile, trace, 0 );
       else {
 	 /* Don't print empty recipe lines. .ROOT and .TARGETS
 	  * deliberately might have empty "" recipes and we don't want
@@ -1440,14 +1440,14 @@ CELLPTR cp;
     * execute the command */
    if( group && !(cp->ce_attr & A_ERROR) ) { 
       if( attr & A_EPILOG )	/* emit epilog */
-	 _append_file( _recipes[RP_GPEPILOG], tmpfile, cp->CE_NAME, trace );
+	 _append_file( _recipes[RP_GPEPILOG], tmpfile, trace );
 
       if( trace ) fputs("]\n", stdout);
 
       do_it = !Trace;
       if( do_it )
 	{
-		Close_temp( cp, tmpfile );
+		Close_temp( cp, tmpfile, cp->CE_NAME );
 #if defined(UNIX)
 
  		chmod(groupfile,0700);
@@ -1656,11 +1656,10 @@ int  ind;
 
 
 PUBLIC void
-Append_line( cmnd, newline, tmpfile, name, printit, map )
+Append_line( cmnd, newline, tmpfile, printit, map )
 char *cmnd;
 int  newline;
 FILE *tmpfile;
-char *name;
 int  printit;
 int  map;
 {
@@ -1670,25 +1669,20 @@ int  map;
 
    fputs(cmnd, tmpfile);
    if( newline ) fputc('\n', tmpfile);
-   fflush(tmpfile);
-
-   if( ferror(tmpfile) )
-      Fatal("Write error on temporary file, while processing `%s'", name);
 }
 
 
 
 static void
-_append_file( rp, tmpfile, name, printit )
+_append_file( rp, tmpfile, printit )
 register STRINGPTR rp;
 FILE 		   *tmpfile;
-char 		   *name;
 int 		   printit;
 {
    char *cmnd;
 
    while( rp != NIL(STRING) ) {
-      Append_line(cmnd = Expand(rp->st_string), TRUE, tmpfile, name, printit,0);
+      Append_line(cmnd = Expand(rp->st_string), TRUE, tmpfile, printit,0);
       FREE(cmnd);
       rp = rp->st_next;
    }

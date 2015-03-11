@@ -392,8 +392,8 @@ char *data;
 
    data = Expand(data);
 
-   Append_line( data, TRUE, tmpfile, name, FALSE, FALSE );
-   Close_temp( Current_target, tmpfile );
+   Append_line( data, TRUE, tmpfile, FALSE, FALSE );
+   Close_temp( Current_target, tmpfile, name );
    FREE(data);
 
    return( text );
