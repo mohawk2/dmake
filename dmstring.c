@@ -232,8 +232,7 @@ char *s2;
 
    if( s1 == NIL(char) || s2 == NIL(char) ) return( "" );
 
-   for( t=s1; *t && (strchr( s2, *t ) != NIL(char)); t++ );
-   return( t );
+   return( s1 + strspn(s1, s2) );
 }
 
 
