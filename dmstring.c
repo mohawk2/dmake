@@ -212,10 +212,7 @@ char *searchchars;
 
    if( s1 == NIL(char) || searchchars == NIL(char) ) return( "" );
 
-   t = strpbrk(s1, searchchars);
-   if( !t )
-      t = s1+strlen(s1);
-   return( t );
+   return( s1+strcspn(s1, searchchars) );
 }
 
 
