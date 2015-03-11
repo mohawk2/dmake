@@ -1129,7 +1129,12 @@ char *name;
    if( (buf.st_mode & S_IFMT) == S_IFDIR )
       return 1;
 #endif
+#ifdef _WIN32
+/* we dont need errno set, no callers check errno */
+   return !DeleteFile(name);
+#else
    return(unlink(name));
+#endif
 }
 
 
