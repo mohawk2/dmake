@@ -28,7 +28,7 @@
 /* Name and version number of this package */
 #define PACKAGE "dmake"
 #define VERSION "4.12"
-#define BUILDINFO "Windows / MS Visual C++"
+#define BUILDINFO "Windows / MS Visual C++" dmstr2(_MSC_FULL_VER)
 
 #if defined (_MSC_VER)
 # if _MSC_VER < 500

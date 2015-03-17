@@ -228,5 +228,10 @@
 #define STOBOOL(A)       (A && ((*A | 0x20) == 'y'))
 #define BTOBOOL(A)       (A)
 
+/* To stringify the result of the expansion of a macro argument
+ * use two levels of macros. */
+#define dmstr2(s) dmstr1(s)
+#define dmstr1(s) #s
+
 #endif
 

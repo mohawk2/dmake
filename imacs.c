@@ -28,9 +28,7 @@
 
 #include "extern.h"
 
-#define DM_StGiFy(a)	#a
-#define STRINGIFY(a)	DM_StGiFy(a)
-#define SET_INT_VAR_FROM_INT(name, val, flag, var) _set_int_var_from_int_and_str(name, val, STRINGIFY(val), flag, var)
+#define SET_INT_VAR_FROM_INT(name, val, flag, var) _set_int_var_from_int_and_str(name, val, dmstr2(val), flag, var)
 
 static	void	_set_int_var ANSI((char *, char *, int, int *));
 static	void	_set_int_var_from_int_and_str ANSI((char *, int, char *, int, int *));

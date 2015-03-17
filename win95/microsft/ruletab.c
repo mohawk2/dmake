@@ -35,11 +35,6 @@
 #define MAXIMUM_WAIT_OBJECTS 1
 #endif
 
-/* To stringify the result of the expansion of a macro argument
- * use two levels of macros. */
-#define dmstr2(s) dmstr1(s)
-#define dmstr1(s) #s
-
 static char *_rules[] = {
 	"MAXLINELENGTH := 32766",
 	"MAXPROCESSLIMIT := " dmstr2(MAXIMUM_WAIT_OBJECTS) ,
