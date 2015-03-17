@@ -29,13 +29,18 @@ Building Dmake
 With autotools
 --------------
 Building dmake on systems that are supported by the autotools build system
-only requires the usual "./configure && make && make install" command.
-The configure command will notify you when your platform is not supported.
+only requires the usual "./autogen.sh && ./configure && make && make install"
+command. The configure command will notify you when your platform is not
+supported.
 
 With Microsoft C++ compiler
 ---------------------------
-For MS Visual C++ 6 and up run "make.bat win95-vpp40" in a command shell.
-This should create a dmake.exe in the top-level directory.
+For MS Visual C++ 4 through 6 run "make.bat win95-vpp40" in a command shell.
+For MS Visual C++ 2003 and up run "make.bat win95-vpp70" in a command shell.
+Both 32 bit and 64 bit builds are supported. The bitness of the dmake build is
+determined by the bitness of cl.exe which was found in PATH. Use "vcvars32" or
+"vcvarsall x64" to pick the correct Visual C++ compiler. A dmake.exe will be
+created in the top-level directory.
 
 It is possible to rename this to, say, dmake0.exe, delete the objects/
 sub-directory and then simply run "dmake0.exe" to build a new dmake.exe.
