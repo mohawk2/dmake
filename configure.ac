@@ -76,7 +76,7 @@ case "$_os" in
 	  OS_VERSION=cygwin
 	  CASE_INSENSITIVE_FS=true
 	  ;;
-	"MINGW")
+	MINGW*)
 	  OS_VERSION=mingw
 	  OS_TYPE=winnt
 	  BUILDINFO="Windows / MinGW"
