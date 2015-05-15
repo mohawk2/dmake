@@ -846,14 +846,19 @@ FILE    *file;
 char    *name;
 {
    FILELISTPTR fl;
+   int status;
    if( cp == NIL(CELL) ) cp = Root;
 
    for( fl=cp->ce_files; fl && fl->fl_file != file; fl=fl->fl_next );
    if( fl ) {
       fl->fl_file = NIL(FILE);
-      if( fclose(file) == EOF )
-         Fatal("Close or Write error on temporary file, while processing `%s'", name);
+      status = fclose(file);
+   } else { /* if it isn't supposed to be closed, atleast it has to be flushed */
+      status = fflush(file);
    }
+   if( status == EOF )
+      Fatal("Close or Write error on temporary file, while processing `%s'", name);
+   return;
 }
 
 
