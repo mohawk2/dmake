@@ -16,9 +16,9 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
-GROUPSHELL*:=/bin/sh 
+GROUPSHELL*:=/bin/sh
 
 all :
 [ This should warn!
@@ -42,13 +42,13 @@ fi
 
 # Test 2
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
-GROUPSHELL*:=/bin/sh 
+GROUPSHELL*:=/bin/sh
 
 all :
 	echo hallo
-[    
+[
 	echo "Group recipe line"
 ]
 
@@ -69,9 +69,9 @@ fi
 
 # Test 3
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
-GROUPSHELL*:=/bin/sh 
+GROUPSHELL*:=/bin/sh
 
 all :
 [

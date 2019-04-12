@@ -33,7 +33,7 @@ else
   echo "Wrong result: $output1"
   echo
   result1=1
-fi 
+fi
 
 if test $result1 -eq 0 ; then
   echo "Success - Cleaning up"

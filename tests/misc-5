@@ -18,7 +18,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 cat > $file1 <<EOT
 # Verify that makefile generation is finished when using it
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 incfile.mk : incfiledepend
@@ -31,7 +31,7 @@ incfiledepend :
 .INCLUDE : incfile.mk
 
 all :
-	+@echo aa:\$(AA):bb 
+	+@echo aa:\$(AA):bb
 EOT
 
 output=`eval ${DMAKEPROG} -r -P2 -f $file1 all`

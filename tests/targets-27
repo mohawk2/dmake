@@ -47,7 +47,7 @@ if test "$output1" != "Build aa.y and aa.x."; then
   result1=1
 else
   echo "OK"
-fi 
+fi
 
 if test $result1 -eq 0 ; then
   echo "Success - Cleaning up"

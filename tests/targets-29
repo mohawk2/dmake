@@ -47,7 +47,7 @@ if test $result1 -ne 0; then
   result1=1
 else
   echo "OK"
-fi 
+fi
 
 if test $result1 -eq 0 ; then
   echo "Success - Cleaning up"

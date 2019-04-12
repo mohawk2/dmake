@@ -35,8 +35,8 @@ result=$?
 if test "$output" != "MYMAXPROCESS:1:"; then
   echo "Wrong result: $output - expecting: MYMAXPROCESS:1:"
   result=1
-fi 
- 
+fi
+
 test $result -eq 0 && echo "Success - Cleaning up" && rm -f ${tmpfiles}
 test $result -ne 0 && echo "Failure!"
 exit $result

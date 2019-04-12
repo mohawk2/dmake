@@ -16,7 +16,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles ( $ -> \$ ).
 # Also quote line continuations ( \<nl> -> \\<nl> ).
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all:
@@ -33,8 +33,8 @@ result=$?
 
 if test "$output" != "OK"; then
   result=1
-fi 
- 
+fi
+
 test $result -eq 0 && echo "Success - Cleaning up" && rm -f ${tmpfiles}
 test $result -ne 0 && echo "Failure!"
 exit $result

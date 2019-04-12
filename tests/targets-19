@@ -31,7 +31,7 @@ if test "$output1" != "X/allY"; then
   result1=1
 else
   echo "Subtest 1: OK"
-fi 
+fi
 
 
 # Test 2 - Test if excess leading slashes in DOS paths get removed
@@ -56,7 +56,7 @@ if test x`uname -o 2> /dev/null` = "xCygwin"; then
 else
     echo "Subtest 2 ignored for non cygwin environment"
     result2=0
-fi 
+fi
 
 
 if test $result1 -eq 0 -a $result2 -eq 0; then

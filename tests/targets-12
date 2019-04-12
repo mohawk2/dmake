@@ -16,7 +16,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Check that we issue a warning.
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .SUFFIXES : .aa .bb
@@ -35,7 +35,7 @@ else
   echo
   result1=1
 fi
- 
+
 if test $result1 -eq 0 ; then
   echo "Success - Cleaning up"
   rm -rf $tmpfiles

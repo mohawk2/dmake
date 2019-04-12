@@ -10,12 +10,12 @@ tmpfiles="$file1"
 
 trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
 
-trap 'rm -rf $tmpfiles' 1 2 3 15 
+trap 'rm -rf $tmpfiles' 1 2 3 15
 
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 cat > $file1 <<EOT
 # Testing function macros
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 TEST1:=a b c
@@ -41,7 +41,7 @@ all:
 	+test ":c a b:" = ":\$(strip    c \
      a b   ):"
 
-	+@echo -e '\n\$\$(subst ...) section' 
+	+@echo -e '\n\$\$(subst ...) section'
 	+test ":aZbZc:" = ":\$(subst,\$(SPACECHAR),\$(PAT) \$(TEST1)):"
 	+test ":aZbZc:" = ":\$(subst,%Z*Z%,\$(PAT) \$(TEST1:s/ /%Z*Z%/)):"
 	+test ":aZbZc:" = ":\$(subst,Y,\$(PAT)       aYbYc         ):"

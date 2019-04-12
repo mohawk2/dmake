@@ -61,7 +61,7 @@ else
   echo "Subtest 1: Wrong result: $output1"
   echo
   result1=1
-fi 
+fi
 
 # Remove files from prior run
 rm -rf $tmpfiles
@@ -108,7 +108,7 @@ else
   echo "Subtest 2: Wrong result: $output2"
   echo
   result2=1
-fi 
+fi
 
 
 if test $result1 -eq 0 -a $result2 -eq 0 ; then

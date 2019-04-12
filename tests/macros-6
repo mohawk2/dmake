@@ -16,7 +16,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .IMPORT .IGNORE : TEMP
@@ -59,4 +59,4 @@ else
   echo "Failure!"
   result=1
 fi
-exit $result 
+exit $result

@@ -19,7 +19,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1 - AUGMAKE meta targets
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .NIX :
@@ -31,7 +31,7 @@ EOT
 
 # Testcase 2 - Percent targets
 cat > $file2 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 %.a : %.b

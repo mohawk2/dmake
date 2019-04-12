@@ -16,7 +16,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1 - Test if :f works.
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .WINPATH:=
@@ -34,11 +34,11 @@ if test "$output1" != "f:yyy.ext \"xxx.ext\":"; then
   result1=1
 else
   echo "Subtest 1: OK"
-fi 
+fi
 
 # Test 2
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 MACRO:=/tmp/yyy.ext "/tmp/a  b/xxx.ext"
@@ -55,12 +55,12 @@ if test "$output2" != "d:/tmp/ \"/tmp/a  b/\":"; then
   result2=1
 else
   echo "Subtest 2: OK"
-fi 
+fi
 
 
 # Test 3
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 MACRO:=/tmp/yyy.ext "/tmp/a  b/xxx.ext"
@@ -77,12 +77,12 @@ if test "$output3" != "e:.ext \".ext\":"; then
   result3=1
 else
   echo "Subtest 3: OK"
-fi 
+fi
 
 
 # Test 4
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 MACRO:=/tmp/yyy.ext "/tmp/a  b/xxx.ext"
@@ -99,12 +99,12 @@ if test "$output4" != "b:yyy \"xxx\":"; then
   result4=1
 else
   echo "Subtest 4: OK"
-fi 
+fi
 
 
 # Test 5
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 MACRO:=/tmp/yyy.ext "/tmp/a  b/xxx.ext"
@@ -121,12 +121,12 @@ if test "$output5" != "de:/tmp/.ext \"/tmp/a  b/.ext\":"; then
   result5=1
 else
   echo "Subtest 5: OK"
-fi 
+fi
 
 
 # Test 6
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 MACROd:=/tmp/yyy "/tmp/a  b/xxx"

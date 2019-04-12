@@ -17,7 +17,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1 - Check that warning is issued if .<suffix> targets are ignored
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .NIX.NUX aaa : ; @+echo "Normal and meta target together"

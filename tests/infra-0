@@ -11,7 +11,7 @@ tmpfiles="$file1 $file2"
 trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
 
 # Test for "test" programm in path
-which test > /dev/null || { echo "Failure! \"test\" program missing." ; exit 1; } 
+which test > /dev/null || { echo "Failure! \"test\" program missing." ; exit 1; }
 echo "Found \"test\" program."
 test=`which test`
 

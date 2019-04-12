@@ -16,7 +16,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 AAA:=BBB
@@ -35,11 +35,11 @@ if test "$output1" != ":123:YYY:"; then
   result1=1
 else
   echo "Subtest 1: OK"
-fi 
+fi
 
 # Test 2
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 { := fail
@@ -64,7 +64,7 @@ fi
 
 # Test 3
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 X := :

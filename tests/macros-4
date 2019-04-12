@@ -19,7 +19,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1 - Warn about miising closing braket.
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all :
@@ -28,7 +28,7 @@ EOT
 
 # Testcase 2 - warn about $)
 cat > $file2 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all :
@@ -37,7 +37,7 @@ EOT
 
 # Testcase 3 - warn about $:
 cat > $file3 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all :
@@ -46,7 +46,7 @@ EOT
 
 # Testcase 4 - don't warn
 cat > $file4 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all :
@@ -89,4 +89,4 @@ else
   echo "Failure!"
   result=1
 fi
-exit $result 
+exit $result

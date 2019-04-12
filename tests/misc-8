@@ -18,7 +18,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 cat > $file1 <<EOT
 # Verify that makefile generation is finished when using it
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 %.dpcc :

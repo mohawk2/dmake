@@ -17,7 +17,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1 - Without OOODMAKEMODE set strip leading ./
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 #OOODMAKEMODE=
@@ -41,7 +41,7 @@ fi
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 2 - With OOODMAKEMODE=y do not strip leading ./
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 OOODMAKEMODE:=y
@@ -65,7 +65,7 @@ fi
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 3 - Test OOODMAKEMODE from environment.
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .IMPORT : OOODMAKEMODE
@@ -89,7 +89,7 @@ fi
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 4 - With OOODMAKEMODE= leading ./
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 OOODMAKEMODE:=
@@ -113,7 +113,7 @@ fi
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 5 - Import from environment / targets from command line.
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 %target :

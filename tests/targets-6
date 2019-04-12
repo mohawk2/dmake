@@ -17,7 +17,7 @@ rm -rf $tmpfiles
 # Check that .NIX is treated as meta target, making all the target
 # that gets build.
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 AUGMAKE=yes

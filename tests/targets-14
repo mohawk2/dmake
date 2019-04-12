@@ -41,7 +41,7 @@ else
   echo
   result1=1
 fi
- 
+
 if test $result1 -eq 0 ; then
   echo "Success - Cleaning up"
   rm -rf $tmpfiles

@@ -17,7 +17,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1 - %-target prerequisite - syntax error
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .PHONY all : %.c
@@ -27,7 +27,7 @@ EOT
 
 # Testcase 2 - The recipe part is ignored - syntax error
 cat > $file2 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all :

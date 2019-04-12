@@ -17,7 +17,7 @@ rm -rf $tmpfiles
 # Test 1 - Test if it works.
 cat > $file1 <<EOT
 # The printf on Solaris seems to need bash.
-SHELL:=/bin/bash 
+SHELL:=/bin/bash
 SHELLFLAGS*:=-ce
 
 AAA!=123
@@ -38,7 +38,7 @@ fi
 # Test 2 - Test if wrong arguments are catched.
 cat > $file1 <<EOT
 # The printf on Solaris seems to need bash.
-SHELL:=/bin/bash 
+SHELL:=/bin/bash
 SHELLFLAGS*:=-ce
 
 AAA!=123

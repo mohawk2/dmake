@@ -17,7 +17,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1 - This segfaulted before 4.5
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 allnew : all
@@ -33,7 +33,7 @@ EOT
 # Testcase 2 - earlier than dmake 4.5 the second %-target was defined
 # without the prerequisites, i.e. qqq.c was not build
 cat > $file2 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 allnew : qqq.y

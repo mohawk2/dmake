@@ -34,8 +34,8 @@ if test "$result" = "0" && test "$output" = "XtesttestX" ; then
 else
   echo "Wrong result: ${output}"
   result=1
-fi 
- 
+fi
+
 test $result -eq 0 && echo "Success - Cleaning up" && rm -f ${tmpfiles}
 test $result -ne 0 && echo "Failure!"
 exit $result

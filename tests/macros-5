@@ -18,7 +18,7 @@ rm -rf $tmpfiles test1 test2
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all :
@@ -30,7 +30,7 @@ EOT
 mkdir -p "$file3"
 mkdir -p "$file4"
 cat > $file2 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 
@@ -65,4 +65,4 @@ else
   echo "Failure!"
   result=1
 fi
-exit $result 
+exit $result

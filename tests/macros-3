@@ -18,7 +18,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Testcase 1 - No warning expected
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 all :
@@ -34,7 +34,7 @@ EOT
 
 # Testcase 2 - dmake should warn
 cat > $file2 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .MYTARGET : something
@@ -68,4 +68,4 @@ else
   echo "Failure!"
   result=1
 fi
-exit $result 
+exit $result

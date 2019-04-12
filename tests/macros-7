@@ -16,7 +16,7 @@ rm -rf $tmpfiles
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1 - Test if :n works.
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 .WINPATH:=
@@ -34,11 +34,11 @@ if test "$output1" != "1/tmp/a \"/tmp/a b/b\" /tmp1"; then
   result1=1
 else
   echo "Subtest 1: OK"
-fi 
+fi
 
 # Test 2 - Test if the .WINPATH setting is honored
 cat > $file1 <<EOT
-SHELL*:=/bin/sh 
+SHELL*:=/bin/sh
 SHELLFLAGS*:=-ce
 
 MACRO:=/tmp
