@@ -11,9 +11,6 @@ CLEANUP="rm -rf $tmpfiles"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
-# Remove files from prior failed run
-$CLEANUP
-
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1 - Test if excess leading slashes get removed
 cat > $file1 <<EOT

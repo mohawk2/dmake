@@ -15,9 +15,6 @@ CLEANUP="rm -rf $tmpfiles"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
-# Remove files from prior failed run
-$CLEANUP
-
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1 - from testcase t_81296_5.mk
 cat > $file1 <<EOT
@@ -64,8 +61,6 @@ else
   result1=1
 fi
 
-# Remove files from prior run
-$CLEANUP
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 2 - from testcase t_81296_6.mk
 cat > $file1 <<EOT
