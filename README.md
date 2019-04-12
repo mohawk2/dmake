@@ -31,3 +31,17 @@ Added features in dmake:
 Those are only two examples, read the NEWS file for more features
 and changes. Note: Beside fixed bugs the dmake versions are downward
 compatible.
+
+# Building from a git checkout
+
+```
+./autogen.sh
+make # must be GNU make
+make -j1 check # fails on parallel
+```
+
+To run a single test:
+
+```
+./prove tests/targets-14
+```
