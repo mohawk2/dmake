@@ -328,7 +328,7 @@ char *src;
 
    if (mod & JUST_FIRST_FLAG) {
       SET_TOKEN(&str, src);
-      if ((s = Get_token(&str,"",FALSE)) != '\0') {
+      if (*(s = Get_token(&str,"",FALSE)) != '\0') {
 	 /* Recycle the quote at the beginning. */
 	 if(str.tk_quote == 0) {
 	    s--;
