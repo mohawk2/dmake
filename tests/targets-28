@@ -10,7 +10,10 @@ file2="aa.x"
 file3="aa.y"
 file4="aa.z"
 tmpfiles="$file1 $file2 $file3 $file4"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -34,7 +37,7 @@ touch aa.x
 # that has been rebuild.
 sleep 1
 
-output1=`eval ${DMAKEPROG} -rf $file1 2>&1`
+output1=`eval ../${DMAKEPROG} -rf $file1 2>&1`
 result1=$?
 
 if test $result1 = 0 && echo $output1 | grep 'Warning: -- Target \[aa.x\] was made but the time stamp has not been updated.' > /dev/null 2>&1 ; then
@@ -71,7 +74,7 @@ touch aa.y
 # Avoid the same time after build.
 sleep 1
 
-output2=`eval ${DMAKEPROG} -rf $file1 2>&1`
+output2=`eval ../${DMAKEPROG} -rf $file1 2>&1`
 result2=$?
 
 if test $result2 = 0 && echo $output2 | grep 'Warning: -- Found file corresponding to virtual target \[aa.y\].' > /dev/null 2>&1 ; then
@@ -110,7 +113,7 @@ sleep 1
 
 # This tests that aa.x is not build as the dependency chain is intact with
 # the virtual target aa.y having the same time stamp as aa.z.
-output3=`eval ${DMAKEPROG} -vm -rf $file1 2>&1`
+output3=`eval ../${DMAKEPROG} -vm -rf $file1 2>&1`
 result3=$?
 
 if test $result3 = 0 && echo "$output3" | grep "aa.x' is up to date"  > /dev/null 2>&1 ; then
@@ -149,7 +152,7 @@ sleep 1 ; touch aa.y
 sleep 1
 
 # This tests that aa.x is build.
-output4=`eval ${DMAKEPROG} -rf $file1 2>&1`
+output4=`eval ../${DMAKEPROG} -rf $file1 2>&1`
 result4=$?
 
 if test $result4 = 0 -a "$output4" = "Build aa.x" ; then

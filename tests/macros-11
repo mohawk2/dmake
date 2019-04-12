@@ -8,7 +8,10 @@
 file1="mfile1.mk"
 file2="startup.mk"
 tmpfiles="$file1 $file2"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -24,7 +27,7 @@ SHELLFLAGS*:=-ce
 	@echo X\$@Y
 EOT
 
-output1=`eval ${DMAKEPROG} -r -f $file1`
+output1=`eval ../${DMAKEPROG} -r -f $file1`
 result1=$?
 if test $result1 = 0 -a "$output1" = "XallY" ; then
   echo "Subtest 1: OK"
@@ -48,7 +51,7 @@ OOODMAKEMODE:=y
 	@echo X\$@Y
 EOT
 
-output2=`eval ${DMAKEPROG} -r -f $file1`
+output2=`eval ../${DMAKEPROG} -r -f $file1`
 result2=$?
 if test $result2 = 0 -a "$output2" = "X./allY" ; then
   echo "Subtest 2: OK"
@@ -72,7 +75,7 @@ SHELLFLAGS*:=-ce
 	@echo X\$@Y
 EOT
 
-output3=`eval OOODMAKEMODE=y ${DMAKEPROG} -r -f $file1`
+output3=`eval OOODMAKEMODE=y ../${DMAKEPROG} -r -f $file1`
 result3=$?
 if test $result3 = 0 -a "$output3" = "X./allY" ; then
   echo "Subtest 3: OK"
@@ -96,7 +99,7 @@ OOODMAKEMODE:=
 	@echo X\$@Y
 EOT
 
-output4=`eval ${DMAKEPROG} -r -f $file1`
+output4=`eval ../${DMAKEPROG} -r -f $file1`
 result4=$?
 if test $result4 = 0 -a "$output4" = "XallY" ; then
   echo "Subtest 4: OK"
@@ -122,7 +125,7 @@ cat > $file2 <<EOT
 .IMPORT : OOODMAKEMODE
 EOT
 
-output5=`eval DMAKEROOT=. OOODMAKEMODE=y ${DMAKEPROG} -f $file1 ./mytarget`
+output5=`eval DMAKEROOT=. OOODMAKEMODE=y ../${DMAKEPROG} -f $file1 ./mytarget`
 result5=$?
 if test $result5 = 0 -a "$output5" = "X./mytargetY" ; then
   echo "Subtest 5: OK"

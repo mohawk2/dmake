@@ -8,7 +8,10 @@
 file1="mfile1.mk"
 file2="ofile1.out"
 tmpfiles="$file1 $file2"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -27,7 +30,7 @@ all :
 ]
 EOT
 
-output1=`eval ${DMAKEPROG} -r -f $file1`
+output1=`eval ../${DMAKEPROG} -r -f $file1`
 result1=$?
 if test "$output1" != ""; then
   echo "Wrong result: $output1"
@@ -44,7 +47,7 @@ else
 fi
 
 # Test if -vr enables the output again
-output2=`eval ${DMAKEPROG} -vr -rf $file1`
+output2=`eval ../${DMAKEPROG} -vr -rf $file1`
 result2=$?
 if echo $output2 | grep -v 'echo someoutput > ofile1.out'; then
   echo "Missing output: echo someoutput > ofile1.out"

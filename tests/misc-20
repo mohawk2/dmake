@@ -11,7 +11,10 @@ file2="my.c"
 file3="my.obj"
 file4="my.foo"
 tmpfiles="$file1 $file2 $file3 $file4"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -50,7 +53,7 @@ touch my.c
 sleep 1
 touch my.foo
 
-output1=`eval ${DMAKEPROG} -rf $file1 2>&1 `
+output1=`eval ../${DMAKEPROG} -rf $file1 2>&1 `
 result1=$?
 
 if test $result1 = 0 -a "$output1" = "incbuild:my.dpo:my.c:my.obj:all"; then
@@ -95,7 +98,7 @@ touch my.c
 sleep 1
 touch my.foo
 
-output2=`eval ${DMAKEPROG} -rf $file1 2>&1 `
+output2=`eval ../${DMAKEPROG} -rf $file1 2>&1 `
 result2=$?
 
 if test $result2 = 0 -a "$output2" = "incbuild:my.dpo:my.c:my.obj:all"; then

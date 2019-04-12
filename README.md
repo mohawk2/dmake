@@ -37,7 +37,7 @@ compatible.
 ```
 ./autogen.sh
 make # must be GNU make
-make -j1 check # fails on parallel
+make -j40 check # pick high value as lots of tests "sleep" for timestamps
 ```
 
 To run a single test:

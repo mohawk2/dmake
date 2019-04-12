@@ -7,7 +7,10 @@
 : ${DMAKEPROG:=dmake}
 file1="mfile1.mk"
 tmpfiles="$file1"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -25,7 +28,7 @@ all :
 
 EOT
 
-output1=`eval ${DMAKEPROG} -r -f $file1`
+output1=`eval ../${DMAKEPROG} -r -f $file1`
 result1=$?
 comparewith=`printf "test1\n\ttest2\n    test3"`
 if test $result1 = 0 -a "$output1" = "$comparewith" ; then
@@ -49,7 +52,7 @@ all :
 
 EOT
 
-output2=`eval ${DMAKEPROG} -r -f $file1`
+output2=`eval ../${DMAKEPROG} -r -f $file1`
 result2=$?
 if test $result2 = 0 -a "$output2" = "text (to dump to file" ; then
   echo "Subtest 2: OK"
@@ -73,7 +76,7 @@ OBJ = fred.obj mary.obj
 	@cat \$(mktmp \$(OBJ:t"+\n"))
 EOT
 
-output3=`eval OOODMAKEMODE=y ${DMAKEPROG} -r -f $file1`
+output3=`eval OOODMAKEMODE=y ../${DMAKEPROG} -r -f $file1`
 result3=$?
 comparewith=`printf "fred.obj+\nmary.obj"`
 if test $result3 = 0 -a "$output3" = "$comparewith" ; then
@@ -98,7 +101,7 @@ OBJ = fred.obj mary.obj joe.obj
 	@cat <+\$(OBJ)+>
 EOT
 
-output4=`eval ${DMAKEPROG} -r -f $file1`
+output4=`eval ../${DMAKEPROG} -r -f $file1`
 result4=$?
 if test $result4 = 0 -a "$output4" = "fred.obj mary.obj joe.obj" ; then
   echo "Subtest 4: OK"

@@ -7,7 +7,10 @@
 : ${DMAKEPROG:=dmake}
 file1="mfile1.mk"
 tmpfiles="$file1"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -22,7 +25,7 @@ SHELLFLAGS*:=-ce
 
 EOT
 
-output1=`eval ${DMAKEPROG} -rf $file1 2>&1 `
+output1=`eval ../${DMAKEPROG} -rf $file1 2>&1 `
 result1=$?
 if test "$output1" != "X/allY"; then
   echo "Subtest 1: Wrong result: $output1"
@@ -43,7 +46,7 @@ SHELLFLAGS*:=-ce
 EOT
 
 if test x`uname -o 2> /dev/null` = "xCygwin"; then
-    output2=`eval ${DMAKEPROG} -r -f $file1`
+    output2=`eval ../${DMAKEPROG} -r -f $file1`
     result2=$?
     if test "$output2" != "Xc:/allY"; then
         echo "Subtest 2: Wrong result: $output2"

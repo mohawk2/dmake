@@ -11,7 +11,10 @@ file3="testfile1"
 file4="testfile2"
 file5="testfile3"
 tmpfiles="$file1 $file2 $file3 $file4 $file5"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -44,7 +47,7 @@ testfile3 :
 
 EOT
 
-output=`eval ${DMAKEPROG} -r -P3 -f $file1`
+output=`eval ../${DMAKEPROG} -r -P3 -f $file1`
 result=$?
 
 # In parallel operation the targets with the smaller sleep value

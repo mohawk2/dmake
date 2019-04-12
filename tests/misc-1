@@ -9,7 +9,10 @@
 : ${DMAKEPROG:=dmake}
 file1="mymakefile.mk"
 tmpfiles="$file1"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -25,7 +28,7 @@ all:
 
 EOT
 
-MYMACRO=`echo 'aa\\\\\naa'` ;export MYMACRO; ${DMAKEPROG} -r -f $file1
+MYMACRO=`echo 'aa\\\\\naa'` ;export MYMACRO; ../${DMAKEPROG} -r -f $file1
 result=$?
 
 test $result -eq 0 && echo "Success - Cleaning up" && $CLEANUP

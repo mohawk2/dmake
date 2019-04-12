@@ -10,7 +10,10 @@ file2="mfile2.mk"
 file3="mfile3.mk"
 file4="mfile4.mk"
 tmpfiles="$file1 $file2 $file3 $file4"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -52,13 +55,13 @@ all :
 	+@echo "X\$XX:Y"
 EOT
 
-output1=`eval ${DMAKEPROG} -r -f $file1 2>&1 `
+output1=`eval ../${DMAKEPROG} -r -f $file1 2>&1 `
 result1=$?
-output2=`eval ${DMAKEPROG} -r -f $file2 2>&1 `
+output2=`eval ../${DMAKEPROG} -r -f $file2 2>&1 `
 result2=$?
-output3=`eval ${DMAKEPROG} -r -f $file3 2>&1 `
+output3=`eval ../${DMAKEPROG} -r -f $file3 2>&1 `
 result3=$?
-output4=`eval ${DMAKEPROG} -r -f $file4 2>&1 `
+output4=`eval ../${DMAKEPROG} -r -f $file4 2>&1 `
 result4=$?
 
 if echo $output1 | grep -v 'Error: -- Syntax error'; then

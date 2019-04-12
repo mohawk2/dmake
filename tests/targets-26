@@ -9,7 +9,10 @@ file1="mfile1.mk"
 file2="phonyfile.a"
 file3="phonyfile.b"
 tmpfiles="$file1 $file2 $file3"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -35,7 +38,7 @@ touch phonyfile.a phonyfile.b
 # that has been rebuild.
 sleep 1
 
-output1=`eval ${DMAKEPROG} -rf $file1 phonyfile.a 2>&1 `
+output1=`eval ../${DMAKEPROG} -rf $file1 phonyfile.a 2>&1 `
 result1=$?
 
 if test "$output1" != "Build phonyfile.b and phonyfile.a."; then

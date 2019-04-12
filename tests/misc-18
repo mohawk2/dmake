@@ -8,7 +8,10 @@
 : ${DMAKEPROG:=dmake}
 file1="mfile1.mk"
 tmpfiles="$file1"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -25,7 +28,7 @@ all :
 
 EOT
 
-output1=`eval ${DMAKEPROG} -r -f $file1`
+output1=`eval ../${DMAKEPROG} -r -f $file1`
 result1=$?
 if test "$output1" != "OK1"; then
   echo "Subtest 1: Wrong result: $output1"
@@ -44,7 +47,7 @@ all .WINPATH :
 
 EOT
 
-output2=`eval ${DMAKEPROG} -r -f $file1`
+output2=`eval ../${DMAKEPROG} -r -f $file1`
 result2=$?
 if test "$output2" != "OK2"; then
   echo "Subtest 2: Wrong result: $output2"
@@ -65,7 +68,7 @@ SHELLFLAGS*:=-ce
 EOT
 
 if test x`uname -o 2> /dev/null` = "xCygwin"; then
-    output3=`eval ${DMAKEPROG} -r -f $file1`
+    output3=`eval ../${DMAKEPROG} -r -f $file1`
     result3=$?
     if test "$output3" != "at:`cygpath -m /tmp/blah.xx`:star:`cygpath -m /tmp/blah`:"; then
         echo "Subtest : Wrong result: $output3"
@@ -90,7 +93,7 @@ all .WINPATH .SETDIR=/tmp :
 EOT
 
 if test x`uname -o 2> /dev/null` = "xCygwin"; then
-    output4=`eval ${DMAKEPROG} -r -f $file1`
+    output4=`eval ../${DMAKEPROG} -r -f $file1`
     result4=$?
     mypwd=`pwd`
     if test "$output4" != ":`cygpath -m /tmp`:`cygpath -m $mypwd`:"; then
@@ -116,7 +119,7 @@ all .WINPATH .SETDIR=/ :
 EOT
 
 if test x`uname -o 2> /dev/null` = "xCygwin"; then
-    output5=`eval ${DMAKEPROG} -r -f $file1`
+    output5=`eval ../${DMAKEPROG} -r -f $file1`
     result5=$?
     mypwd=`pwd`
     if test "$output5" != ":`cygpath -m /`:`cygpath -m $mypwd`:"; then
@@ -142,7 +145,7 @@ SHELLFLAGS*:=-ce
 EOT
 
 if test x`uname -o 2> /dev/null` = "xCygwin"; then
-    output6=`eval ${DMAKEPROG} -r -f $file1`
+    output6=`eval ../${DMAKEPROG} -r -f $file1`
     result6=$?
     if test "$output6" != ":`cygpath -m /tmp/all.bla`:"; then
         echo "Subtest : Wrong result: $output6"

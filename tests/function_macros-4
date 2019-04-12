@@ -9,7 +9,10 @@
 file1="makefile.mk"
 file2="stdout.txt"
 tmpfiles="$file1 $file2"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -26,7 +29,7 @@ aaa :
 	+echo A\$(shell cat $file2)A
 EOT
 
-${DMAKEPROG} -P2 -r -f $file1
+../${DMAKEPROG} -P2 -r -f $file1
 result=$?
 
 test $result -eq 0 && echo "Success - Cleaning up" && $CLEANUP

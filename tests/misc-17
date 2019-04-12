@@ -8,7 +8,10 @@
 file1="mfile1.mk"
 file2="my.inc"
 tmpfiles="$file1 $file2"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -27,7 +30,7 @@ all:
 
 EOT
 
-output=`eval ${DMAKEPROG} -S -P2 -rf $file1 all`
+output=`eval ../${DMAKEPROG} -S -P2 -rf $file1 all`
 result=$?
 
 if test "$output" != "MYMAXPROCESS:1:"; then

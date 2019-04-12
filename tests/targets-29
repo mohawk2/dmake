@@ -10,7 +10,10 @@ file2="aaa.aaa"
 file3="aaa.bbb"
 file4="aaa.ccc"
 tmpfiles="$file1 $file2 $file3 $file4"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -36,7 +39,7 @@ all : aaa.aaa
 
 EOT
 
-output1=`eval ${DMAKEPROG} -P2 -rf $file1 2>&1`
+output1=`eval ../${DMAKEPROG} -P2 -rf $file1 2>&1`
 result1=$?
 
 if test $result1 -ne 0; then

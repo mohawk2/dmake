@@ -10,7 +10,10 @@
 file1="mfile1.mk"
 file2="mytarget.dpcc"
 tmpfiles="$file1 $file2"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -39,7 +42,7 @@ mytarget.dpcc :
 
 EOT
 
-output=`eval ${DMAKEPROG} -r -P2 -f $file1`
+output=`eval ../${DMAKEPROG} -r -P2 -f $file1`
 result=$?
 
 if test "$output" != "making: mytarget.obj"; then

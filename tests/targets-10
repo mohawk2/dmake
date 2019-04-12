@@ -9,7 +9,10 @@
 : ${DMAKEPROG:=dmake}
 file1="mfile1.mk"
 tmpfiles="$file1"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -25,7 +28,7 @@ abc.xx : ; echo nix
 
 EOT
 
-output1=`eval ${DMAKEPROG} -r -f $file1 2>&1 `
+output1=`eval ../${DMAKEPROG} -r -f $file1 2>&1 `
 result1=$?
 
 if echo $output1 | grep 'Warning: -- More than one prerequisite' > /dev/null 2>&1 ; then

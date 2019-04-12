@@ -8,7 +8,10 @@
 : ${DMAKEPROG:=dmake}
 file1="mfile1.mk"
 tmpfiles="$file1"
-CLEANUP="rm -rf $tmpfiles"
+STARTDIR="`pwd`"; WORKDIR="$0-OUTPUT"
+CLEANUP="eval (cd $STARTDIR; rm -rf $WORKDIR)"
+$CLEANUP # Zap remnants of any failed run
+mkdir "$WORKDIR"; cd "$WORKDIR"
 
 trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
@@ -22,7 +25,7 @@ SHELLFLAGS*:=-ce
 	+echo "OK"
 EOT
 
-output1=`eval ${DMAKEPROG} -vr -rf $file1 all.xx 2>&1 `
+output1=`eval ../${DMAKEPROG} -vr -rf $file1 all.xx 2>&1 `
 result1=$?
 
 if test $result1 -eq 0 ; then
