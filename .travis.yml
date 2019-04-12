@@ -1,0 +1,17 @@
+language: c
+matrix:
+  include:
+    - os: linux
+before_install:
+  - env|sort
+  - perl -V
+script:
+  - ./autogen.sh
+  - make
+  - make -j40 check # pick high value as lots of tests "sleep" for timestamps
+notifications:
+  irc:
+    channels:
+    - "irc.perl.org#graphql-perl"
+    on_failure: always
+    skip_join: true
