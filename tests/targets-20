@@ -14,11 +14,12 @@ file2="ptarget.a"
 file3="ptarget.b"
 file4="ptarget.c"
 tmpfiles="$file1 $file2 $file3 $file4"
+CLEANUP="rm -rf $tmpfiles"
 
-trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
+trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
 # Remove files from prior failed run
-rm -rf $tmpfiles
+$CLEANUP
 
 # Create test environment
 touch ptarget.c
@@ -57,7 +58,7 @@ fi
 
 if test $result1 -eq 0 ; then
   echo "Success - Cleaning up"
-  rm -rf $tmpfiles
+  $CLEANUP
   exit
 else
   echo "Failure!"

@@ -8,11 +8,12 @@
 : ${DMAKEPROG:=dmake}
 file1="mfile1.mk"
 tmpfiles="$file1"
+CLEANUP="rm -rf $tmpfiles"
 
-trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
+trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
 # Remove files from prior failed run
-rm -rf $tmpfiles
+$CLEANUP
 
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Check that we set AAA to set_AAA.
@@ -44,7 +45,7 @@ fi
 
 if test $result1 -eq 0 ; then
   echo "Success - Cleaning up"
-  rm -rf $tmpfiles
+  $CLEANUP
   result=0
 else
   echo "Failure! Unexpected result."

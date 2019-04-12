@@ -9,11 +9,12 @@
 file1="mfile1.mk"
 file2="target.abc"
 tmpfiles="$file1 $file2"
+CLEANUP="rm -rf $tmpfiles"
 
-trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
+trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
 # Remove files from prior failed run
-rm -rf $tmpfiles
+$CLEANUP
 
 echo "Something" > $file2
 
@@ -48,6 +49,6 @@ else
   result=1
 fi
 
-test $result -eq 0 && echo "Success - Cleaning up" && rm -f ${tmpfiles}
+test $result -eq 0 && echo "Success - Cleaning up" && $CLEANUP
 test $result -ne 0 && echo "Failure!"
 exit $result

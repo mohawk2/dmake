@@ -9,11 +9,12 @@
 file1="mfile1.mk"
 file2="mytarget.dpcc"
 tmpfiles="$file1 $file2"
+CLEANUP="rm -rf $tmpfiles"
 
-trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
+trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
 # Remove files from prior failed run
-rm -rf $tmpfiles
+$CLEANUP
 
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 cat > $file1 <<EOT
@@ -34,6 +35,6 @@ EOT
 output=`eval ${DMAKEPROG} -r -f $file1`
 result=$?
 
-test $result -eq 0 && echo "Success - Cleaning up" && rm -f ${tmpfiles}
+test $result -eq 0 && echo "Success - Cleaning up" && $CLEANUP
 test $result -ne 0 && echo "Failure! Invalid circular dependency detected."
 exit $result

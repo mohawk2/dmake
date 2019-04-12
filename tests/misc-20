@@ -11,11 +11,12 @@ file2="my.c"
 file3="my.obj"
 file4="my.foo"
 tmpfiles="$file1 $file2 $file3 $file4"
+CLEANUP="rm -rf $tmpfiles"
 
-trap '{ echo "trapped signal - removing temporary files" ; rm -rf $tmpfiles ; }' 1 2 3 15
+trap "{ echo 'trapped signal - removing temporary files' ; $CLEANUP ; }" 1 2 3 15
 
 # Remove files from prior failed run
-rm -rf $tmpfiles
+$CLEANUP
 
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 1 - from testcase t_81296_5.mk
@@ -64,7 +65,7 @@ else
 fi
 
 # Remove files from prior run
-rm -rf $tmpfiles
+$CLEANUP
 # Remember to quote variables in generated makefiles( $ -> \$ ).
 # Test 2 - from testcase t_81296_6.mk
 cat > $file1 <<EOT
@@ -113,7 +114,7 @@ fi
 
 if test $result1 -eq 0 -a $result2 -eq 0 ; then
   echo "Success - Cleaning up"
-  rm -rf $tmpfiles
+  $CLEANUP
   exit
 else
   echo "Failure!"
