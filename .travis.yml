@@ -2,6 +2,7 @@ language: c
 matrix:
   include:
     - os: linux
+    - os: osx
 before_install:
   - env|sort
   - perl -V
