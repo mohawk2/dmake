@@ -1049,7 +1049,7 @@ macro value in lower case
 
 macro value in upper case
 
-=item 1
+=item C<1>
 
 return the first white space separated token from value
 
@@ -3409,6 +3409,8 @@ but  fails  with a 'don't know how to make FRC' error
 message if you do not specify AUGMAKE special target
 handling via the -A flag (or by setting AUGMAKE:=yes
 internally).
+
+=back
 
 =head1 LIMITS
 
