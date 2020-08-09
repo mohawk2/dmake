@@ -880,7 +880,7 @@ With .WINPATH set it expands to:
 
 =back
 
-All  attributes are user setable and except for .UPDATEALL and .MKSARGS
+All  attributes are user settable and except for .UPDATEALL and .MKSARGS
 may be used in one of two forms.  The .MKSARGS attribute is  restricted
 to  use  as a global attribute, and the use of the .UPDATEALL attribute
 is restricted to rules of the second form only.
@@ -1112,14 +1112,14 @@ and  you  use  the :d modifier then the expansion returns the directory
 name less the final directory separator string.  Thus successive  pairs
 of :d modifiers each remove a level of directory in the token string.
 
-The  infered  names of targets :i modifier returnes the actual filename
+The  inferred names of targets :i modifier returns the actual filename
 associated to the target, see L</BINDING TARGETS>. If the value  is
 not  a target or prerequisite the value is returned unchanged. For the
 following example:
 
   test = aprog bprog
 
-If aprog and bprog are targets or prerequisits and they  are  bound  to
+If aprog and bprog are targets or prerequisites and they  are  bound  to
 /tmp/aprog  and  bprog (see .SOURCE special target) the macro expansion
 has the following effect:
 
@@ -1204,9 +1204,10 @@ and string2 are not delimited by white  space  whereas  the  tokens  in
 token_list  are.  A null token in the token list is specified using "".
 Thus using another example we have:
 
-  test/{f1 f2}.o     --> test/f1.o test/f2.o test/ {f1 f2}.o    -->
-  test/ f1.o f2.o test/{f1 f2} .o    --> test/f1 test/f2 .o test/{"f1"
-  ""}.o  --> test/f1.o test/.o
+  test/{f1 f2}.o     --> test/f1.o test/f2.o
+  test/ {f1 f2}.o    --> test/ f1.o f2.o
+  test/{f1 f2} .o    --> test/f1 test/f2 .o
+  test/{"f1" ""}.o   --> test/f1.o test/.o
 
 and
 
@@ -1505,8 +1506,8 @@ sequences are handled.
 
 =back
 
-No special treatment of buildin commands for group  recipes  is
-implemented  even  though  the E<lt>empty recipeE<gt> will most propably
+No special treatment of builtin commands for group  recipes  is
+implemented  even  though  the E<lt>empty recipeE<gt> will most probably
 also not be evaluated by most shells that can be used to handle the
 recipe  groups.
 
@@ -1549,7 +1550,8 @@ persist for  the duration of the dmake run.  If the data text is to
 contain new lines the map escape codes macro expasion can be used.
 For example the expression:
 
-  mytext:=this is a\ntest of the text diversion all:
+  mytext:=this is a\ntest of the text diversion
+  all:
           cat $(mktmp $(mytext:m))
 
 is replaced by:
@@ -1560,7 +1562,8 @@ where  the  temporary  file contains two lines both of which are
 terminated by a new-line.  A second more illustrative  example  generates
 a response file to an MSDOS link command:
 
-  OBJ = fred.obj mary.obj joe.obj all : $(OBJ)
+  OBJ = fred.obj mary.obj joe.obj
+  all : $(OBJ)
           link @$(mktmp $(^:t"+\n"))
 
 The result of making `all' in the second example is the command:
@@ -1569,7 +1572,9 @@ The result of making `all' in the second example is the command:
 
 where the temporary file contains:
 
-  fred.obj+ mary.obj+ joe.obj
+  fred.obj+
+  mary.obj+
+  joe.obj
 
 The  last  line of the file is terminated by a new-line which is always
 inserted at the end of the data string.
@@ -1621,7 +1626,7 @@ TMPDIR and exporting it using the .EXPORT special target.
 Dmake allows to define targets with  the  sole  purpose  to  enforce  a
 dependency  chain  that  are unable to create the target, hence virtual
 targets.  When dmake tries to make a target, but only  finds  a  target
-definition without recipe lines, it would normally issues a "Don't know
+definition without recipe lines, it would normally issue a "Don't know
 how to make ..." error message, but if a target rule is terminated by a
 semicolon  and  has  no  following recipe lines, or if it has no recipe
 lines, but defines prerequisites, or if the  AUGMAKE  mode  is  enabled
@@ -1810,7 +1815,7 @@ start with a `.'  they are not treated as a .E<lt>suffixE<gt> meta target
 
 Please  note  that self defined targets shouldn't use the prefix `.' as
 they would be handled as .E<lt>suffixE<gt> meta targets and dmake most
-propably would complain about this.
+probably would complain about this.
 
 In  addition  to the special targets above, several other forms of
 targets are recognized and are considered special, their  exact  form
@@ -1846,7 +1851,7 @@ the user.
 Warning! This macro's value is differently defined  for
 a  native  Windows  dmake  executable (compiled
 with MS Visual C++ or MinGW) and dmake for other
-operating systems or build with other compilers.
+operating systems or built with other compilers.
 
 In the first case its value is the absolute
 filename of the executable of the current dmake
@@ -2171,7 +2176,7 @@ without the use of a shell.
 There  is  only  one  character valued macro defined by dmake: SWITCHAR
 contains the switch character used  to  introduce  options  on  command
 lines.   For  UNIX its value is `-', and for MSDOS its value may be `/' or
-`-'.  The macro is internally defined and is not user setable.   The MSDOS
+`-'.  The macro is internally defined and is not user settable.   The MSDOS
 version of dmake attempts to first extract SWITCHAR from an environment
 variable of the same name.  If that fails it then  attempts  to use the
 undocumented getswitchar system call, and returns the result of that.
@@ -2250,7 +2255,7 @@ macros used in these parameters are allowed.
 
 expands each macroterm in turn until there are no
 more or one  of  them  returns an empty string.
-If all expand to non-empty strings the macro returs
+If all expand to non-empty strings the macro returns
 the string "t"  otherwise it returns an empty string.
 
 =head2 $(assign expression)
@@ -2273,7 +2278,7 @@ Some examples are:
 
 =head2 $(echo list)
 
-Echo's the value of list.  list is not expanded.
+Echoes the value of list.  list is not expanded.
 
 =head2 $(eq,text_a,text_b true false)
 
@@ -2297,7 +2302,8 @@ concatenation of expanding data with var being
 set to each whitespace separated token from list.
 For example:
 
-  list = a b c all :; echo [$(foreach,i,$(list) [$i])]
+  list = a b c
+  all :; echo [$(foreach,i,$(list) [$i])]
 
 will output
 
@@ -2352,7 +2358,7 @@ para is used to override the .WINPATH setting.
 
 =head2 $(not macroterm)
 
-expands macroterm and returs the string "t" if the
+expands macroterm and returns the string "t" if the
 result of  the  expansion  is  the  empty  string;
 otherwise, it returns the empty string.
 
@@ -2371,9 +2377,9 @@ of  text  is  not NULL.
 
 =head2 $(or macroterm ...)
 
-expands  each  macroterm  in  turn  and  returs
+expands  each  macroterm  in  turn  and  returns
 the empty string if each term expands to the empty
-string;  otherwise, it returs the string "t".
+string;  otherwise, it returns the string "t".
 
 =head2 $(shell command)
 
@@ -2492,7 +2498,7 @@ you must use:
   mytarget ?= bar := hello mytarget ?= foo  = $(bar)
 
 Once a target is made any associated conditional macros are deactivated
-and their values are no longer available.  Activation occurrs after all
+and their values are no longer available.  Activation occurs after all
 inference, and .SETDIR directives have been processed and after  $@  is
 assigned,  but  before  prerequisites are processed; thereby making the
 values of conditional macro definitions available  during  construction
@@ -2691,7 +2697,7 @@ E<lt>%-targetE<gt> as %-targets are  divided  into  multiple  definitions
 with a single %-target.
 
 NOTE:   As  multiple %-targets didn't work reliably with dmake versions
-prior to 4.5 unless the rule operator `|:' was used we currently  issue
+prior to 4.5 unless the rule operator `|:' was used, we currently  issue
 a warning stating that it now works.
 
 The  %-target  defines a pattern against which a target whose recipe is
@@ -2794,14 +2800,15 @@ Indirect prerequisites are specified in an inference rule by  quoting
 the  prerequisite with single quotes.  For example, if you had the
 explicit dependency:
 
-  fred.o : fred.c ; rule to make fred.o fred.o : local.h
+  fred.o : fred.c ; rule to make fred.o
+  fred.o : local.h
 
 then this can be inferred for fred.o from the following inference rule:
 
   %.o : %.c 'local.h' ; makes a .o from a .c
 
-You may infer indirect prerequisites that are a function of  the  value of
-'%' in the current rule.  The meta-rule:
+You may infer indirect prerequisites that are a function of the value of
+'%' in the current rule. The meta-rule:
 
   %.o : %.c '$(INC)/%.h' ; rule to make a .o from a .c
 
@@ -2817,7 +2824,8 @@ The construct:
 
 is equivalent to:
 
-  %.o : %.c 'local.h' ; recipe %.o : %.f 'local.h' ; recipe
+  %.o : %.c 'local.h' ; recipe
+  %.o : %.f 'local.h' ; recipe
 
 If  any of the attributes .EPILOG, .IGNORE, .LIBRARY, .NOSTATE, .PHONY,
 .PRECIOUS, .PROLOG, .SETDIR, .SILENT, .SWAP, .USESHELL and .WINPATH are
@@ -2862,8 +2870,9 @@ rule  targets.   When  it  performs transitive closure it infers how to
 make a target from a prerequisite by performing a pattern match  as  if
 the potential prerequisite were a new target.  The set of rules:
 
-  %.o : %.c ; rule for making .o from .c %.c : %.y ; rule for making .c
-  from .y % : RCS/%,v ; check out of RCS file
+  %.o : %.c ; rule for making .o from .c
+  %.c : %.y ; rule for making .c from .y
+  % : RCS/%,v ; check out of RCS file
 
 will,  by  performing  transitive  closure, allow dmake to infer how to
 make a .o from a .y using a  .c  as  an  intermediate  temporary  file.
@@ -2993,11 +3002,13 @@ but are enclosed by lines beginning with [ and ].
 The recipe flags [+,-,%,@] are recognized at the start of a recipe line
 even if they appear in a macro.  For example:
 
-  SH = + all: $(SH)echo hi
+  SH = +
+  all: ; $(SH)echo hi
 
 is completely equivalent to writing
 
-  SH = + all: +echo hi
+  SH = +
+  all: ; +echo hi
 
 The  last  step  performed by dmake prior to running a recipe is to set
 the macro CMNDNAME to the name of the command to execute (determined
@@ -3038,8 +3049,7 @@ an appropriate object file  cannot  be  found.   dmake  now  supports
 Elf libraries on systems that support Elf and hence supports, on those
 systems, long member file names.  A small example best illustrates this.
 
-  mylib.a .LIBRARY : mem1.o mem2.o mem3.o
-  rules for making library...
+  mylib.a .LIBRARY : mem1.o mem2.o mem3.o ; rules for making library...
   # remember to remove .o's when lib is made
 
   # equivalent to:  '%.o : %.c ; ...'
@@ -3061,15 +3071,22 @@ Thus the following example:
 
   a.out : ml.a(a.o) ml.a(b.o); $(CC) -o $@  $<
 
-  .c.o :; $(CC) -c $(CFLAGS) -o $@  $< %.a:
-          ar rv $@ $?  ranlib $@ rm -rf $?
+  .c.o :; $(CC) -c $(CFLAGS) -o $@  $<
+  %.a:
+          ar rv $@ $?
+          ranlib $@
+          rm -rf $?
 
 constructs the following dependency graph.
 
-  a.out : ml.a; $(CC) -o $@  $< ml.a .LIBRARY : a.o b.o
+  a.out : ml.a; $(CC) -o $@  $<
+  ml.a .LIBRARY : a.o b.o
 
-  %.o : %.c ; $(CC) -c $(CFLAGS) -o $@  $< %.a :
-          ar rv $@ $?  ranlib $@ rm -rf $?
+  %.o : %.c ; $(CC) -c $(CFLAGS) -o $@  $<
+  %.a :
+          ar rv $@ $?
+          ranlib $@
+          rm -rf $?
 
 and making a.out then works as expected.
 
@@ -3100,7 +3117,7 @@ dmake  supports  the  keeping  of state information for targets
 that it makes whenever the macro .KEEP_STATE is assigned a value.
 The value of the  macro  should  be  the  name of a state file that will
 contain the state information.  If state keeping is enabled then each
-target  that does  not  poses the .NOSTATE attribute will have a record
+target  that does  not  possess the .NOSTATE attribute will have a record
 written into the state file indicating the target's name, the current
 directory, the command  used to update the target, and which, if any,
 :: rule is being used.  When you make this target again if any of this
@@ -3116,7 +3133,7 @@ The  state  file is an ascii file and is portable, however it is not
 in human readable form as the entries represent hash  keys  of  the
 above information.
 
-The Sun Microsystem's Make construct
+The Sun Microsystems Make construct
 
   .KEEP_STATE :
 
@@ -3141,7 +3158,7 @@ is E<gt> 1.  dmake guarantees that all dependencies as specified in the
 makefile are  honored.   A  target  will not be made until all of its
 prerequisites have been made.  Note that when you specify -P 4 then four
 child  processes are  run  concurrently but dmake actually displays the
-fifth command it will run immediately upon a child process becomming free.
+fifth command it will run immediately upon a child process becoming free.
 This  is  an artifact of the method used to traverse the dependency graph
 and cannot be removed.  If a parallel make is being performed then  the
 following restrictions on parallelism are enforced.
@@ -3211,7 +3228,7 @@ C<expression> can be one of the following forms:
 
 =item String evaluation
 
-  <lt>text> | <text> == <text> | <text> != <text>
+  <text> | <text> == <text> | <text> != <text>
 
 =item Numeric evaluation
 
@@ -3242,7 +3259,9 @@ the $(shell ...) macro to construct more complex test expressions.
 
 =head1 EXAMPLES
 
-  # A simple example showing how to use make # prgm : a.o b.o
+  # A simple example showing how to use make
+  #
+  prgm : a.o b.o
           cc a.o b.o -o prgm
   a.o : a.c g.h
           cc a.c -o $@
@@ -3268,7 +3287,8 @@ we can specify our dependencies more concisely.
 A more general way to say the above  using  the  new  macro  expansions
 would be:
 
-  SRC = a b OBJ = {$(SRC)}.o
+  SRC = a b
+  OBJ = {$(SRC)}.o
 
   prgm : $(OBJ)
           cc -o $@ $<
@@ -3278,13 +3298,16 @@ would be:
 If  we want to keep the objects in a separate directory, called objdir,
 then we would write something like this.
 
-  SRC = a b OBJ = {$(SRC)}.o
+  SRC = a b
+  OBJ = {$(SRC)}.o
 
   prgm : $(OBJ)
           cc $< -o $@
 
-  $(OBJ) : g.h %.o : %.c
-          $(CC) -c $(CFLAGS) -o $(@:f) $< mv $(@:f) objdir
+  $(OBJ) : g.h
+  %.o : %.c
+          $(CC) -c $(CFLAGS) -o $(@:f) $<
+          mv $(@:f) objdir
 
   .SOURCE.o : objdir   # tell dmake to look here for .o's
 
@@ -3293,26 +3316,30 @@ An example of building library members would go  something  like  this:
 
   SRC= a b
 
-  LIB= lib LIBm= { $(SRC) }.o
+  LIB= lib
+  LIBm= { $(SRC) }.o
 
   prgm: $(LIB)
           cc -o $@ $(LIB)
 
   $(LIB) .LIBRARY : $(LIBm)
-          ar rv $@ $< rm $<
+          ar rv $@ $<
+          rm $<
 
 Finally, suppose that each of the source files in the previous  example
 had  the  `:'  character in their target name.  Then we would write the
 above example as:
 
-  SRC= f:a f:b LIB= lib LIBm= "{ $(SRC) }.o"      # put quotes around
-  each token
+  SRC= f:a f:b
+  LIB= lib
+  LIBm= "{ $(SRC) }.o"      # put quotes around each token
 
   prgm: $(LIB)
           cc -o $@ $(LIB)
 
   $(LIB) .LIBRARY : $(LIBm)
-          ar rv $@ $< rm $<
+          ar rv $@ $<
+          rm $<
 
 =head1 COMPATIBILITY
 
@@ -3358,7 +3385,7 @@ AUGMAKE features:
 GNU  Make  style  include,  and  if/else/endif directives are
 allowed in non-group recipes.  Thus, the word include
 appearing at the start of a line that is not part
-of a gruop recipe will be mapped to the ".INCLUDE"
+of a group recipe will be mapped to the ".INCLUDE"
 directive that  damke  uses.  Similarly,  the  words
 ifeq,ifneq,elif,else,  and  endif are mapped to their
 corresponding dmake equivalents.
@@ -3464,7 +3491,7 @@ Some  system  commands  return non-zero status inappropriately.  Use -i
 (`-' within the makefile) to overcome the difficulty.
 
 Some systems do not have easily accessible time stamps for library
-members  (MSDOS,  AMIGA,  etc)  for these dmake uses the time stamp of
+members  (MSDOS,  AMIGA,  etc) - for these dmake uses the time stamp of
 the library instead and prints a warning the first time it does  so.
 This is  almost  always  ok,  except when multiple makefiles update
 a single library file.  In these instances it is possible to miss an
