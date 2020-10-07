@@ -35,11 +35,11 @@
 #undef __WIN32__
 #endif
 
+#include "extern.h"
 #ifdef __APPLE__
 #include <sys/types.h>
 #endif
 #include <dirent.h>
-#include "extern.h"
 #include <sysintf.h>
 
 
@@ -156,8 +156,15 @@ int          force;
        * the same directory. This would only happen if different targets
        * using different upper/lower case spellings for the same directory
        * and is *never* a good idea. */
+#ifndef _WIN32
       if (Set_dir(udir) == 0) {
 	 if((dirp=opendir(".")) != NIL(DIR)) {
+#else
+/* stat (or any other IO call) isn't called below on Win32
+   so no need to change cwd */
+      if (1) {
+	 if((dirp=opendir(udir)) != NIL(DIR)) {
+#endif
 	    while((direntp=readdir(dirp)) != NULL) {
 	       TALLOC(ep,1,Entry);
 	       ep->name = DmStrDup(direntp->d_name); /* basename only */
@@ -181,7 +188,9 @@ int          force;
 	    }
 	    closedir(dirp);
 	 }
+#ifndef _WIN32
 	 Set_dir(Pwd);
+#endif
       }
    }
 

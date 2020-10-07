@@ -392,8 +392,14 @@ char *data;
 
    data = Expand(data);
 
-   Append_line( data, TRUE, tmpfile, name, FALSE, FALSE );
-   Close_temp( Current_target, tmpfile );
+   /* Expand's decendents can change Current_target, example
+      "$(mktmp $(HEADER) $(shell @type text_file_on_disk) $(FOOTER))" will do it.
+      Is that a bug? Should Current_target be saved to a C auto? IDK. See also a
+      comment by the original author in Exec_commands(). "type" is a
+      Win32 command. ~bulk88
+    */
+   Append_line( data, TRUE, tmpfile, FALSE, FALSE );
+   Close_temp( Current_target, tmpfile, name );
    FREE(data);
 
    return( text );

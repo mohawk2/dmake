@@ -151,9 +151,9 @@ int  flag;
 	       cp = lp->cl_prq;
 	    }
 	    TALLOC(sp,1,STRING);
-	    sp->st_string = DmStrDup(tok2);
 	    sp->st_next   = cp->ce_cond;
 	    cp->ce_cond   = sp;
+	    sp->st_string = DmStrDup(tok2);
 
 	    tok1 = NIL(char);
 	 }

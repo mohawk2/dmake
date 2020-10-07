@@ -76,7 +76,7 @@ case "$_os" in
 	  OS_VERSION=cygwin
 	  CASE_INSENSITIVE_FS=true
 	  ;;
-	"MINGW")
+	MINGW*)
 	  OS_VERSION=mingw
 	  OS_TYPE=winnt
 	  BUILDINFO="Windows / MinGW"
@@ -85,7 +85,7 @@ case "$_os" in
 	"MSVC6")
 	  OS_VERSION=msvc6
 	  OS_TYPE=winnt
-	  BUILDINFO="Windows / MS Visual C++"
+	  BUILDINFO="Windows / MS Visual C++" dmstr2\(_MSC_FULL_VER\)
 	  CASE_INSENSITIVE_FS=true
 	  ;;
 	"Darwin")

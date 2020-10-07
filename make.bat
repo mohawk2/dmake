@@ -41,10 +41,12 @@ echo    msc60        - Microsoft C 6.0 compile.
 echo    msc60swp     - Microsoft C 6.0, MASM 5.1 compile of swapping dmake.
 
 echo    win95-bcc50     - Borland C++ 5.0 32-bit compile of dmake.
-echo    win95-vpp40     - Microsoft VC++ 4.0 32-bit compile of dmake.
-echo    win95-vpp70     - MS VC++ ^>= 2003 optimized
-echo    win95-vpp70 rel - MS VC++ ^>= 2003 optimized
-echo    win95-vpp70 dbg - MS VC++ ^>= 2003 unoptimized for debugging
+echo    win95-vpp40     - Microsoft VC++ 4.0-6.0 optimized
+echo    win95-vpp40 rel - Microsoft VC++ 4.0-6.0 optimized
+echo    win95-vpp40 dbg - Microsoft VC++ 4.0-6.0 unoptimized for debugging
+echo    win95-vpp70     - MS VC++ ^>= 2003 32 or 64 bit optimized
+echo    win95-vpp70 rel - MS VC++ ^>= 2003 32 or 64 bit optimized
+echo    win95-vpp70 dbg - MS VC++ ^>= 2003 32 or 64 bit unoptimized 4 debugging
 goto end
 
 rem This is the script that makes dmake using Microsoft C 5.1

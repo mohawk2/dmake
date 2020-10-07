@@ -61,3 +61,7 @@ extern char * getcwd();
 #undef _POSIX_PATH_MAX
 #endif
 #define _POSIX_PATH_MAX _MAX_PATH
+
+#if _MSC_VER >= 1400
+#  define fputc(_c,_stream) _fputc_nolock(_c,_stream)
+#endif

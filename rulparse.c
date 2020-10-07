@@ -413,7 +413,7 @@ int  no_check;
 {
    DB_ENTER( "Add_recipe_to_list" );
 
-   if( rule != NIL( char ) && (*rule != '\0' || white_too) ) {
+   if( *rule != '\0' || white_too ) {
       DB_PRINT( "par", ("Adding recipe [%s]", rule) );
       _sv_crule = Def_recipe( rule, _sv_crule, white_too, no_check );
 

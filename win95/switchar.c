@@ -23,9 +23,7 @@
 --      Use cvs log to obtain detailed change logs.
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "stdmacs.h"
+#include "extern.h"
 
 getswitchar()/*
 ===============

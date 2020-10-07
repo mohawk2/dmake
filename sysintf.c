@@ -840,18 +840,25 @@ char   *fname;
 ** Close a previously used temporary file.
 */
 PUBLIC void
-Close_temp(cp, file)
+Close_temp(cp, file, name)
 CELLPTR cp;
 FILE    *file;
+char    *name;
 {
    FILELISTPTR fl;
+   int status;
    if( cp == NIL(CELL) ) cp = Root;
 
    for( fl=cp->ce_files; fl && fl->fl_file != file; fl=fl->fl_next );
    if( fl ) {
       fl->fl_file = NIL(FILE);
-      fclose(file);
+      status = fclose(file);
+   } else { /* if it isn't supposed to be closed, atleast it has to be flushed */
+      status = fflush(file);
    }
+   if( status == EOF )
+      Fatal("Close or Write error on temporary file, while processing `%s'", name);
+   return;
 }
 
 
@@ -1129,7 +1136,12 @@ char *name;
    if( (buf.st_mode & S_IFMT) == S_IFDIR )
       return 1;
 #endif
+#ifdef _WIN32
+/* we dont need errno set, no callers check errno */
+   return !DeleteFile(name);
+#else
    return(unlink(name));
+#endif
 }
 
 

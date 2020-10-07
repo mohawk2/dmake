@@ -30,6 +30,23 @@
 /* For MSVC++ needs to include windows.h first to avoid problems with
  * type redefinitions. Include it also for MinGW for consistency. */
 #if defined(__MINGW32__) || defined(_MSC_VER)
+/* silence warnings about using null term strings in >= VC 2005
+sysintf.c(918) : warning C4996: 'strcat' was declared deprecated
+        Message: 'This function or variable may be unsafe. Consider using strcat
+_s instead. To disable deprecation, use _CRT_SECURE_NO_DEPRECATE. See online hel
+p for details.' */
+#define _CRT_SECURE_NO_DEPRECATE
+/* silence warnings about using POSIX name funcs in >= VC 2005
+sysintf.c(1132) : warning C4996: 'unlink' was declared deprecated
+        C:\Program Files\Microsoft Visual Studio 8\VC\INCLUDE\stdio.h(290) : see
+ declaration of 'unlink'
+        Message: 'The POSIX name for this item is deprecated. Instead, use the I
+SO C++ conformant name: _unlink. See online help for details.' */
+#define _CRT_NONSTDC_NO_DEPRECATE
+/* get back some of the perf loss caused by >= VC 2005 dropping single threaded
+   static link CRT, this macro disables multithreading locks on some stdio
+   functions */
+#define _CRT_DISABLE_PERFCRIT_LOCKS
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
@@ -169,7 +186,7 @@ char *cygdospath(char *src, int winpath);
 #endif
 
 #ifdef _WIN32
-#  define FileTimeTo_time_t(ft) ((time_t)((*((unsigned __int64 *)ft) - 116444736000000000ULL)/10000000ULL))
+#  define FileTimeTo_time_t(ft) ((time_t)((*((unsigned __int64 *)ft) - 116444736000000000)/10000000))
 #endif
 
 /* Get the working directory fall back code */
