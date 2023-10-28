@@ -1,0 +1,8 @@
+
+Dmake has been tested on Windows 11 using Microsoft C 19.37.
+
+To build:
+    From the root of the distribution, execute the following command:
+	
+        winnt\microsft\vpp40\mk.cmd
+	

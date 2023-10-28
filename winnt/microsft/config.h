@@ -44,9 +44,11 @@
 #define coreleft() 0L
 
 /* MSC Version 4.0 doesn't understand SIGTERM, later versions do. */
+/*
 #ifndef SIGTERM
 #   define SIGTERM SIGINT
 #endif
+*/
 
 /* Fixes unimplemented line buffering for MSC 5.x and 6.0.
  * MSC _IOLBF is the same as _IOFBF

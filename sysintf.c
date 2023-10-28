@@ -61,6 +61,14 @@
 
 #include "extern.h"
 
+#ifdef _MSC_VER
+#include <sys/types.h>
+#include <sys/utime.h>
+#define utime _utime
+#define HAVE_UTIME_NULL
+#include <fcntl.h>
+#endif
+
 #if defined(_MSC_VER) || defined(__MINGW32__)
 /* this is needed for the _ftime call below. Only needed here. */
 #   include <sys/timeb.h>
@@ -125,8 +133,10 @@ int  force;
       Assume unix time 0.\n", basename, NameMax );
       return((time_t)0L);
    }
+#ifndef _MSC_VER
    else if( BTOBOOL(UseDirCache) )
       return(CacheStat(name,force));
+#endif
    else
       return(really_dostat(name));
 }
@@ -237,9 +247,9 @@ CELLPTR target;
 
    /* Print absolute path if requested. */
    if( !(target->ce_attr & A_SHELLESC) && (Measure & M_ABSPATH) ) {
-      printf("%s %s %lu.%.3u %s%s%s\n",text, tstrg, time_sec, time_msec, Pwd, DirSepStr, tname);
+	   printf("%s %s %lu.%.3u %s%s%s\n",text, tstrg, (long) time_sec, time_msec, Pwd, DirSepStr, tname);
    } else {
-      printf("%s %s %lu.%.3u %s\n",text, tstrg, time_sec, time_msec, tname);
+	   printf("%s %s %lu.%.3u %s\n",text, tstrg, (long) time_sec, time_msec, tname);
    }
 }
 
@@ -640,7 +650,11 @@ char*   path;
 PUBLIC char
 Get_switch_char()
 {
+#ifdef _MSC_VER
+   return '-';
+#else
    return( getswitchar() );
+#endif
 }
 
 
@@ -655,6 +669,11 @@ char *tmpdir;
 char **path;
 {
    int fd; /* file descriptor */
+
+#ifdef _MSC_VER
+#define tempname _tempnam
+#define HAVE_TEMPNAM
+#endif
 
 #if defined(HAVE_MKSTEMP)
    mode_t       mask;
@@ -676,11 +695,13 @@ char **path;
    npid = _getpid();
    nticks = GetTickCount() & 0xfff;
    sprintf(pidbuff,"mk%d_%d_",npid,nticks);
+   *path = tempnam(tmpdir, pidbuff);
+   fd = open(*path, _O_CREAT | _O_EXCL | _O_TRUNC | _O_RDWR, 0600);
 #else   
    sprintf(pidbuff,"mk");
-#endif   
    *path = tempnam(tmpdir, pidbuff);
    fd = open(*path, O_CREAT | O_EXCL | O_TRUNC | O_RDWR, 0600);
+#endif   
 #else
 
 #error mkstemp() or tempnam() is needed
@@ -1022,7 +1043,7 @@ CELLPTR cp;
 
       if( Verbose & V_MAKE )
 	 printf( "%s:  <<<< Set [%s] time stamp to %lu\n",
-		 Pname, tcp->CE_NAME, tcp->ce_time );
+		 Pname, tcp->CE_NAME, (long) tcp->ce_time );
 
       if( Measure & M_TARGET )
 	 Do_profile_output( "e", M_TARGET, tcp );

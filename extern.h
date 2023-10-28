@@ -159,11 +159,15 @@ char *cygdospath(char *src, int winpath);
 #endif
 
 /* Work around some of the functions that may or may not exist */
+#ifdef _MSC_VER
+#define tzset _tzset
+#define HAVE_TZSET 1
+#endif
 #if ! HAVE_TZSET
 #if HAVE_SETTZ
 #  define tzset() settz()
 #else
-#  warn "tzset is not supported, null out"
+#  pragma message ("tzset is not supported, null out")
 #  define tzset()
 #endif
 #endif

@@ -160,7 +160,7 @@ int     force;
 
       if( Verbose & V_MAKE )
 	 printf( "%s:  Checking library '%s' for member [%s], time %ld\n",
-		 Pname, cp->ce_lib, name, cp->ce_time );
+		 Pname, cp->ce_lib, name, (long) cp->ce_time );
    }
 
    FREE( tmp );

@@ -397,7 +397,7 @@ CELLPTR setdirroot;
 	       
 	    if( Verbose & V_MAKE )
 	       printf("%s:  Time stamp of [%s] is %ld\n",Pname,tcp->CE_NAME,
-		      tcp->ce_time);
+		      (long) tcp->ce_time);
 	 }
       }
    }
@@ -738,7 +738,7 @@ CELLPTR setdirroot;
 
       if( Verbose & V_MAKE )
 	 printf( "%s:  Updating [%s], (%ld > %ld)\n", Pname,
-		 cp->CE_NAME, otime, cp->ce_time );
+		 cp->CE_NAME, (long) otime, (long) cp->ce_time );
 
       /* In order to check if a targets time stamp was properly updated
        * after the target was made and to keep the dependency chain valid
@@ -849,7 +849,7 @@ CELLPTR setdirroot;
    else {
       if( Verbose & V_MAKE )
 	 printf( "%s:  Up to date [%s], prq time = %ld , target time = %ld)\n", Pname,
-		 cp->CE_NAME, otime, cp->ce_time );
+		 cp->CE_NAME, (long) otime, (long) cp->ce_time );
       mark_made = TRUE;
    }
 

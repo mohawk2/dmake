@@ -23,6 +23,9 @@
 --      Use cvs log to obtain detailed change logs.
 */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #define DMSTAT stat
 #define VOID_LCACHE(l,m)
 #define GETPID _psp
