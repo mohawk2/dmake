@@ -44,11 +44,6 @@
 
 #define NIL(p)	((p*)NULL)
 
-/* Cygwin defines _STDDEF_H with only one leading '_' */
-#if !defined(atarist) && !defined(__STDDEF_H) && !defined(_STDDEF_H)
-#define offsetof(type,id) ((size_t)&((type*)NULL)->id)
-#endif
-
 #define FALSE	0
 #define TRUE	1
 

@@ -83,6 +83,11 @@ dbug/dbug/dbug.c, eg "-#d:F:L:t"
 #include "extern.h" /* this includes config.h */
 #include "sysintf.h"
 
+#ifdef _MSC_VER
+#include <fcntl.h>
+#define O_WRONLY _O_WRONLY
+#endif
+
 #ifndef MSDOS
 #define USAGE \
 "Usage:\n%s [-P#] [-{f|K} file] [-{w|W} target ...] [macro[!][[*][+][:]]=value ...]\n"
@@ -168,7 +173,7 @@ char **argv;
    Pname = Basename(Pname);
 
    DB_PROCESS(Pname);
-   (void) setvbuf(stdout, NULL, _IOLBF, BUFSIZ); /* stdout line buffered */
+   setvbuf(stdout, NULL, _IOLBF, BUFSIZ); /* stdout line buffered */
 
    Continue  = FALSE;
    Comment   = FALSE;

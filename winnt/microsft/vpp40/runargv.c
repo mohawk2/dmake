@@ -1,5 +1,3 @@
-Blake sent me the wrong one.
-
 /* RCS  $Id: runargv.c,v 1.2 2007-10-15 16:00:01 ihi Exp $
 --
 -- SYNOPSIS

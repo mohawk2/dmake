@@ -37,6 +37,10 @@ This file should not be used, use unix/runargv.c instead.
 static int  _abort_flg = FALSE;
 static void _add_child ANSI((CELLPTR, int));
 static void _finished_child ANSI((int));
+static void printArgs(char *name, char **argv);
+
+
+#define X()	fprintf(stderr, "runargv(%d)\n", __LINE__)
 
 PUBLIC int
 runargv(target, group, last, cmnd_attr, cmd)
@@ -82,7 +86,6 @@ char  **cmd; /* Simulate a reference to *cmd. */
 	 dup2( zerofd, 1 );
       }
    }
-
    /* Return immediately for empty line or noop command. */
    if ( !*tcmd ||				/* empty line */
 	( strncmp(tcmd, "noop", 4) == 0 &&	/* noop command */
@@ -107,12 +110,23 @@ char  **cmd; /* Simulate a reference to *cmd. */
       status = 0;
    }
    else {
-      argv = Pack_argv( group, shell, cmd );
-      Packed_shell = shell||group;
+	   /* I think this code is wrong (the entire else block).  I hacked it to get it working on Windows for my own needs.
+	      I think it would be a big job to fix it correctly becases the whole idea behind it is wrong.  */
+#ifdef _MSC_VER
+            char *args[4];
+            args[0] = "cmd";
+            args[1] = "/c";
+            args[2] = tcmd;
+            args[3] = NULL;
+            status = spawnvpe(P_WAIT, *args, args, environ);
+#else
+            argv = Pack_argv( group, shell, cmd );
+            Packed_shell = shell||group;
 
-      /* The last two arguments would need (const char *const *) casts
-       * to silence the warning when building with MinGW. */
-      status = spawnvpe(P_WAIT, *argv, argv, environ);
+            /* The last two arguments would need (const char *const *) casts
+             * to silence the warning when building with MinGW. */
+            status = spawnvpe(P_WAIT, *argv, argv, environ);
+#endif
    }
 
    /* Restore stdout/stderr if needed. */
@@ -124,8 +138,13 @@ char  **cmd; /* Simulate a reference to *cmd. */
 
    if( status == -1 ) {
       /* spawnvpe failed */
+#ifdef _MSC_VER
+      fprintf(stderr, "%s:  Error executing '%s': %s",
+	      Pname, tcmd, strerror(errno) );
+#else
       fprintf(stderr, "%s:  Error executing '%s': %s",
 	      Pname, argv[0], strerror(errno) );
+#endif
       if( ignore||Continue ) {
 	 fprintf(stderr, " (Ignored)" );
       }
@@ -137,7 +156,6 @@ char  **cmd; /* Simulate a reference to *cmd. */
 
    _finished_child(status);
    if( last && !Doing_bang ) Update_time_stamp( target );
-
    return( 0 );
 }
 
@@ -147,6 +165,18 @@ Clean_up_processes()
 {
    _abort_flg = TRUE;
    _finished_child(-1);
+}
+
+static void printArgs(char *name, char **argv)
+{
+	int i;
+	fprintf(stderr, "%s ", name);
+	for (i=0 ; ; i++) {
+		if (argv[i] == NULL)
+			break;
+		fprintf(stderr, "\"%s\" ", argv[i]);
+	}
+	fprintf(stderr, "\n");
 }
 
 
